@@ -1,11 +1,11 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 
 const DEFAULT_USER = {
-  name: 'Maya Patel',
-  email: 'maya.patel@university.edu',
+  name: 'Student',
+  email: 'student@university.edu',
   role: 'Student',
-  bio: 'Third-year Physics and Computer Science double major. I love digging into thermodynamics and algorithm design. Always up for a good study session.',
-  joinedDate: 'September 2024',
+  bio: 'Welcome to ClassVault! You can update your profile details in Settings.',
+  joinedDate: 'September 2026',
 }
 
 const AuthContext = createContext(null)
@@ -28,7 +28,7 @@ export function UserProvider({ children }) {
     }
   }, [user])
 
-  // Get first name for greetings (e.g. "Maya")
+  // Get first name for greetings (e.g. "Alex")
   const firstName = user?.name ? user.name.trim().split(/\s+/)[0] : 'Student'
 
   // Get up to 2 uppercase initials for avatar badge (e.g. "MP")

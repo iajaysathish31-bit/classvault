@@ -173,7 +173,8 @@ export default function Settings() {
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm text-vault-navy focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
+                        placeholder="Enter your name"
+                        className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm text-vault-navy placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
                         required
                       />
                     </div>
@@ -186,7 +187,8 @@ export default function Settings() {
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm text-vault-navy focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
+                        placeholder="Enter your email id"
+                        className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm text-vault-navy placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
                         required
                       />
                     </div>
