@@ -103,29 +103,29 @@ export default function FacultyBroadcast() {
       <div className="space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-rose-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-rose-500 text-sm font-medium animate-bounce">
+          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-700 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-600 text-sm font-medium animate-bounce">
             <Check size={18} />
             {toastMessage}
           </div>
         )}
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950 p-6 md:p-8 rounded-3xl border border-rose-950/60 shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 md:p-8 rounded-3xl border border-emerald-100 shadow-xs">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-rose-400 bg-rose-950 px-2.5 py-1 rounded-md border border-rose-800/60">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
               Direct Communication
             </span>
-            <h1 className="text-2xl font-black text-white mt-2 tracking-tight">
+            <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
               Class Announcements & Broadcasts
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
               Dispatch real-time urgent updates, assignment deadline modifications, and exam announcements to students.
             </p>
           </div>
 
           <button
             onClick={() => setModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold shadow-lg shadow-rose-950 transition-all self-start md:self-auto"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md shadow-emerald-200 transition-all self-start md:self-auto"
           >
             <Plus size={16} /> New Broadcast
           </button>
@@ -136,43 +136,43 @@ export default function FacultyBroadcast() {
           {broadcasts.map((b) => (
             <div
               key={b.id}
-              className={`bg-slate-950 rounded-3xl p-6 border transition-all shadow-md ${
+              className={`bg-white rounded-3xl p-6 border transition-all shadow-xs ${
                 b.urgent
-                  ? 'border-rose-800 bg-gradient-to-br from-slate-950 to-rose-950/30'
-                  : 'border-slate-800 hover:border-rose-900/40'
+                  ? 'border-amber-300 bg-gradient-to-br from-white to-amber-50/40 shadow-amber-100/50'
+                  : 'border-emerald-100/80 hover:border-emerald-300'
               }`}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-850">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
                 <div className="flex flex-wrap items-center gap-2">
                   <span
-                    className={`text-[11px] font-bold px-2 py-0.5 rounded border ${
+                    className={`text-[11px] font-bold px-2.5 py-0.5 rounded border ${
                       b.cohort === 'ALL COHORTS'
-                        ? 'bg-purple-950 text-purple-300 border-purple-800/60'
-                        : 'bg-rose-950 text-rose-300 border border-rose-800/60'
+                        ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                        : 'bg-teal-50 text-teal-800 border-teal-200'
                     }`}
                   >
                     {b.cohort}
                   </span>
 
                   {b.urgent && (
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800/60 flex items-center gap-1">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
                       <AlertTriangle size={11} /> High Priority
                     </span>
                   )}
 
-                  <span className="text-xs text-slate-500 flex items-center gap-1">
+                  <span className="text-xs text-slate-400 flex items-center gap-1">
                     <Clock size={12} /> {b.timestamp}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] text-slate-400">
-                    Read by <strong className="text-rose-400">{b.views}</strong> /{' '}
+                  <span className="text-[11px] text-slate-500">
+                    Read by <strong className="text-emerald-700">{b.views}</strong> /{' '}
                     {b.totalEnrolled} students
                   </span>
                   <button
                     onClick={() => handleDelete(b.id)}
-                    className="p-1 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-950/40 transition-colors"
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
                   >
                     <Trash2 size={14} />
                   </button>
@@ -180,8 +180,8 @@ export default function FacultyBroadcast() {
               </div>
 
               <div className="mt-4">
-                <h3 className="text-base font-bold text-white mb-2">{b.title}</h3>
-                <p className="text-xs text-slate-300 leading-relaxed max-w-4xl">{b.content}</p>
+                <h3 className="text-base font-bold text-slate-900 mb-2">{b.title}</h3>
+                <p className="text-xs text-slate-600 leading-relaxed max-w-4xl">{b.content}</p>
               </div>
             </div>
           ))}
@@ -189,21 +189,21 @@ export default function FacultyBroadcast() {
 
         {/* New Broadcast Modal */}
         {modalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-xs p-4">
-            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-rose-950/80 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
-              <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 text-slate-800">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-rose-950 text-rose-400 border border-rose-800/60 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center">
                     <BellRing size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-base">New Broadcast Notice</h3>
-                    <p className="text-xs text-slate-400">Push directly to student dashboards</p>
+                    <h3 className="font-bold text-slate-900 text-base">New Broadcast Notice</h3>
+                    <p className="text-xs text-slate-500">Push directly to student dashboards</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="p-1 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="p-1 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100"
                 >
                   <X size={20} />
                 </button>
@@ -211,7 +211,7 @@ export default function FacultyBroadcast() {
 
               <form onSubmit={handleCreateBroadcast} className="mt-5 space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Announcement Subject
                   </label>
                   <input
@@ -219,19 +219,19 @@ export default function FacultyBroadcast() {
                     placeholder="e.g. Schedule Change: Friday Lab Moved to 2:30 PM"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Target Cohort
                   </label>
                   <select
                     value={newCohort}
                     onChange={(e) => setNewCohort(e.target.value)}
-                    className="w-full text-xs px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none"
+                    className="w-full text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600"
                   >
                     <option value="ALL COHORTS">All Enrolled Cohorts (Entire Term)</option>
                     <option value="CLS-401">CLS-401 - Advanced Thermodynamics</option>
@@ -241,7 +241,7 @@ export default function FacultyBroadcast() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Notice Details
                   </label>
                   <textarea
@@ -249,7 +249,7 @@ export default function FacultyBroadcast() {
                     placeholder="Write detailed instructions or notices..."
                     value={newContent}
                     onChange={(e) => setNewContent(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:border-rose-500 resize-none"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:outline-none focus:border-emerald-600 resize-none"
                     required
                   />
                 </div>
@@ -260,27 +260,27 @@ export default function FacultyBroadcast() {
                     id="urgentCheck"
                     checked={isUrgent}
                     onChange={(e) => setIsUrgent(e.target.checked)}
-                    className="rounded text-rose-500 focus:ring-0 bg-slate-950 border-slate-700 w-4 h-4 cursor-pointer"
+                    className="rounded text-emerald-700 focus:ring-0 bg-slate-50 border-slate-300 w-4 h-4 cursor-pointer"
                   />
                   <label
                     htmlFor="urgentCheck"
-                    className="text-xs text-slate-300 font-medium cursor-pointer"
+                    className="text-xs text-slate-700 font-medium cursor-pointer"
                   >
                     Mark as Urgent / High Priority Notification
                   </label>
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
                   <button
                     type="button"
                     onClick={() => setModalOpen(false)}
-                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800"
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 rounded-xl text-xs font-bold bg-rose-700 hover:bg-rose-600 text-white shadow-lg shadow-rose-950 flex items-center gap-1.5"
+                    className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white shadow-md shadow-emerald-200 flex items-center gap-1.5"
                   >
                     <Send size={14} /> Send Broadcast
                   </button>

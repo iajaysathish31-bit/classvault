@@ -42,7 +42,7 @@ export default function Landing() {
           </Link>
           <Link
             to="/login?role=teacher"
-            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 transition-colors"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/60 transition-colors"
           >
             <ShieldAlert size={14} /> Teacher Portal
           </Link>
@@ -133,49 +133,49 @@ export default function Landing() {
           </div>
 
           {/* Gateway 2: Faculty Portal */}
-          <div className="relative group bg-slate-950 rounded-3xl p-8 border-2 border-slate-800 shadow-xl shadow-slate-950/40 hover:border-rose-600 hover:shadow-2xl hover:shadow-rose-950/50 transition-all flex flex-col justify-between overflow-hidden text-slate-100">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-rose-600/15 to-transparent rounded-bl-full pointer-events-none" />
+          <div className="relative group bg-white rounded-3xl p-8 border-2 border-emerald-100 shadow-xl shadow-emerald-100/40 hover:border-emerald-500 hover:shadow-2xl hover:shadow-emerald-200/50 transition-all flex flex-col justify-between overflow-hidden text-slate-800">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-emerald-100 to-transparent rounded-bl-full pointer-events-none" />
 
             <div>
-              <div className="w-14 h-14 rounded-2xl bg-rose-700 text-white flex items-center justify-center shadow-lg shadow-rose-950 mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-700 text-white flex items-center justify-center shadow-lg shadow-emerald-200 mb-6">
                 <ShieldAlert size={28} />
               </div>
 
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-[11px] font-extrabold uppercase tracking-wider text-rose-400 bg-rose-950 px-2.5 py-0.5 rounded-full border border-rose-800/60">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
                   Faculty Console
                 </span>
-                <span className="text-xs text-slate-400 font-bold">Fall Term 2026</span>
+                <span className="text-xs text-slate-500 font-bold">Fall Term 2026</span>
               </div>
 
-              <h2 className="text-2xl font-black text-white tracking-tight">
+              <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                 Faculty Operations Center
               </h2>
 
-              <p className="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
-                Executive dark command console designed for professors and instructors to manage student cohorts, compute weighted gradebooks, and publish resources.
+              <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
+                Clean academic administration console designed for professors and instructors to manage student cohorts, compute weighted gradebooks, and publish resources.
               </p>
 
-              <div className="mt-6 space-y-2 text-xs text-slate-300">
+              <div className="mt-6 space-y-2 text-xs text-slate-600">
                 <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-700" />
                   <span>Teaching cohorts, capacity meters & join code generator</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-700" />
                   <span>Spreadsheet-style gradebook with live curve recalculation</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-700" />
                   <span>Instant student broadcast and urgent alert dispatcher</span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-slate-800">
+            <div className="mt-8 pt-6 border-t border-slate-100">
               <Link
                 to="/login?role=teacher"
-                className="w-full py-3.5 px-6 rounded-2xl bg-rose-700 hover:bg-rose-600 text-white text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-rose-950 group-hover:gap-3 transition-all"
+                className="w-full py-3.5 px-6 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-200 group-hover:gap-3 transition-all"
               >
                 Enter Faculty Portal <ArrowRight size={16} />
               </Link>
@@ -203,7 +203,7 @@ export default function Landing() {
               </div>
               <h4 className="font-bold text-slate-900 text-base">Clear Visual Distinction</h4>
               <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                Students enjoy a soft indigo, low-fatigue study space. Teachers operate a high-density, dark slate administrative console.
+                Students enjoy a soft indigo study space. Teachers operate a clean white and forest emerald administrative console.
               </p>
             </div>
 

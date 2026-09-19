@@ -175,22 +175,22 @@ export default function FacultyGradebook() {
       <div className="space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-rose-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-rose-500 text-sm font-medium animate-bounce">
+          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-700 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-600 text-sm font-medium animate-bounce">
             <Check size={18} />
             {toastMessage}
           </div>
         )}
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950 p-6 md:p-8 rounded-3xl border border-rose-950/60 shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 md:p-8 rounded-3xl border border-emerald-100 shadow-sm">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-rose-400 bg-rose-950 px-2.5 py-1 rounded-md border border-rose-800/60">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
               Evaluation Matrix
             </span>
-            <h1 className="text-2xl font-black text-white mt-2 tracking-tight">
+            <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
               Gradebook & Term Evaluations
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
               Live grade calculations with weighted assignments, exams, and grading rubric curves.
             </p>
           </div>
@@ -198,7 +198,7 @@ export default function FacultyGradebook() {
           <div className="flex items-center gap-3">
             <button
               onClick={handleExportCSV}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-bold border border-slate-750 transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 transition-all"
             >
               <Download size={14} /> Export CSV
             </button>
@@ -207,45 +207,45 @@ export default function FacultyGradebook() {
 
         {/* Grade Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-slate-950 p-5 rounded-3xl border border-rose-950/40">
-            <span className="text-xs font-bold text-slate-400">Class Average</span>
+          <div className="bg-white p-5 rounded-3xl border border-emerald-100 shadow-xs">
+            <span className="text-xs font-bold text-slate-500">Class Average</span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-black text-white">{avgCohort}%</span>
-              <span className="text-xs text-rose-400 font-bold">
+              <span className="text-3xl font-black text-slate-900">{avgCohort}%</span>
+              <span className="text-xs text-emerald-700 font-bold">
                 {getLetter(Number(avgCohort))} Average
               </span>
             </div>
           </div>
 
-          <div className="bg-slate-950 p-5 rounded-3xl border border-rose-950/40">
-            <span className="text-xs font-bold text-slate-400">Top Benchmark</span>
+          <div className="bg-white p-5 rounded-3xl border border-emerald-100 shadow-xs">
+            <span className="text-xs font-bold text-slate-500">Top Benchmark</span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-black text-rose-400">{maxCohort}%</span>
-              <span className="text-xs text-slate-400 font-bold">Highest Standing</span>
+              <span className="text-3xl font-black text-emerald-700">{maxCohort}%</span>
+              <span className="text-xs text-slate-500 font-bold">Highest Standing</span>
             </div>
           </div>
 
-          <div className="bg-slate-950 p-5 rounded-3xl border border-rose-950/40">
-            <span className="text-xs font-bold text-slate-400">Passing Standing</span>
+          <div className="bg-white p-5 rounded-3xl border border-emerald-100 shadow-xs">
+            <span className="text-xs font-bold text-slate-500">Passing Standing</span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-black text-white">100%</span>
-              <span className="text-xs text-rose-300 font-bold">All Above 70%</span>
+              <span className="text-3xl font-black text-slate-900">100%</span>
+              <span className="text-xs text-emerald-700 font-bold">All Above 70%</span>
             </div>
           </div>
         </div>
 
         {/* Filter Controls */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-950 p-4 rounded-3xl border border-slate-800">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-4 rounded-3xl border border-emerald-100 shadow-xs">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-400 mr-2">Cohort:</span>
+            <span className="text-xs font-bold text-slate-500 mr-2">Cohort:</span>
             {courses.map((crs) => (
               <button
                 key={crs}
                 onClick={() => setSelectedCourse(crs)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   selectedCourse === crs
-                    ? 'bg-rose-700 text-white shadow-md shadow-rose-950'
-                    : 'bg-slate-900 text-slate-300 hover:bg-slate-850 border border-slate-800'
+                    ? 'bg-emerald-700 text-white shadow-xs'
+                    : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
                 }`}
               >
                 {crs}
@@ -260,17 +260,17 @@ export default function FacultyGradebook() {
               placeholder="Search student name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-4 py-1.5 rounded-xl bg-slate-900 border border-slate-750 text-xs text-slate-200 focus:outline-none focus:border-rose-500 w-full sm:w-60"
+              className="pl-9 pr-4 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 w-full sm:w-60"
             />
           </div>
         </div>
 
         {/* Interactive Spreadsheet Table */}
-        <div className="bg-slate-950 rounded-3xl border border-slate-800 overflow-hidden shadow-xl">
+        <div className="bg-white rounded-3xl border border-emerald-100 overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-800 bg-slate-900/60 text-slate-400 font-bold">
+                <tr className="border-b border-emerald-100 bg-emerald-50/60 text-slate-700 font-bold">
                   <th className="py-3.5 px-5">Student</th>
                   <th className="py-3.5 px-4 text-center">PSet 1 (20%)</th>
                   <th className="py-3.5 px-4 text-center">PSet 2 (20%)</th>
@@ -281,7 +281,7 @@ export default function FacultyGradebook() {
                   <th className="py-3.5 px-5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80">
+              <tbody className="divide-y divide-slate-100">
                 {filtered.map((student) => {
                   const overall = calculateOverall(student)
                   const letter = getLetter(overall)
@@ -289,25 +289,25 @@ export default function FacultyGradebook() {
                   return (
                     <tr
                       key={student.id}
-                      className="hover:bg-slate-900/40 transition-colors text-slate-200"
+                      className="hover:bg-slate-50/70 transition-colors text-slate-700"
                     >
-                      <td className="py-3.5 px-5 font-semibold text-white">
+                      <td className="py-3.5 px-5 font-bold text-slate-900">
                         <div>{student.name}</div>
-                        <div className="text-[11px] text-slate-500 font-normal">{student.email}</div>
+                        <div className="text-[11px] text-slate-400 font-normal">{student.email}</div>
                       </td>
-                      <td className="py-3.5 px-4 text-center font-mono">{student.ps1}</td>
-                      <td className="py-3.5 px-4 text-center font-mono">{student.ps2}</td>
-                      <td className="py-3.5 px-4 text-center font-mono">{student.midterm}</td>
-                      <td className="py-3.5 px-4 text-center font-mono">{student.project}</td>
-                      <td className="py-3.5 px-4 text-center font-bold text-rose-400 text-sm font-mono">
+                      <td className="py-3.5 px-4 text-center font-mono font-medium">{student.ps1}</td>
+                      <td className="py-3.5 px-4 text-center font-mono font-medium">{student.ps2}</td>
+                      <td className="py-3.5 px-4 text-center font-mono font-medium">{student.midterm}</td>
+                      <td className="py-3.5 px-4 text-center font-mono font-medium">{student.project}</td>
+                      <td className="py-3.5 px-4 text-center font-bold text-emerald-800 text-sm font-mono">
                         {overall}%
                       </td>
                       <td className="py-3.5 px-4 text-center">
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-black ${
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                             letter.startsWith('A')
-                              ? 'bg-rose-950 text-rose-400 border border-rose-800/60'
-                              : 'bg-slate-900 text-slate-300 border border-slate-700'
+                              ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                              : 'bg-slate-100 text-slate-700 border border-slate-200'
                           }`}
                         >
                           {letter}
@@ -316,7 +316,7 @@ export default function FacultyGradebook() {
                       <td className="py-3.5 px-5 text-right">
                         <button
                           onClick={() => handleOpenEdit(student)}
-                          className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-rose-400 border border-slate-750 font-bold text-xs inline-flex items-center gap-1.5 transition-all"
+                          className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs inline-flex items-center gap-1.5 transition-all"
                         >
                           <Edit2 size={12} /> Edit Scores
                         </button>
@@ -331,21 +331,21 @@ export default function FacultyGradebook() {
 
         {/* Edit Scores Modal */}
         {editModalOpen && targetStudent && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-xs p-4">
-            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-rose-950/80 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
-              <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 text-slate-800">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-rose-950 text-rose-400 border border-rose-800/60 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
                     <Award size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-base">Adjust Evaluation Scores</h3>
-                    <p className="text-xs text-slate-400">{targetStudent.name}</p>
+                    <h3 className="font-bold text-slate-900 text-base">Adjust Evaluation Scores</h3>
+                    <p className="text-xs text-slate-500">{targetStudent.name}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setEditModalOpen(false)}
-                  className="p-1 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="p-1 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100"
                 >
                   <X size={20} />
                 </button>
@@ -354,7 +354,7 @@ export default function FacultyGradebook() {
               <form onSubmit={handleSaveGrade} className="mt-5 space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
                       Problem Set 1 (20%)
                     </label>
                     <input
@@ -363,13 +363,13 @@ export default function FacultyGradebook() {
                       max="100"
                       value={editPs1}
                       onChange={(e) => setEditPs1(e.target.value)}
-                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500 font-mono"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600 font-mono"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
                       Problem Set 2 (20%)
                     </label>
                     <input
@@ -378,7 +378,7 @@ export default function FacultyGradebook() {
                       max="100"
                       value={editPs2}
                       onChange={(e) => setEditPs2(e.target.value)}
-                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500 font-mono"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600 font-mono"
                       required
                     />
                   </div>
@@ -386,7 +386,7 @@ export default function FacultyGradebook() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
                       Midterm Exam (30%)
                     </label>
                     <input
@@ -395,13 +395,13 @@ export default function FacultyGradebook() {
                       max="100"
                       value={editMidterm}
                       onChange={(e) => setEditMidterm(e.target.value)}
-                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500 font-mono"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600 font-mono"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
                       Final Project (30%)
                     </label>
                     <input
@@ -410,15 +410,15 @@ export default function FacultyGradebook() {
                       max="100"
                       value={editProject}
                       onChange={(e) => setEditProject(e.target.value)}
-                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500 font-mono"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600 font-mono"
                       required
                     />
                   </div>
                 </div>
 
-                <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 flex justify-between items-center text-xs">
-                  <span className="text-slate-400">Recalculated Average:</span>
-                  <span className="text-base font-bold text-rose-400">
+                <div className="bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-100 flex justify-between items-center text-xs">
+                  <span className="text-slate-600 font-medium">Recalculated Average:</span>
+                  <span className="text-base font-bold text-emerald-800">
                     {calculateOverall({
                       ps1: Number(editPs1),
                       ps2: Number(editPs2),
@@ -429,17 +429,17 @@ export default function FacultyGradebook() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
                   <button
                     type="button"
                     onClick={() => setEditModalOpen(false)}
-                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800"
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 rounded-xl text-xs font-bold bg-rose-700 hover:bg-rose-600 text-white shadow-lg shadow-rose-950"
+                    className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white shadow-md shadow-emerald-200"
                   >
                     Save Changes
                   </button>
