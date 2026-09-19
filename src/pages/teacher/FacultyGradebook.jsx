@@ -19,7 +19,7 @@ const initialStudents = [
     id: 1,
     name: 'Liam Nakamura',
     email: 'liam.n@univ.edu',
-    course: 'PHYS 401',
+    course: 'CLS-401',
     ps1: 94,
     ps2: 90,
     midterm: 88,
@@ -29,7 +29,7 @@ const initialStudents = [
     id: 2,
     name: 'Chloe Laurent',
     email: 'chloe.l@univ.edu',
-    course: 'PHYS 401',
+    course: 'CLS-401',
     ps1: 88,
     ps2: 92,
     midterm: 85,
@@ -39,7 +39,7 @@ const initialStudents = [
     id: 3,
     name: 'Marcus Bell',
     email: 'marcus.b@univ.edu',
-    course: 'PHYS 401',
+    course: 'CLS-401',
     ps1: 76,
     ps2: 80,
     midterm: 74,
@@ -49,7 +49,7 @@ const initialStudents = [
     id: 4,
     name: 'Sophia Martinez',
     email: 'sophia.m@univ.edu',
-    course: 'PHYS 401',
+    course: 'CLS-401',
     ps1: 98,
     ps2: 96,
     midterm: 94,
@@ -59,7 +59,7 @@ const initialStudents = [
     id: 5,
     name: 'Elena Rostov',
     email: 'elena.r@univ.edu',
-    course: 'CS 302',
+    course: 'CLS-302',
     ps1: 99,
     ps2: 98,
     midterm: 95,
@@ -69,7 +69,7 @@ const initialStudents = [
     id: 6,
     name: 'Devon King',
     email: 'devon.k@univ.edu',
-    course: 'CS 302',
+    course: 'CLS-302',
     ps1: 82,
     ps2: 85,
     midterm: 80,
@@ -79,7 +79,7 @@ const initialStudents = [
     id: 7,
     name: 'Aria Montgomery',
     email: 'aria.m@univ.edu',
-    course: 'MATH 201',
+    course: 'CLS-201',
     ps1: 92,
     ps2: 95,
     midterm: 90,
@@ -88,7 +88,7 @@ const initialStudents = [
 ]
 
 function calculateOverall(s) {
-  const avg = (s.ps1 * 0.2 + s.ps2 * 0.2 + s.midterm * 0.3 + s.project * 0.3)
+  const avg = s.ps1 * 0.2 + s.ps2 * 0.2 + s.midterm * 0.3 + s.project * 0.3
   return Math.round(avg * 10) / 10
 }
 
@@ -104,7 +104,7 @@ function getLetter(score) {
 
 export default function FacultyGradebook() {
   const [students, setStudents] = useState(initialStudents)
-  const [selectedCourse, setSelectedCourse] = useState('PHYS 401')
+  const [selectedCourse, setSelectedCourse] = useState('CLS-401')
   const [searchQuery, setSearchQuery] = useState('')
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [targetStudent, setTargetStudent] = useState(null)
@@ -121,7 +121,7 @@ export default function FacultyGradebook() {
     setTimeout(() => setToastMessage(''), 3500)
   }
 
-  const courses = ['PHYS 401', 'CS 302', 'MATH 201']
+  const courses = ['CLS-401', 'CLS-302', 'CLS-201']
 
   const filtered = students.filter((s) => {
     const matchCourse = s.course === selectedCourse
@@ -175,16 +175,16 @@ export default function FacultyGradebook() {
       <div className="space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500 text-sm font-medium animate-bounce">
+          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-rose-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-rose-500 text-sm font-medium animate-bounce">
             <Check size={18} />
             {toastMessage}
           </div>
         )}
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950 p-6 md:p-8 rounded-3xl border border-slate-800 shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950 p-6 md:p-8 rounded-3xl border border-rose-950/60 shadow-md">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-md border border-emerald-800/60">
+            <span className="text-xs font-bold uppercase tracking-widest text-rose-400 bg-rose-950 px-2.5 py-1 rounded-md border border-rose-800/60">
               Evaluation Matrix
             </span>
             <h1 className="text-2xl font-black text-white mt-2 tracking-tight">
@@ -207,29 +207,29 @@ export default function FacultyGradebook() {
 
         {/* Grade Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800">
+          <div className="bg-slate-950 p-5 rounded-3xl border border-rose-950/40">
             <span className="text-xs font-bold text-slate-400">Class Average</span>
             <div className="flex items-baseline gap-2 mt-2">
               <span className="text-3xl font-black text-white">{avgCohort}%</span>
-              <span className="text-xs text-emerald-400 font-bold">
+              <span className="text-xs text-rose-400 font-bold">
                 {getLetter(Number(avgCohort))} Average
               </span>
             </div>
           </div>
 
-          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800">
+          <div className="bg-slate-950 p-5 rounded-3xl border border-rose-950/40">
             <span className="text-xs font-bold text-slate-400">Top Benchmark</span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-black text-emerald-400">{maxCohort}%</span>
+              <span className="text-3xl font-black text-rose-400">{maxCohort}%</span>
               <span className="text-xs text-slate-400 font-bold">Highest Standing</span>
             </div>
           </div>
 
-          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800">
+          <div className="bg-slate-950 p-5 rounded-3xl border border-rose-950/40">
             <span className="text-xs font-bold text-slate-400">Passing Standing</span>
             <div className="flex items-baseline gap-2 mt-2">
               <span className="text-3xl font-black text-white">100%</span>
-              <span className="text-xs text-emerald-400 font-bold">All Above 70%</span>
+              <span className="text-xs text-rose-300 font-bold">All Above 70%</span>
             </div>
           </div>
         </div>
@@ -244,7 +244,7 @@ export default function FacultyGradebook() {
                 onClick={() => setSelectedCourse(crs)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   selectedCourse === crs
-                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950'
+                    ? 'bg-rose-700 text-white shadow-md shadow-rose-950'
                     : 'bg-slate-900 text-slate-300 hover:bg-slate-850 border border-slate-800'
                 }`}
               >
@@ -260,7 +260,7 @@ export default function FacultyGradebook() {
               placeholder="Search student name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-4 py-1.5 rounded-xl bg-slate-900 border border-slate-750 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 w-full sm:w-60"
+              className="pl-9 pr-4 py-1.5 rounded-xl bg-slate-900 border border-slate-750 text-xs text-slate-200 focus:outline-none focus:border-rose-500 w-full sm:w-60"
             />
           </div>
         </div>
@@ -299,15 +299,15 @@ export default function FacultyGradebook() {
                       <td className="py-3.5 px-4 text-center font-mono">{student.ps2}</td>
                       <td className="py-3.5 px-4 text-center font-mono">{student.midterm}</td>
                       <td className="py-3.5 px-4 text-center font-mono">{student.project}</td>
-                      <td className="py-3.5 px-4 text-center font-bold text-emerald-400 text-sm font-mono">
+                      <td className="py-3.5 px-4 text-center font-bold text-rose-400 text-sm font-mono">
                         {overall}%
                       </td>
                       <td className="py-3.5 px-4 text-center">
                         <span
                           className={`px-2 py-0.5 rounded text-[10px] font-black ${
                             letter.startsWith('A')
-                              ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/60'
-                              : 'bg-teal-950 text-teal-400 border border-teal-800/60'
+                              ? 'bg-rose-950 text-rose-400 border border-rose-800/60'
+                              : 'bg-slate-900 text-slate-300 border border-slate-700'
                           }`}
                         >
                           {letter}
@@ -316,7 +316,7 @@ export default function FacultyGradebook() {
                       <td className="py-3.5 px-5 text-right">
                         <button
                           onClick={() => handleOpenEdit(student)}
-                          className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-slate-750 font-bold text-xs inline-flex items-center gap-1.5 transition-all"
+                          className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-rose-400 border border-slate-750 font-bold text-xs inline-flex items-center gap-1.5 transition-all"
                         >
                           <Edit2 size={12} /> Edit Scores
                         </button>
@@ -331,11 +331,11 @@ export default function FacultyGradebook() {
 
         {/* Edit Scores Modal */}
         {editModalOpen && targetStudent && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4">
-            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-800 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-xs p-4">
+            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-rose-950/80 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800/60 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-rose-950 text-rose-400 border border-rose-800/60 flex items-center justify-center">
                     <Award size={20} />
                   </div>
                   <div>
@@ -363,7 +363,7 @@ export default function FacultyGradebook() {
                       max="100"
                       value={editPs1}
                       onChange={(e) => setEditPs1(e.target.value)}
-                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-emerald-500 font-mono"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500 font-mono"
                       required
                     />
                   </div>
@@ -378,7 +378,7 @@ export default function FacultyGradebook() {
                       max="100"
                       value={editPs2}
                       onChange={(e) => setEditPs2(e.target.value)}
-                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-emerald-500 font-mono"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500 font-mono"
                       required
                     />
                   </div>
@@ -395,7 +395,7 @@ export default function FacultyGradebook() {
                       max="100"
                       value={editMidterm}
                       onChange={(e) => setEditMidterm(e.target.value)}
-                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-emerald-500 font-mono"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500 font-mono"
                       required
                     />
                   </div>
@@ -410,7 +410,7 @@ export default function FacultyGradebook() {
                       max="100"
                       value={editProject}
                       onChange={(e) => setEditProject(e.target.value)}
-                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-emerald-500 font-mono"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500 font-mono"
                       required
                     />
                   </div>
@@ -418,7 +418,7 @@ export default function FacultyGradebook() {
 
                 <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 flex justify-between items-center text-xs">
                   <span className="text-slate-400">Recalculated Average:</span>
-                  <span className="text-base font-bold text-emerald-400">
+                  <span className="text-base font-bold text-rose-400">
                     {calculateOverall({
                       ps1: Number(editPs1),
                       ps2: Number(editPs2),
@@ -439,7 +439,7 @@ export default function FacultyGradebook() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950"
+                    className="px-5 py-2 rounded-xl text-xs font-bold bg-rose-700 hover:bg-rose-600 text-white shadow-lg shadow-rose-950"
                   >
                     Save Changes
                   </button>

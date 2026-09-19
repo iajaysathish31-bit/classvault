@@ -8,16 +8,9 @@ import {
   Plus,
   FileText,
   Trash2,
-  Lock,
-  Globe,
   Check,
   X,
-  Clock,
   Filter,
-  ExternalLink,
-  Code,
-  FileSpreadsheet,
-  Presentation,
 } from 'lucide-react'
 
 export default function FacultyMaterials() {
@@ -75,17 +68,17 @@ export default function FacultyMaterials() {
       <div className="space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500 text-sm font-medium animate-bounce">
+          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-rose-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-rose-500 text-sm font-medium animate-bounce">
             <Check size={18} />
             {toastMessage}
           </div>
         )}
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950 p-6 md:p-8 rounded-3xl border border-slate-800 shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950 p-6 md:p-8 rounded-3xl border border-rose-950/60 shadow-md">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-md border border-emerald-800/60">
+              <span className="text-xs font-bold uppercase tracking-widest text-rose-400 bg-rose-950 px-2.5 py-1 rounded-md border border-rose-800/60">
                 TEACHER UPLOADS CONTENT
               </span>
               <span className="text-xs text-slate-400 font-mono">
@@ -102,7 +95,7 @@ export default function FacultyMaterials() {
 
           <button
             onClick={() => setUploadModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950 transition-all self-start md:self-auto"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold shadow-lg shadow-rose-950 transition-all self-start md:self-auto"
           >
             <Plus size={16} /> + Upload Content
           </button>
@@ -118,7 +111,7 @@ export default function FacultyMaterials() {
               onClick={() => setSelectedType(tp)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 selectedType === tp
-                  ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950'
+                  ? 'bg-rose-700 text-white shadow-md shadow-rose-950'
                   : 'bg-slate-900 text-slate-300 hover:bg-slate-850 border border-slate-800'
               }`}
             >
@@ -149,10 +142,10 @@ export default function FacultyMaterials() {
                   >
                     <td className="py-3.5 px-5">
                       <div className="font-bold text-white flex items-center gap-2">
-                        <FileText size={15} className="text-emerald-400 shrink-0" />
+                        <FileText size={15} className="text-rose-400 shrink-0" />
                         {item.title}
                       </div>
-                      <span className="text-[10px] font-mono text-emerald-400 mt-0.5 inline-block">
+                      <span className="text-[10px] font-mono text-rose-400 mt-0.5 inline-block">
                         {item.content_id}
                       </span>
                     </td>
@@ -162,7 +155,7 @@ export default function FacultyMaterials() {
                     </td>
 
                     <td className="py-3.5 px-4">
-                      <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/60 text-[10px] font-bold">
+                      <span className="px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800/60 text-[10px] font-bold">
                         {item.type}
                       </span>
                     </td>
@@ -192,10 +185,10 @@ export default function FacultyMaterials() {
         {/* Upload Modal */}
         {uploadModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-xs p-4">
-            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-800 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
+            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-rose-950/80 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800/60 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-rose-950 text-rose-400 border border-rose-800/60 flex items-center justify-center">
                     <Upload size={20} />
                   </div>
                   <div>
@@ -221,7 +214,7 @@ export default function FacultyMaterials() {
                     placeholder="e.g. Statistical Mechanics Microstates Reference"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500"
                     required
                   />
                 </div>
@@ -270,7 +263,7 @@ export default function FacultyMaterials() {
                     placeholder="Brief summary of concepts or problem set covered..."
                     value={newDescription}
                     onChange={(e) => setNewDescription(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none resize-none"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none resize-none"
                   />
                 </div>
 
@@ -297,7 +290,7 @@ export default function FacultyMaterials() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950"
+                    className="px-5 py-2 rounded-xl text-xs font-bold bg-rose-700 hover:bg-rose-600 text-white shadow-lg shadow-rose-950"
                   >
                     Publish to Vault
                   </button>

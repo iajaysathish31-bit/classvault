@@ -5,7 +5,6 @@ import {
   GraduationCap,
   Layers,
   Award,
-  FileCheck2,
   BellRing,
   Settings,
   LogOut,
@@ -29,20 +28,20 @@ export default function TeacherLayout({ children }) {
 
   return (
     <div className="flex min-h-screen bg-slate-900 font-sans text-slate-100 antialiased">
-      {/* Executive Emerald & Slate Sidebar */}
-      <aside className="w-68 shrink-0 bg-slate-950 border-r border-slate-800/80 flex flex-col justify-between h-screen sticky top-0 shadow-2xl">
+      {/* Executive Crimson & Slate Sidebar */}
+      <aside className="w-68 shrink-0 bg-slate-950 border-r border-rose-950/40 flex flex-col justify-between h-screen sticky top-0 shadow-2xl">
         <div>
           {/* Faculty Header */}
-          <div className="p-6 border-b border-slate-800/70">
+          <div className="p-6 border-b border-slate-850">
             <Link to="/teacher/dashboard" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-950">
+              <div className="w-10 h-10 rounded-xl bg-rose-700 text-white flex items-center justify-center shadow-lg shadow-rose-950">
                 <ShieldAlert size={22} />
               </div>
               <div>
                 <span className="font-bold text-white text-lg tracking-tight block leading-tight">
                   ClassVault
                 </span>
-                <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">
+                <span className="text-[10px] font-bold text-rose-400 uppercase tracking-widest">
                   Faculty Console
                 </span>
               </div>
@@ -51,9 +50,9 @@ export default function TeacherLayout({ children }) {
             {/* Academic Term Badge */}
             <div className="mt-4 flex items-center justify-between bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 text-xs text-slate-400">
               <span className="flex items-center gap-1.5 text-slate-300 font-medium">
-                <CalendarDays size={13} className="text-emerald-400" /> Fall Term 2026
+                <CalendarDays size={13} className="text-rose-400" /> Fall Term 2026
               </span>
-              <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/60">
+              <span className="text-[10px] font-bold text-rose-300 bg-rose-950/80 px-2 py-0.5 rounded border border-rose-800/60">
                 Active
               </span>
             </div>
@@ -93,8 +92,8 @@ export default function TeacherLayout({ children }) {
                   to={item.path}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
                     isActive
-                      ? 'bg-emerald-600 text-white shadow-md shadow-emerald-900/60 font-semibold'
-                      : 'text-slate-400 hover:bg-slate-900 hover:text-emerald-400'
+                      ? 'bg-rose-700 text-white shadow-md shadow-rose-950 font-semibold'
+                      : 'text-slate-400 hover:bg-slate-900 hover:text-rose-400'
                   }`}
                 >
                   <Icon size={18} />
@@ -106,16 +105,16 @@ export default function TeacherLayout({ children }) {
         </div>
 
         {/* Instructor Profile Card & Logout */}
-        <div className="p-4 border-t border-slate-800/80 bg-slate-900/60 m-3 rounded-2xl">
+        <div className="p-4 border-t border-slate-850 bg-slate-900/60 m-3 rounded-2xl">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm font-bold shadow-md shadow-emerald-950">
+            <div className="w-10 h-10 rounded-xl bg-rose-700 text-white flex items-center justify-center text-sm font-bold shadow-md shadow-rose-950">
               {initials}
             </div>
             <div className="overflow-hidden">
               <p className="text-sm font-semibold text-white truncate">
                 Prof. {user?.name || 'Faculty Member'}
               </p>
-              <p className="text-xs text-emerald-400 font-medium">Senior Instructor</p>
+              <p className="text-xs text-rose-400 font-medium">Senior Instructor</p>
             </div>
           </div>
 
@@ -131,7 +130,7 @@ export default function TeacherLayout({ children }) {
       </aside>
 
       {/* Main Content Area in Dark Slate Theme */}
-      <main className="flex-1 bg-slate-900 min-h-screen overflow-x-hidden text-slate-100">
+      <main className="flex-1 bg-slate-900 min-h-screen overflow-x-hidden text-slate-100 p-8">
         {children}
       </main>
     </div>

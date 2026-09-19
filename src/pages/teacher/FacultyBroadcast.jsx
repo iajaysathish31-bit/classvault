@@ -18,19 +18,19 @@ const initialBroadcasts = [
   {
     id: 1,
     title: 'Midterm 1 Examination Logistics & Approved Formula Sheets',
-    cohort: 'PHYS 401',
+    cohort: 'CLS-401',
     timestamp: 'Today at 8:45 AM',
     pinned: true,
     urgent: true,
     views: 26,
     totalEnrolled: 28,
     content:
-      'Midterm 1 is scheduled for next Wednesday at 10:00 AM in Science Hall 302. Please bring an approved TI-84 or equivalent non-programmable calculator. Only the official formula sheet posted in the Curriculum Vault is permitted.',
+      'Midterm 1 is scheduled for next Wednesday at 10:00 AM in Science Hall 302. Please bring an approved non-programmable calculator. Only the official formula sheet posted in the Curriculum Vault is permitted.',
   },
   {
     id: 2,
     title: 'Red-Black Tree Assignment Extension (24 Hours)',
-    cohort: 'CS 302',
+    cohort: 'CLS-302',
     timestamp: 'Yesterday at 3:15 PM',
     pinned: false,
     urgent: false,
@@ -103,16 +103,16 @@ export default function FacultyBroadcast() {
       <div className="space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500 text-sm font-medium animate-bounce">
+          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-rose-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-rose-500 text-sm font-medium animate-bounce">
             <Check size={18} />
             {toastMessage}
           </div>
         )}
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950 p-6 md:p-8 rounded-3xl border border-slate-800 shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950 p-6 md:p-8 rounded-3xl border border-rose-950/60 shadow-md">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-md border border-emerald-800/60">
+            <span className="text-xs font-bold uppercase tracking-widest text-rose-400 bg-rose-950 px-2.5 py-1 rounded-md border border-rose-800/60">
               Direct Communication
             </span>
             <h1 className="text-2xl font-black text-white mt-2 tracking-tight">
@@ -125,7 +125,7 @@ export default function FacultyBroadcast() {
 
           <button
             onClick={() => setModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950 transition-all self-start md:self-auto"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold shadow-lg shadow-rose-950 transition-all self-start md:self-auto"
           >
             <Plus size={16} /> New Broadcast
           </button>
@@ -138,8 +138,8 @@ export default function FacultyBroadcast() {
               key={b.id}
               className={`bg-slate-950 rounded-3xl p-6 border transition-all shadow-md ${
                 b.urgent
-                  ? 'border-rose-900/60 bg-gradient-to-br from-slate-950 to-rose-950/20'
-                  : 'border-slate-800 hover:border-slate-700'
+                  ? 'border-rose-800 bg-gradient-to-br from-slate-950 to-rose-950/30'
+                  : 'border-slate-800 hover:border-rose-900/40'
               }`}
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-850">
@@ -148,7 +148,7 @@ export default function FacultyBroadcast() {
                     className={`text-[11px] font-bold px-2 py-0.5 rounded border ${
                       b.cohort === 'ALL COHORTS'
                         ? 'bg-purple-950 text-purple-300 border-purple-800/60'
-                        : 'bg-emerald-950 text-emerald-400 border border-emerald-800/60'
+                        : 'bg-rose-950 text-rose-300 border border-rose-800/60'
                     }`}
                   >
                     {b.cohort}
@@ -167,7 +167,7 @@ export default function FacultyBroadcast() {
 
                 <div className="flex items-center gap-3">
                   <span className="text-[11px] text-slate-400">
-                    Read by <strong className="text-emerald-400">{b.views}</strong> /{' '}
+                    Read by <strong className="text-rose-400">{b.views}</strong> /{' '}
                     {b.totalEnrolled} students
                   </span>
                   <button
@@ -189,11 +189,11 @@ export default function FacultyBroadcast() {
 
         {/* New Broadcast Modal */}
         {modalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4">
-            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-800 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-xs p-4">
+            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-rose-950/80 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800/60 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-rose-950 text-rose-400 border border-rose-800/60 flex items-center justify-center">
                     <BellRing size={20} />
                   </div>
                   <div>
@@ -219,7 +219,7 @@ export default function FacultyBroadcast() {
                     placeholder="e.g. Schedule Change: Friday Lab Moved to 2:30 PM"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500"
                     required
                   />
                 </div>
@@ -234,10 +234,9 @@ export default function FacultyBroadcast() {
                     className="w-full text-xs px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none"
                   >
                     <option value="ALL COHORTS">All Enrolled Cohorts (Entire Term)</option>
-                    <option value="PHYS 401">PHYS 401 - Advanced Thermodynamics</option>
-                    <option value="CS 302">CS 302 - Data Structures</option>
-                    <option value="MATH 201">MATH 201 - Linear Algebra</option>
-                    <option value="HIST 210">HIST 210 - Modern World History</option>
+                    <option value="CLS-401">CLS-401 - Advanced Thermodynamics</option>
+                    <option value="CLS-302">CLS-302 - Data Structures & Algorithms</option>
+                    <option value="CLS-201">CLS-201 - Linear Algebra</option>
                   </select>
                 </div>
 
@@ -250,7 +249,7 @@ export default function FacultyBroadcast() {
                     placeholder="Write detailed instructions or notices..."
                     value={newContent}
                     onChange={(e) => setNewContent(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:border-emerald-500 resize-none"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:border-rose-500 resize-none"
                     required
                   />
                 </div>
@@ -261,13 +260,13 @@ export default function FacultyBroadcast() {
                     id="urgentCheck"
                     checked={isUrgent}
                     onChange={(e) => setIsUrgent(e.target.checked)}
-                    className="rounded text-emerald-500 focus:ring-0 bg-slate-950 border-slate-700 w-4 h-4 cursor-pointer"
+                    className="rounded text-rose-500 focus:ring-0 bg-slate-950 border-slate-700 w-4 h-4 cursor-pointer"
                   />
                   <label
                     htmlFor="urgentCheck"
                     className="text-xs text-slate-300 font-medium cursor-pointer"
                   >
-                    Mark as Urgent / Priority Notification (highlights in red)
+                    Mark as Urgent / High Priority Notification
                   </label>
                 </div>
 
@@ -281,7 +280,7 @@ export default function FacultyBroadcast() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950 flex items-center gap-1.5"
+                    className="px-5 py-2 rounded-xl text-xs font-bold bg-rose-700 hover:bg-rose-600 text-white shadow-lg shadow-rose-950 flex items-center gap-1.5"
                   >
                     <Send size={14} /> Send Broadcast
                   </button>

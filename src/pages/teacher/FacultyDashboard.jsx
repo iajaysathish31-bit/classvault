@@ -12,8 +12,6 @@ import {
   AlertCircle,
   ArrowRight,
   Plus,
-  Send,
-  Sparkles,
   TrendingUp,
   FileCheck2,
   Calendar,
@@ -79,7 +77,7 @@ export default function FacultyDashboard() {
   const handleOpenGrade = (sub) => {
     setActiveItem(sub)
     setEnteredGrade(sub.suggestedGrade)
-    setEnteredFeedback('Strong analytical approach. All test cases matched the theoretical curve.')
+    setEnteredFeedback('Strong analytical derivation. Accurate diagram equations and thermodynamic boundary conditions.')
     setGradingModalOpen(true)
   }
 
@@ -99,24 +97,24 @@ export default function FacultyDashboard() {
       <div className="space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500 text-sm font-medium animate-bounce">
+          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-rose-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-rose-500 text-sm font-medium animate-bounce">
             <Check size={18} />
             {toastMessage}
           </div>
         )}
 
         {/* Executive Header Banner */}
-        <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 p-6 md:p-8 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
-          <div className="absolute right-0 top-0 bottom-0 w-96 bg-gradient-to-l from-emerald-500/10 to-transparent pointer-events-none" />
+        <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 p-6 md:p-8 rounded-3xl border border-rose-950/60 shadow-xl relative overflow-hidden">
+          <div className="absolute right-0 top-0 bottom-0 w-96 bg-gradient-to-l from-rose-600/15 to-transparent pointer-events-none" />
 
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <div className="flex items-center gap-2.5 mb-2">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-1 rounded-md">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-rose-400 bg-rose-950/80 border border-rose-800/80 px-2.5 py-1 rounded-md">
                   {user?.department || 'Faculty Console'} · {user?.teacher_id || 'TCH-101'}
                 </span>
                 <span className="text-xs text-slate-400 flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
                   Live Sync Active
                 </span>
               </div>
@@ -137,7 +135,7 @@ export default function FacultyDashboard() {
               </Link>
               <Link
                 to="/teacher/materials"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950 transition-all"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold shadow-lg shadow-rose-950 transition-all"
               >
                 <Plus size={15} /> Upload Content
               </Link>
@@ -147,54 +145,54 @@ export default function FacultyDashboard() {
 
         {/* Metrics Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
+          <div className="bg-slate-950 p-5 rounded-3xl border border-rose-950/40 shadow-md">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-400">Created Classes</span>
-              <div className="w-8 h-8 rounded-xl bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-rose-950/80 text-rose-400 border border-rose-800/60 flex items-center justify-center">
                 <BookOpen size={16} />
               </div>
             </div>
             <p className="text-2xl font-black text-white mt-3">{classes.length}</p>
-            <span className="text-[11px] text-emerald-400 flex items-center gap-1 mt-1 font-semibold">
+            <span className="text-[11px] text-rose-400 flex items-center gap-1 mt-1 font-semibold">
               <TrendingUp size={12} /> University Classes
             </span>
           </div>
 
-          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
+          <div className="bg-slate-950 p-5 rounded-3xl border border-rose-950/40 shadow-md">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-400">Authored Topics</span>
-              <div className="w-8 h-8 rounded-xl bg-teal-950/80 text-teal-400 border border-teal-800/60 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-rose-950/80 text-rose-400 border border-rose-800/60 flex items-center justify-center">
                 <ListOrdered size={16} />
               </div>
             </div>
             <p className="text-2xl font-black text-white mt-3">{topics.length}</p>
-            <span className="text-[11px] text-teal-400 flex items-center gap-1 mt-1 font-semibold">
+            <span className="text-[11px] text-rose-300 flex items-center gap-1 mt-1 font-semibold">
               Syllabus Units
             </span>
           </div>
 
-          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
+          <div className="bg-slate-950 p-5 rounded-3xl border border-rose-950/40 shadow-md">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-400">Topic Reviews</span>
-              <div className="w-8 h-8 rounded-xl bg-blue-950/80 text-blue-400 border border-blue-800/60 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-rose-950/80 text-rose-400 border border-rose-800/60 flex items-center justify-center">
                 <CheckCircle2 size={16} />
               </div>
             </div>
             <p className="text-2xl font-black text-white mt-3">{totalReviews}</p>
-            <span className="text-[11px] text-blue-400 flex items-center gap-1 mt-1 font-semibold">
+            <span className="text-[11px] text-rose-400 flex items-center gap-1 mt-1 font-semibold">
               Student Completions
             </span>
           </div>
 
-          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
+          <div className="bg-slate-950 p-5 rounded-3xl border border-rose-950/40 shadow-md">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-400">Vault Content</span>
-              <div className="w-8 h-8 rounded-xl bg-purple-950/80 text-purple-400 border border-purple-800/60 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-rose-950/80 text-rose-400 border border-rose-800/60 flex items-center justify-center">
                 <Layers size={16} />
               </div>
             </div>
             <p className="text-2xl font-black text-white mt-3">{contents.length}</p>
-            <span className="text-[11px] text-purple-400 flex items-center gap-1 mt-1 font-semibold">
+            <span className="text-[11px] text-rose-300 flex items-center gap-1 mt-1 font-semibold">
               Resources Uploaded
             </span>
           </div>
@@ -203,12 +201,12 @@ export default function FacultyDashboard() {
         {/* Two-Column Working Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Submissions Queue (2 cols) */}
-          <div className="lg:col-span-2 bg-slate-950 p-6 rounded-3xl border border-slate-800 shadow-md flex flex-col justify-between">
+          <div className="lg:col-span-2 bg-slate-950 p-6 rounded-3xl border border-rose-950/40 shadow-md flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between pb-4 border-b border-slate-800/80 mb-4">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-850 mb-4">
                 <div>
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <FileCheck2 size={18} className="text-emerald-400" />
+                    <FileCheck2 size={18} className="text-rose-400" />
                     Pending Student Submissions
                   </h3>
                   <p className="text-xs text-slate-400">
@@ -217,7 +215,7 @@ export default function FacultyDashboard() {
                 </div>
                 <Link
                   to="/teacher/gradebook"
-                  className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+                  className="text-xs font-bold text-rose-400 hover:text-rose-300 flex items-center gap-1"
                 >
                   Gradebook <ArrowRight size={13} />
                 </Link>
@@ -225,7 +223,7 @@ export default function FacultyDashboard() {
 
               {submissions.length === 0 ? (
                 <div className="text-center py-10 text-slate-400">
-                  <ShieldCheck size={36} className="mx-auto text-emerald-400 mb-2" />
+                  <ShieldCheck size={36} className="mx-auto text-rose-400 mb-2" />
                   <p className="text-sm font-bold text-white">Grading Queue Clear!</p>
                   <p className="text-xs text-slate-500 mt-1">All submissions evaluated.</p>
                 </div>
@@ -234,16 +232,16 @@ export default function FacultyDashboard() {
                   {submissions.map((sub) => (
                     <div
                       key={sub.id}
-                      className="bg-slate-900/90 border border-slate-800 hover:border-slate-700 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors"
+                      className="bg-slate-900/90 border border-slate-800 hover:border-rose-900/50 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-slate-800 text-emerald-400 font-black text-xs flex items-center justify-center border border-slate-700">
+                        <div className="w-10 h-10 rounded-xl bg-slate-800 text-rose-400 font-black text-xs flex items-center justify-center border border-slate-700">
                           {sub.avatar}
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
                             <h4 className="text-sm font-bold text-white">{sub.student}</h4>
-                            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/60">
+                            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800/60">
                               {sub.cohort}
                             </span>
                           </div>
@@ -256,7 +254,7 @@ export default function FacultyDashboard() {
 
                       <button
                         onClick={() => handleOpenGrade(sub)}
-                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-950 transition-all flex items-center justify-center gap-1.5 self-end sm:self-center"
+                        className="px-4 py-2 rounded-xl bg-rose-700 hover:bg-rose-600 text-white font-bold text-xs shadow-md shadow-rose-950 transition-all flex items-center justify-center gap-1.5 self-end sm:self-center"
                       >
                         <Award size={14} /> Review & Grade
                       </button>
@@ -266,17 +264,17 @@ export default function FacultyDashboard() {
               )}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+            <div className="mt-6 pt-4 border-t border-slate-850 flex items-center justify-between text-xs text-slate-400">
               <span>Rubric evaluation active</span>
-              <span className="text-emerald-400 font-semibold font-mono">Fall 2026 Academic Term</span>
+              <span className="text-rose-400 font-semibold font-mono">Fall 2026 Academic Term</span>
             </div>
           </div>
 
           {/* Today's Teaching Schedule (1 col) */}
-          <div className="bg-slate-950 p-6 rounded-3xl border border-slate-800 shadow-md">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-800/80 mb-4">
+          <div className="bg-slate-950 p-6 rounded-3xl border border-rose-950/40 shadow-md">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-850 mb-4">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Calendar size={18} className="text-emerald-400" />
+                <Calendar size={18} className="text-rose-400" />
                 Teaching Schedule
               </h3>
               <span className="text-[10px] font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800 font-mono">
@@ -285,14 +283,12 @@ export default function FacultyDashboard() {
             </div>
 
             <div className="space-y-3">
-              {classes.slice(0, 2).map((cls, idx) => (
+              {classes.slice(0, 2).map((cls) => (
                 <div
                   key={cls.class_id}
-                  className={`bg-slate-900/90 border-l-4 p-4 rounded-2xl border-y border-r border-slate-800 ${
-                    idx === 0 ? 'border-emerald-500' : 'border-teal-500'
-                  }`}
+                  className="bg-slate-900/90 border-l-4 border-rose-600 p-4 rounded-2xl border-y border-r border-slate-800"
                 >
-                  <span className="text-[10px] font-bold text-emerald-400 font-mono uppercase tracking-wide">
+                  <span className="text-[10px] font-bold text-rose-400 font-mono uppercase tracking-wide">
                     {cls.class_id}
                   </span>
                   <h4 className="text-sm font-bold text-white mt-1">{cls.subject}</h4>
@@ -302,7 +298,7 @@ export default function FacultyDashboard() {
                   </div>
                   <div className="mt-3 flex items-center justify-between text-[11px] text-slate-400">
                     <span>{topics.filter((t) => t.class_id === cls.class_id).length} Topics Defined</span>
-                    <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-950 text-emerald-400 rounded">
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-rose-950 text-rose-300 rounded">
                       Active
                     </span>
                   </div>
@@ -339,7 +335,7 @@ export default function FacultyDashboard() {
             <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-800 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800/60 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-rose-950 text-rose-400 border border-rose-800/60 flex items-center justify-center">
                     <Award size={20} />
                   </div>
                   <div>
@@ -361,7 +357,7 @@ export default function FacultyDashboard() {
                 <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
                   <div className="text-xs text-slate-400 mb-1">Assignment Deliverable</div>
                   <div className="text-sm font-bold text-white">{activeItem.assignment}</div>
-                  <div className="text-xs text-emerald-400 mt-1 font-mono">{activeItem.file}</div>
+                  <div className="text-xs text-rose-400 mt-1 font-mono">{activeItem.file}</div>
                 </div>
 
                 <div>
@@ -374,7 +370,7 @@ export default function FacultyDashboard() {
                     max="100"
                     value={enteredGrade}
                     onChange={(e) => setEnteredGrade(e.target.value)}
-                    className="w-full text-lg font-bold px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-emerald-400 focus:outline-none focus:border-emerald-500 font-mono"
+                    className="w-full text-lg font-bold px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-rose-400 focus:outline-none focus:border-rose-500 font-mono"
                     required
                   />
                 </div>
@@ -387,7 +383,7 @@ export default function FacultyDashboard() {
                     rows={3}
                     value={enteredFeedback}
                     onChange={(e) => setEnteredFeedback(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:border-emerald-500 resize-none"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:border-rose-500 resize-none"
                   />
                 </div>
 
@@ -395,13 +391,13 @@ export default function FacultyDashboard() {
                   <button
                     type="button"
                     onClick={() => setGradingModalOpen(false)}
-                    className="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800"
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950"
+                    className="px-5 py-2 rounded-xl text-xs font-bold bg-rose-700 hover:bg-rose-600 text-white shadow-lg shadow-rose-950"
                   >
                     Post Evaluation
                   </button>

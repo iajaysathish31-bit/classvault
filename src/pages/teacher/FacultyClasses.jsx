@@ -5,18 +5,11 @@ import { useUser } from '../../context/AuthContext.jsx'
 import {
   Users,
   Plus,
-  Copy,
   Check,
-  Search,
-  BookOpen,
-  GraduationCap,
   Calendar,
   X,
   Trash2,
   ListOrdered,
-  FileText,
-  Sparkles,
-  Layers,
   CheckCircle2,
 } from 'lucide-react'
 
@@ -89,17 +82,17 @@ export default function FacultyClasses() {
       <div className="space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500 text-sm font-medium animate-bounce">
+          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-rose-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-rose-500 text-sm font-medium animate-bounce">
             <Check size={18} />
             {toastMessage}
           </div>
         )}
 
         {/* Header Banner */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950 p-6 md:p-8 rounded-3xl border border-slate-800 shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950 p-6 md:p-8 rounded-3xl border border-rose-950/60 shadow-md">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-md border border-emerald-800/60">
+              <span className="text-xs font-bold uppercase tracking-widest text-rose-400 bg-rose-950 px-2.5 py-1 rounded-md border border-rose-800/60">
                 CLASS & TOPIC ARCHITECTURE
               </span>
               <span className="text-xs text-slate-400 font-mono">
@@ -116,7 +109,7 @@ export default function FacultyClasses() {
 
           <button
             onClick={() => setCreateModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950 transition-all self-start md:self-auto"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold shadow-lg shadow-rose-950 transition-all self-start md:self-auto"
           >
             <Plus size={16} /> + Create New Class
           </button>
@@ -134,11 +127,11 @@ export default function FacultyClasses() {
             return (
               <div
                 key={cls.class_id}
-                className="bg-slate-950 rounded-3xl p-6 border border-slate-800 shadow-md hover:border-emerald-800/60 transition-all flex flex-col justify-between border-t-4 border-t-emerald-500"
+                className="bg-slate-950 rounded-3xl p-6 border border-slate-800 shadow-md hover:border-rose-800/60 transition-all flex flex-col justify-between border-t-4 border-t-rose-600"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-3">
-                    <span className="text-[11px] font-mono font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/50">
+                    <span className="text-[11px] font-mono font-bold text-rose-400 bg-rose-950/80 px-2 py-0.5 rounded border border-rose-800/50">
                       {cls.class_id}
                     </span>
                     <span className="text-xs text-slate-400 flex items-center gap-1">
@@ -167,7 +160,7 @@ export default function FacultyClasses() {
                       <span className="text-[10px] text-slate-500 block font-bold uppercase">
                         Student Reviews
                       </span>
-                      <span className="text-base font-black text-emerald-400">
+                      <span className="text-base font-black text-rose-400">
                         {totalReviews}
                       </span>
                     </div>
@@ -180,7 +173,7 @@ export default function FacultyClasses() {
                   </span>
                   <button
                     onClick={() => setSelectedClassForTopics(cls)}
-                    className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-emerald-400 text-xs font-bold border border-slate-750 transition-all flex items-center gap-1.5"
+                    className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-rose-400 text-xs font-bold border border-slate-750 transition-all flex items-center gap-1.5"
                   >
                     <ListOrdered size={14} />
                     Manage Topics ({classTopics.length})
@@ -194,11 +187,11 @@ export default function FacultyClasses() {
         {/* Manage Topics Modal */}
         {selectedClassForTopics && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-xs p-4">
-            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl border border-slate-800 animate-in fade-in zoom-in-95 duration-200 text-slate-100 max-h-[90vh] flex flex-col justify-between">
+            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl border border-rose-950/80 animate-in fade-in zoom-in-95 duration-200 text-slate-100 max-h-[90vh] flex flex-col justify-between">
               {/* Modal Header */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800/60 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-rose-950 text-rose-400 border border-rose-800/60 flex items-center justify-center">
                     <ListOrdered size={20} />
                   </div>
                   <div>
@@ -235,7 +228,7 @@ export default function FacultyClasses() {
                           className="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex items-start justify-between gap-3"
                         >
                           <div className="flex items-start gap-3">
-                            <span className="w-6 h-6 rounded-lg bg-slate-900 border border-slate-800 text-emerald-400 text-xs font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
+                            <span className="w-6 h-6 rounded-lg bg-slate-900 border border-slate-800 text-rose-400 text-xs font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
                               {idx + 1}
                             </span>
                             <div>
@@ -248,7 +241,7 @@ export default function FacultyClasses() {
                               <p className="text-xs text-slate-400 mt-1 leading-relaxed">
                                 {t.content}
                               </p>
-                              <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-medium mt-2">
+                              <span className="inline-flex items-center gap-1 text-[11px] text-rose-400 font-medium mt-2">
                                 <CheckCircle2 size={12} /> {reviewCount} student review{reviewCount !== 1 ? 's' : ''}
                               </span>
                             </div>
@@ -272,7 +265,7 @@ export default function FacultyClasses() {
                 onSubmit={handleAddTopic}
                 className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3"
               >
-                <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
+                <span className="text-xs font-bold text-rose-300 uppercase tracking-wider block">
                   + Add Next Syllabus Topic
                 </span>
 
@@ -282,7 +275,7 @@ export default function FacultyClasses() {
                     placeholder="Topic Name (e.g. Isentropic Flow in Nozzles)"
                     value={newTopicName}
                     onChange={(e) => setNewTopicName(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-750 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full text-xs px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-750 text-white focus:outline-none focus:border-rose-500"
                     required
                   />
                   <textarea
@@ -290,7 +283,7 @@ export default function FacultyClasses() {
                     placeholder="Topic Learning Content / Notes / Equations..."
                     value={newTopicContent}
                     onChange={(e) => setNewTopicContent(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-750 text-slate-200 focus:outline-none focus:border-emerald-500 resize-none"
+                    className="w-full text-xs px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-750 text-slate-200 focus:outline-none focus:border-rose-500 resize-none"
                     required
                   />
                 </div>
@@ -305,7 +298,7 @@ export default function FacultyClasses() {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950 flex items-center gap-1"
+                    className="px-4 py-2 rounded-xl text-xs font-bold bg-rose-700 hover:bg-rose-600 text-white shadow-md shadow-rose-950 flex items-center gap-1"
                   >
                     <Plus size={14} /> Save Topic
                   </button>
@@ -318,10 +311,10 @@ export default function FacultyClasses() {
         {/* Create Class Modal */}
         {createModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-xs p-4">
-            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-800 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
+            <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-rose-950/80 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800/60 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-rose-950 text-rose-400 border border-rose-800/60 flex items-center justify-center">
                     <Plus size={20} />
                   </div>
                   <div>
@@ -347,7 +340,7 @@ export default function FacultyClasses() {
                     placeholder="e.g. Quantum Computing & Quantum Information"
                     value={newSubject}
                     onChange={(e) => setNewSubject(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500"
                     required
                   />
                 </div>
@@ -361,7 +354,7 @@ export default function FacultyClasses() {
                     placeholder="e.g. Tue, Thu · 10:00 AM – 11:30 AM"
                     value={newClassDate}
                     onChange={(e) => setNewClassDate(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500"
                     required
                   />
                 </div>
@@ -375,7 +368,7 @@ export default function FacultyClasses() {
                     placeholder="Overview of syllabus, prerequisites, and learning outcomes..."
                     value={newDescription}
                     onChange={(e) => setNewDescription(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-emerald-500 resize-none"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-rose-500 resize-none"
                   />
                 </div>
 
@@ -389,7 +382,7 @@ export default function FacultyClasses() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950"
+                    className="px-5 py-2 rounded-xl text-xs font-bold bg-rose-700 hover:bg-rose-600 text-white shadow-lg shadow-rose-950"
                   >
                     Create Class
                   </button>
