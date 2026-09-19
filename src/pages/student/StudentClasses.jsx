@@ -1,276 +1,280 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import StudentLayout from '../../layouts/StudentLayout.jsx'
+import { useData } from '../../context/DataContext.jsx'
+import { useUser } from '../../context/AuthContext.jsx'
 import {
   Search,
   Plus,
   Clock,
   MapPin,
-  Users,
   ChevronRight,
   BookOpen,
   X,
   Check,
-  Download,
+  CheckCircle2,
+  Calendar,
+  ListOrdered,
+  Sparkles,
+  Layers,
+  ArrowRight,
 } from 'lucide-react'
 
-const initialStudentClasses = [
-  {
-    code: 'PHYS 401',
-    name: 'Advanced Thermodynamics',
-    initial: 'A',
-    prof: 'Prof. Chen Wei',
-    time: 'Mon, Wed, Fri · 10:00 AM – 11:30 AM',
-    location: 'Science Hall 302',
-    progress: 60,
-    done: 3,
-    total: 5,
-    materialsCount: 4,
-    color: 'bg-indigo-600',
-  },
-  {
-    code: 'CS 302',
-    name: 'Data Structures & Algorithms',
-    initial: 'D',
-    prof: 'Prof. Sara Okafor',
-    time: 'Tue, Thu · 2:00 PM – 3:45 PM',
-    location: 'Alan Turing Building 104',
-    progress: 100,
-    done: 4,
-    total: 4,
-    materialsCount: 5,
-    color: 'bg-violet-600',
-  },
-  {
-    code: 'MATH 201',
-    name: 'Linear Algebra',
-    initial: 'L',
-    prof: 'Prof. James Erikson',
-    time: 'Mon, Wed · 11:30 AM – 1:00 PM',
-    location: 'Euler Hall 204',
-    progress: 66,
-    done: 4,
-    total: 6,
-    materialsCount: 3,
-    color: 'bg-blue-600',
-  },
-  {
-    code: 'HIST 210',
-    name: 'Modern World History',
-    initial: 'M',
-    prof: 'Prof. Anita Reyes',
-    time: 'Tue, Thu · 9:30 AM – 11:00 AM',
-    location: 'Humanities Hall 112',
-    progress: 66,
-    done: 2,
-    total: 3,
-    materialsCount: 2,
-    color: 'bg-purple-600',
-  },
-]
-
 export default function StudentClasses() {
-  const [classesList, setClassesList] = useState(initialStudentClasses)
-  const [search, setSearch] = useState('')
-  const [showJoinModal, setShowJoinModal] = useState(false)
-  const [joinCode, setJoinCode] = useState('')
-  const [toastMsg, setToastMsg] = useState('')
+  const { classes, topics, getTopicsForClass, getProgressForTopic, getClassProgress, updateTopicProgress, getTeacherForClass } = useData()
+  const { user } = useUser()
 
-  const handleJoin = (e) => {
-    e.preventDefault()
-    if (!joinCode.trim()) return
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedClassForTopics, setSelectedClassForTopics] = useState(null)
+  const [toastMessage, setToastMessage] = useState('')
 
-    const newClass = {
-      code: joinCode.trim().toUpperCase(),
-      name: `Course (${joinCode.trim().toUpperCase()})`,
-      initial: joinCode.trim().charAt(0).toUpperCase(),
-      prof: 'Course Faculty',
-      time: 'Mon, Wed · 10:00 AM',
-      location: 'Science Hall 101',
-      progress: 0,
-      done: 0,
-      total: 4,
-      materialsCount: 1,
-      color: 'bg-indigo-600',
-    }
-
-    setClassesList([...classesList, newClass])
-    setJoinCode('')
-    setShowJoinModal(false)
-    setToastMsg(`Successfully enrolled in ${newClass.code}!`)
-    setTimeout(() => setToastMsg(''), 3000)
+  const showToast = (msg) => {
+    setToastMessage(msg)
+    setTimeout(() => setToastMessage(''), 3500)
   }
 
-  const filtered = classesList.filter(
-    (c) =>
-      c.name.toLowerCase().includes(search.toLowerCase()) ||
-      c.code.toLowerCase().includes(search.toLowerCase()) ||
-      c.prof.toLowerCase().includes(search.toLowerCase())
-  )
+  const handleStatusChange = (topicId, topicName, currentStatus) => {
+    const nextStatus = currentStatus === 'Reviewed' ? 'Pending' : 'Reviewed'
+    updateTopicProgress({ topic_id: topicId, status: nextStatus })
+    showToast(
+      nextStatus === 'Reviewed'
+        ? `Marked "${topicName}" as Reviewed!`
+        : `Marked "${topicName}" as Pending.`
+    )
+  }
+
+  const filteredClasses = classes.filter((cls) => {
+    return (
+      cls.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cls.class_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cls.description.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })
 
   return (
     <StudentLayout>
-      <div className="px-8 py-8 max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">My Enrolled Subjects</h1>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Access syllabus materials, lecture notes, and assignment dropboxes
-            </p>
-          </div>
-
-          <button
-            onClick={() => setShowJoinModal(true)}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-5 py-2.5 rounded-2xl shadow-md shadow-indigo-200 transition-all cursor-pointer"
-          >
-            <Plus size={16} /> Join Subject with Code
-          </button>
-        </div>
-
-        {/* Search Box */}
-        <div className="relative max-w-md">
-          <Search size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search subjects or instructors..."
-            className="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-white border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 shadow-2xs"
-          />
-        </div>
-
-        {/* Classes Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {filtered.map((cls) => (
-            <div
-              key={cls.code}
-              className="bg-white rounded-3xl border border-indigo-100/80 p-6 shadow-xs hover:border-indigo-300 hover:shadow-md transition-all flex flex-col justify-between group"
-            >
-              <div>
-                <div className="flex items-start justify-between gap-3 mb-4">
-                  <div className="flex items-center gap-3.5">
-                    <div
-                      className={`w-12 h-12 rounded-2xl ${cls.color} text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-sm`}
-                    >
-                      {cls.initial}
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-md">
-                        {cls.code}
-                      </span>
-                      <h2 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors mt-1">
-                        {cls.name}
-                      </h2>
-                    </div>
-                  </div>
-
-                  <span className="text-xs font-semibold text-slate-400 bg-slate-50 px-2.5 py-1 rounded-lg">
-                    {cls.materialsCount} Vault Files
-                  </span>
-                </div>
-
-                <div className="space-y-1.5 text-xs text-slate-500 mb-6 bg-slate-50/60 p-3.5 rounded-2xl">
-                  <p className="flex items-center gap-2">
-                    <Clock size={14} className="text-indigo-600 shrink-0" />
-                    <span>{cls.time}</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <MapPin size={14} className="text-indigo-600 shrink-0" />
-                    <span>{cls.location} · {cls.prof}</span>
-                  </p>
-                </div>
-
-                {/* Progress bar */}
-                <div className="mb-4">
-                  <div className="flex justify-between text-xs mb-1 font-medium">
-                    <span className="text-slate-500">Assignments Completed</span>
-                    <span className="text-indigo-600 font-bold">{cls.done}/{cls.total} ({cls.progress}%)</span>
-                  </div>
-                  <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                    <div
-                      className="bg-indigo-600 h-full rounded-full transition-all duration-500"
-                      style={{ width: `${cls.progress}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                <Link
-                  to="/student/vault"
-                  className="text-xs font-semibold text-slate-500 hover:text-indigo-600 flex items-center gap-1"
-                >
-                  <BookOpen size={13} /> View Notes
-                </Link>
-
-                <Link
-                  to={`/classes/${cls.code.replace(/\s+/g, '-')}`}
-                  className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
-                >
-                  Enter Course Room <ChevronRight size={15} />
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Join Class Modal */}
-        {showJoinModal && (
-          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95">
-              <button
-                onClick={() => setShowJoinModal(false)}
-                className="absolute right-4 top-4 text-slate-400 hover:text-slate-600 p-1"
-              >
-                <X size={18} />
-              </button>
-
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Enroll in a Subject</h2>
-              <p className="text-xs text-slate-400 mb-4">
-                Enter the class code given by your course professor (e.g. PHYS401-FALL26).
-              </p>
-
-              <form onSubmit={handleJoin} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Class Code / Enrollment Key <span className="text-rose-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. CS302-FALL26"
-                    value={joinCode}
-                    onChange={(e) => setJoinCode(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
-                  />
-                </div>
-
-                <div className="flex justify-end gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowJoinModal(false)}
-                    className="px-4 py-2 text-xs font-semibold text-slate-500 hover:text-slate-700"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-sm"
-                  >
-                    Enroll Subject
-                  </button>
-                </div>
-              </form>
-            </div>
+      <div className="space-y-6">
+        {/* Toast Notification */}
+        {toastMessage && (
+          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500 text-sm font-medium animate-bounce">
+            <Check size={18} />
+            {toastMessage}
           </div>
         )}
 
-        {/* Toast */}
-        {toastMsg && (
-          <div className="fixed bottom-6 right-6 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2 text-sm z-50 animate-in slide-in-from-bottom">
-            <Check size={16} className="text-emerald-400" />
-            <span>{toastMsg}</span>
+        {/* Top Header Card */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-indigo-100 shadow-sm">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                CLASS & TOPIC PROGRESSION
+              </span>
+              <span className="text-xs text-slate-400 font-mono">
+                Student ID: {user?.student_id || 'STU-8821'}
+              </span>
+            </div>
+            <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
+              My Classes & Topic Reviews
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              Review syllabus topics, record completion dates, and track your topic understanding per class.
+            </p>
+          </div>
+
+          <div className="relative">
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search enrolled subjects..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 pr-4 py-2.5 rounded-2xl border border-slate-200 text-xs text-slate-700 bg-slate-50/60 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 w-64"
+            />
+          </div>
+        </div>
+
+        {/* Classes Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filteredClasses.map((cls) => {
+            const classTopics = getTopicsForClass(cls.class_id)
+            const progress = getClassProgress(cls.class_id, user?.student_id)
+            const teacher = getTeacherForClass(cls.teacher_id)
+
+            return (
+              <div
+                key={cls.class_id}
+                className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs hover:border-indigo-300 transition-all hover:shadow-md flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-2 mb-3">
+                    <span className="text-[11px] font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
+                      {cls.class_id}
+                    </span>
+                    <span className="text-xs text-slate-400 flex items-center gap-1 font-medium">
+                      <Calendar size={13} className="text-indigo-400" /> {cls.class_date}
+                    </span>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-slate-900 leading-snug">
+                    {cls.subject}
+                  </h3>
+
+                  <p className="text-xs text-slate-400 mt-1">
+                    Instructor: <strong className="text-slate-700">{teacher.name}</strong>
+                  </p>
+
+                  <p className="text-xs text-slate-500 mt-3 line-clamp-3 leading-relaxed">
+                    {cls.description}
+                  </p>
+
+                  {/* Topic Progress Bar */}
+                  <div className="mt-5 pt-4 border-t border-slate-100">
+                    <div className="flex justify-between text-xs mb-1.5">
+                      <span className="text-slate-500 font-medium">Topics Reviewed</span>
+                      <span className="text-indigo-600 font-bold">
+                        {progress.reviewed} of {progress.total} ({progress.percent}%)
+                      </span>
+                    </div>
+                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-indigo-600 rounded-full transition-all duration-300"
+                        style={{ width: `${progress.percent}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <span className="text-[11px] text-slate-400 font-medium">
+                    {classTopics.length} Syllabus Topics
+                  </span>
+
+                  <button
+                    onClick={() => setSelectedClassForTopics(cls)}
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs border border-indigo-200 transition-all hover:scale-105 active:scale-95"
+                  >
+                    <ListOrdered size={14} /> Review Topics
+                  </button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Topic Progression Drawer / Modal */}
+        {selectedClassForTopics && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl border border-indigo-100 animate-in fade-in zoom-in-95 duration-200 text-slate-900 max-h-[90vh] flex flex-col justify-between">
+              {/* Modal Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                    <ListOrdered size={20} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-base">
+                      {selectedClassForTopics.subject}
+                    </h3>
+                    <p className="text-xs text-slate-500 font-mono">
+                      Class ID: {selectedClassForTopics.class_id} · Topic Reviews
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedClassForTopics(null)}
+                  className="p-1 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Topics List with TOPIC_PROGRESS Tracker */}
+              <div className="my-5 overflow-y-auto max-h-96 space-y-3 pr-1">
+                {getTopicsForClass(selectedClassForTopics.class_id).length === 0 ? (
+                  <p className="text-center py-8 text-xs text-slate-400">
+                    No topics have been uploaded by the instructor for this class yet.
+                  </p>
+                ) : (
+                  getTopicsForClass(selectedClassForTopics.class_id).map((topic, idx) => {
+                    const progress = getProgressForTopic(topic.topic_id, user?.student_id)
+                    const isReviewed = progress?.status === 'Reviewed'
+
+                    return (
+                      <div
+                        key={topic.topic_id}
+                        className={`p-4 rounded-2xl border transition-all ${
+                          isReviewed
+                            ? 'bg-emerald-50/50 border-emerald-200'
+                            : 'bg-white border-slate-200 hover:border-indigo-200'
+                        }`}
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="flex items-start gap-3">
+                            <span
+                              className={`w-6 h-6 rounded-lg text-xs font-mono font-bold flex items-center justify-center shrink-0 mt-0.5 ${
+                                isReviewed
+                                  ? 'bg-emerald-600 text-white'
+                                  : 'bg-indigo-50 text-indigo-700 border border-indigo-100'
+                              }`}
+                            >
+                              {idx + 1}
+                            </span>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <h4 className="text-sm font-bold text-slate-900">
+                                  {topic.topic_name}
+                                </h4>
+                                <span className="text-[10px] font-mono text-slate-400">
+                                  {topic.topic_id}
+                                </span>
+                              </div>
+                              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                                {topic.content}
+                              </p>
+                              {isReviewed && progress?.reviewed_date && (
+                                <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-semibold mt-1.5">
+                                  <Check size={11} /> Reviewed on {progress.reviewed_date}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <button
+                            onClick={() =>
+                              handleStatusChange(
+                                topic.topic_id,
+                                topic.topic_name,
+                                progress?.status || 'Pending'
+                              )
+                            }
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 self-end sm:self-center ${
+                              isReviewed
+                                ? 'bg-emerald-600 text-white shadow-xs'
+                                : 'bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200'
+                            }`}
+                          >
+                            <CheckCircle2 size={13} />
+                            {isReviewed ? 'Reviewed' : 'Mark as Reviewed'}
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })
+                )}
+              </div>
+
+              {/* Modal Footer */}
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs text-slate-500">
+                  Topic review progress syncs automatically with faculty gradebook.
+                </span>
+                <button
+                  onClick={() => setSelectedClassForTopics(null)}
+                  className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors"
+                >
+                  Done
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>

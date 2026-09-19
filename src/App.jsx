@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { UserProvider } from './context/AuthContext.jsx'
+import { DataProvider } from './context/DataContext.jsx'
 
 // Shared Pages
 import Landing from './pages/Landing.jsx'
@@ -25,43 +26,45 @@ import FacultyBroadcast from './pages/teacher/FacultyBroadcast.jsx'
 export default function App() {
   return (
     <UserProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Public Entrance */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+      <DataProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Public Entrance */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
 
-          {/* Student Dedicated Portal */}
-          <Route path="/dashboard" element={<StudentDashboard />} />
-          <Route path="/student" element={<Navigate to="/student/dashboard" replace />} />
-          <Route path="/student/dashboard" element={<StudentDashboard />} />
-          <Route path="/student/classes" element={<StudentClasses />} />
-          <Route path="/student/assignments" element={<StudentAssignments />} />
-          <Route path="/student/vault" element={<StudentVault />} />
+            {/* Student Dedicated Portal */}
+            <Route path="/dashboard" element={<StudentDashboard />} />
+            <Route path="/student" element={<Navigate to="/student/dashboard" replace />} />
+            <Route path="/student/dashboard" element={<StudentDashboard />} />
+            <Route path="/student/classes" element={<StudentClasses />} />
+            <Route path="/student/assignments" element={<StudentAssignments />} />
+            <Route path="/student/vault" element={<StudentVault />} />
 
-          {/* Student Aliases for backward compatibility */}
-          <Route path="/classes" element={<StudentClasses />} />
-          <Route path="/resources" element={<StudentVault />} />
-          <Route path="/classes/:code" element={<ClassDetails />} />
+            {/* Student Aliases for backward compatibility */}
+            <Route path="/classes" element={<StudentClasses />} />
+            <Route path="/resources" element={<StudentVault />} />
+            <Route path="/classes/:code" element={<ClassDetails />} />
 
-          {/* Teacher / Faculty Dedicated Portal */}
-          <Route path="/teacher" element={<Navigate to="/teacher/dashboard" replace />} />
-          <Route path="/teacher/dashboard" element={<FacultyDashboard />} />
-          <Route path="/teacher/classes" element={<FacultyClasses />} />
-          <Route path="/teacher/gradebook" element={<FacultyGradebook />} />
-          <Route path="/teacher/grading" element={<FacultyGradebook />} />
-          <Route path="/teacher/materials" element={<FacultyMaterials />} />
-          <Route path="/teacher/broadcast" element={<FacultyBroadcast />} />
+            {/* Teacher / Faculty Dedicated Portal */}
+            <Route path="/teacher" element={<Navigate to="/teacher/dashboard" replace />} />
+            <Route path="/teacher/dashboard" element={<FacultyDashboard />} />
+            <Route path="/teacher/classes" element={<FacultyClasses />} />
+            <Route path="/teacher/gradebook" element={<FacultyGradebook />} />
+            <Route path="/teacher/grading" element={<FacultyGradebook />} />
+            <Route path="/teacher/materials" element={<FacultyMaterials />} />
+            <Route path="/teacher/broadcast" element={<FacultyBroadcast />} />
 
-          {/* Account Management */}
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
+            {/* Account Management */}
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </DataProvider>
     </UserProvider>
   )
 }

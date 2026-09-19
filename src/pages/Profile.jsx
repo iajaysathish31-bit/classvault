@@ -1,32 +1,36 @@
 import { useState, useEffect } from 'react'
 import Sidebar from '../components/Sidebar.jsx'
 import { useUser } from '../context/AuthContext.jsx'
-import { Check } from 'lucide-react'
-
-const joinedClasses = [
-  { code: 'PHYS 401', name: 'Advanced Thermodynamics', initial: 'A', color: 'bg-vault-blue' },
-  { code: 'CS 302', name: 'Data Structures & Algorithms', initial: 'D', color: 'bg-indigo-500' },
-  { code: 'MATH 201', name: 'Linear Algebra', initial: 'L', color: 'bg-blue-600' },
-  { code: 'HIST 210', name: 'Modern World History', initial: 'M', color: 'bg-purple-500' },
-]
+import { useData } from '../context/DataContext.jsx'
+import { Check, ShieldAlert, GraduationCap, Building2, Phone, Calendar, Hash } from 'lucide-react'
 
 export default function Profile() {
   const [tab, setTab] = useState('overview')
   const { user, initials, updateUser } = useUser()
+  const { classes } = useData()
+
+  const isTeacher = user?.role === 'Teacher'
+
   const [formData, setFormData] = useState({
-    name: user.name,
-    email: user.email,
-    bio: user.bio,
+    name: user?.name || '',
+    email: user?.email || '',
+    bio: user?.bio || '',
+    department: user?.department || '',
+    year: user?.year || '',
+    phone: user?.phone || '',
   })
   const [savedSuccess, setSavedSuccess] = useState(false)
 
   useEffect(() => {
     setFormData({
-      name: user.name,
-      email: user.email,
-      bio: user.bio,
+      name: user?.name || '',
+      email: user?.email || '',
+      bio: user?.bio || '',
+      department: user?.department || (isTeacher ? 'Physics & Applied Sciences' : 'Computer Science & Engineering'),
+      year: user?.year || 'Year 3 (Junior)',
+      phone: user?.phone || '+1 (555) 349-8821',
     })
-  }, [user])
+  }, [user, isTeacher])
 
   const handleSave = (e) => {
     e.preventDefault()
@@ -34,6 +38,9 @@ export default function Profile() {
       name: formData.name,
       email: formData.email,
       bio: formData.bio,
+      department: formData.department,
+      year: formData.year,
+      phone: formData.phone,
     })
     setSavedSuccess(true)
     setTimeout(() => setSavedSuccess(false), 3000)
@@ -44,176 +51,207 @@ export default function Profile() {
       <Sidebar />
 
       <main className="flex-1 px-8 py-6">
-        <h1 className="text-xl font-semibold text-vault-navy mb-6">Profile</h1>
+        <h1 className="text-xl font-semibold text-vault-navy mb-6">User Profile & Credentials</h1>
 
-        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden mb-6">
-          <div className="h-28 bg-gradient-to-r from-vault-blue to-vault-blue-dark" />
+        {/* Profile Card Header */}
+        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden mb-6 shadow-sm">
+          <div className={`h-28 bg-gradient-to-r ${isTeacher ? 'from-slate-900 via-slate-800 to-emerald-900' : 'from-indigo-600 to-violet-700'}`} />
           <div className="px-6 pb-6">
             <div className="flex items-end justify-between -mt-8 mb-4">
-              <div className="w-16 h-16 rounded-2xl bg-vault-blue text-white flex items-center justify-center text-xl font-semibold border-4 border-white">
+              <div className={`w-16 h-16 rounded-2xl ${isTeacher ? 'bg-emerald-600' : 'bg-indigo-600'} text-white flex items-center justify-center text-xl font-semibold border-4 border-white shadow-md`}>
                 {initials}
               </div>
               <button
-                onClick={() => setTab('settings')}
-                className="text-sm font-medium text-vault-navy border border-gray-200 rounded-lg px-4 py-2 hover:bg-gray-50"
+                onClick={() => setTab(tab === 'settings' ? 'overview' : 'settings')}
+                className="text-sm font-medium text-vault-navy border border-gray-200 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors"
               >
-                Edit profile
+                {tab === 'settings' ? 'View Overview' : 'Edit profile'}
               </button>
             </div>
 
             <div className="flex items-start justify-between flex-wrap gap-4">
               <div>
-                <h2 className="text-lg font-serif font-semibold text-vault-navy">{user.name}</h2>
-                <p className="text-sm text-gray-400">{user.email}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <span className="text-xs font-medium bg-vault-blue/10 text-vault-blue px-2.5 py-1 rounded-full capitalize">
-                    🎓 {user.role}
+                <div className="flex items-center gap-2">
+                  <h2 className="text-lg font-serif font-semibold text-vault-navy">{user.name}</h2>
+                  <span className="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded">
+                    {isTeacher ? user?.teacher_id || 'TCH-101' : user?.student_id || 'STU-8821'}
                   </span>
-                  <span className="text-xs text-gray-400">Joined {user.joinedDate || 'September 2024'}</span>
+                </div>
+                <p className="text-sm text-gray-400">{user.email}</p>
+                <div className="flex flex-wrap items-center gap-2 mt-2">
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${isTeacher ? 'bg-emerald-50 text-emerald-700' : 'bg-indigo-50 text-indigo-700'}`}>
+                    {isTeacher ? '🏛️ Faculty / Teacher' : '🎓 Enrolled Student'}
+                  </span>
+                  <span className="text-xs text-gray-500 font-medium">
+                    {user?.department || 'University Academic Department'}
+                  </span>
                 </div>
               </div>
-              <div className="flex items-center gap-8">
-                <div className="text-center">
-                  <p className="text-xl font-semibold text-vault-navy">4</p>
-                  <p className="text-xs text-gray-400">Classes</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xl font-semibold text-vault-navy">12</p>
-                  <p className="text-xs text-gray-400">Uploads</p>
-                </div>
-              </div>
-            </div>
 
-            <div className="flex items-center gap-6 mt-6 border-t border-gray-100 pt-4">
-              <button
-                onClick={() => setTab('overview')}
-                className={`text-sm font-medium pb-1 border-b-2 ${
-                  tab === 'overview' ? 'text-vault-blue border-vault-blue' : 'text-gray-400 border-transparent'
-                }`}
-              >
-                Overview
-              </button>
-              <button
-                onClick={() => setTab('settings')}
-                className={`text-sm font-medium pb-1 border-b-2 ${
-                  tab === 'settings' ? 'text-vault-blue border-vault-blue' : 'text-gray-400 border-transparent'
-                }`}
-              >
-                Settings
-              </button>
+              {/* Stats badges */}
+              <div className="flex items-center gap-6">
+                <div className="text-center">
+                  <p className="text-xl font-bold text-vault-navy">{classes.length}</p>
+                  <p className="text-xs text-gray-400">{isTeacher ? 'Classes Taught' : 'Enrolled Classes'}</p>
+                </div>
+                {!isTeacher && (
+                  <div className="text-center">
+                    <p className="text-xl font-bold text-vault-navy">{user?.year || 'Year 3'}</p>
+                    <p className="text-xs text-gray-400">Academic Year</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
+        {/* Tab Content */}
         {tab === 'overview' ? (
-          <>
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-6">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-medium text-vault-navy">Bio</h3>
-                <button
-                  onClick={() => setTab('settings')}
-                  className="text-sm text-vault-blue font-medium hover:underline"
-                >
-                  Edit
-                </button>
+          <div className="space-y-6">
+            {/* Entity Attributes Grid */}
+            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs">
+              <h3 className="font-semibold text-vault-navy text-sm mb-4">
+                {isTeacher ? 'Faculty Academic Attributes (TEACHER Entity)' : 'Student Record Attributes (STUDENT Entity)'}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between">
+                  <span className="text-gray-500 font-medium flex items-center gap-1.5">
+                    <Hash size={14} className="text-gray-400" />
+                    {isTeacher ? 'teacher_id (Primary Key)' : 'student_id (Primary Key)'}:
+                  </span>
+                  <span className="font-mono font-bold text-slate-800">
+                    {isTeacher ? user?.teacher_id || 'TCH-101' : user?.student_id || 'STU-8821'}
+                  </span>
+                </div>
+
+                <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between">
+                  <span className="text-gray-500 font-medium flex items-center gap-1.5">
+                    <Building2 size={14} className="text-gray-400" />
+                    department:
+                  </span>
+                  <span className="font-semibold text-slate-800">
+                    {user?.department || (isTeacher ? 'Physics & Applied Sciences' : 'Computer Science & Engineering')}
+                  </span>
+                </div>
+
+                {!isTeacher && (
+                  <>
+                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between">
+                      <span className="text-gray-500 font-medium flex items-center gap-1.5">
+                        <Calendar size={14} className="text-gray-400" />
+                        year:
+                      </span>
+                      <span className="font-semibold text-slate-800">{user?.year || 'Year 3 (Junior)'}</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between">
+                      <span className="text-gray-500 font-medium flex items-center gap-1.5">
+                        <Phone size={14} className="text-gray-400" />
+                        phone:
+                      </span>
+                      <span className="font-mono font-semibold text-slate-800">{user?.phone || '+1 (555) 349-8821'}</span>
+                    </div>
+                  </>
+                )}
               </div>
-              <p className="text-sm text-gray-500 leading-relaxed">
-                {user.bio}
+            </div>
+
+            {/* Bio Card */}
+            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs">
+              <h3 className="font-semibold text-vault-navy text-sm mb-2">About & Academic Bio</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                {user?.bio || 'Academic participant on ClassVault platform.'}
               </p>
             </div>
-
-            <div className="bg-white rounded-2xl border border-gray-100 p-6">
-              <h3 className="font-medium text-vault-navy mb-4">Joined Classes</h3>
-              <div className="divide-y divide-gray-100">
-                {joinedClasses.map((c) => (
-                  <div key={c.code} className="flex items-center justify-between py-3">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-9 h-9 rounded-lg ${c.color} text-white flex items-center justify-center text-sm font-semibold`}>
-                        {c.initial}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-vault-navy">{c.name}</p>
-                        <p className="text-xs text-gray-400">{c.code}</p>
-                      </div>
-                    </div>
-                    <span className="text-xs font-medium text-vault-blue bg-vault-blue/10 px-2.5 py-1 rounded-full capitalize">
-                      {user.role}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </>
+          </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-gray-100 p-6">
-            <h3 className="font-medium text-vault-navy mb-6">Account settings</h3>
+          /* Edit Form */
+          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <h3 className="font-semibold text-vault-navy mb-6">Update Profile Attributes</h3>
 
-            <form onSubmit={handleSave} className="space-y-5 max-w-lg">
+            <form onSubmit={handleSave} className="space-y-4 max-w-xl">
               <div>
-                <label className="block text-sm font-medium text-vault-navy mb-1.5">Full name</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Full Name (name)</label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Enter your name"
-                  className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
+                  placeholder="Enter full name"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-vault-navy mb-1.5">Email address</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Email Address (email)</label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="Enter your email id"
-                  className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
+                  placeholder="Enter email id"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-vault-navy mb-1.5">Bio</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Academic Department (department)</label>
+                <input
+                  type="text"
+                  value={formData.department}
+                  onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                  placeholder="e.g. Computer Science & Engineering"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
+                  required
+                />
+              </div>
+
+              {!isTeacher && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Year of Study (year)</label>
+                    <input
+                      type="text"
+                      value={formData.year}
+                      onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+                      placeholder="e.g. Year 3 (Junior)"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Phone Number (phone)</label>
+                    <input
+                      type="text"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="e.g. +1 (555) 349-8821"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Bio / Notes</label>
                 <textarea
                   rows={3}
                   value={formData.bio}
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                  placeholder="Tell us about yourself..."
-                  className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue resize-none"
+                  placeholder="Academic interests and research focus..."
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none resize-none"
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-vault-navy mb-1.5">Change password</label>
-                <input
-                  type="password"
-                  placeholder="New password"
-                  className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
-                />
-              </div>
-
-              <div>
-                <p className="text-sm font-medium text-vault-navy mb-2">Notification preferences</p>
-                <label className="flex items-center gap-2 text-sm text-gray-500 mb-2 cursor-pointer">
-                  <input type="checkbox" defaultChecked className="accent-vault-blue rounded" />
-                  Email me about new assignments
-                </label>
-                <label className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer">
-                  <input type="checkbox" defaultChecked className="accent-vault-blue rounded" />
-                  Remind me before deadlines
-                </label>
-              </div>
-
-              <div className="flex items-center gap-3 pt-2">
+              <div className="flex items-center gap-3 pt-3">
                 <button
                   type="submit"
-                  className="bg-vault-blue text-white text-sm font-medium px-5 py-2.5 rounded-xl hover:bg-vault-blue-dark transition-colors"
+                  className="bg-vault-blue hover:bg-vault-blue-dark text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-colors shadow-xs"
                 >
-                  Save changes
+                  Save Changes
                 </button>
                 {savedSuccess && (
-                  <span className="flex items-center gap-1.5 text-xs text-emerald-600 font-medium">
+                  <span className="flex items-center gap-1.5 text-xs text-emerald-600 font-semibold">
                     <Check size={14} /> Profile updated successfully!
                   </span>
                 )}

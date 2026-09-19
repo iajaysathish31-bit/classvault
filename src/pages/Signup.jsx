@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Library, GraduationCap, Presentation } from 'lucide-react'
+import { Library, GraduationCap, Presentation, Building2 } from 'lucide-react'
 import { useUser } from '../context/AuthContext.jsx'
 
 const stats = [
@@ -14,6 +14,7 @@ export default function Signup() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [department, setDepartment] = useState('Computer Science & Engineering')
   const { signup } = useUser()
   const navigate = useNavigate()
 
@@ -21,14 +22,15 @@ export default function Signup() {
     e.preventDefault()
     const formattedRole = role.charAt(0).toUpperCase() + role.slice(1)
     signup({
-      name: name.trim() || (formattedRole === 'Teacher' ? 'Instructor' : 'Student'),
+      name: name.trim() || (formattedRole === 'Teacher' ? 'Faculty Instructor' : 'Student User'),
       email: email.trim() || `${role}@university.edu`,
       role: formattedRole,
+      department: department.trim() || (formattedRole === 'Teacher' ? 'Physics & Applied Sciences' : 'Computer Science & Engineering'),
     })
     if (formattedRole === 'Teacher') {
       navigate('/teacher/dashboard')
     } else {
-      navigate('/dashboard')
+      navigate('/student/dashboard')
     }
   }
 
@@ -58,9 +60,9 @@ export default function Signup() {
 
         <div className="relative z-10 flex flex-col gap-3">
           {stats.map((s) => (
-            <div key={s.label} className="flex items-baseline gap-2">
-              <span className="text-xl font-serif font-semibold">{s.value}</span>
-              <span className="text-sm text-white/70">{s.label}</span>
+            <div key={s.label} className="flex items-center gap-3">
+              <span className="text-xl font-semibold">{s.value}</span>
+              <span className="text-white/70 text-sm">{s.label}</span>
             </div>
           ))}
         </div>
@@ -80,7 +82,10 @@ export default function Signup() {
           <div className="grid grid-cols-2 gap-1 bg-gray-100 rounded-xl p-1 mb-6">
             <button
               type="button"
-              onClick={() => setRole('student')}
+              onClick={() => {
+                setRole('student')
+                setDepartment('Computer Science & Engineering')
+              }}
               className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 role === 'student' ? 'bg-white text-vault-blue shadow-sm' : 'text-gray-500'
               }`}
@@ -89,46 +94,63 @@ export default function Signup() {
             </button>
             <button
               type="button"
-              onClick={() => setRole('teacher')}
+              onClick={() => {
+                setRole('teacher')
+                setDepartment('Physics & Applied Sciences')
+              }}
               className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 role === 'teacher' ? 'bg-white text-vault-blue shadow-sm' : 'text-gray-500'
               }`}
             >
-              <Presentation size={16} /> Teacher
+              <Presentation size={16} /> Teacher / Faculty
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-vault-navy mb-1.5">Full name</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Full Name (name)</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
-                className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
+                className="w-full px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-xs placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
                 required
               />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-vault-navy mb-1.5">Email address</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Email Address (email)</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email id"
-                className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
+                className="w-full px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-xs placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
                 required
               />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-vault-navy mb-1.5">Password</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Department (department)</label>
+              <input
+                type="text"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                placeholder="e.g. Physics & Applied Sciences"
+                className="w-full px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-xs placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Password (password)</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 8 characters"
-                className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
+                className="w-full px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-xs placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
                 required
                 minLength={8}
               />
@@ -136,17 +158,15 @@ export default function Signup() {
 
             <button
               type="submit"
-              className="w-full bg-vault-blue text-white font-medium py-3 rounded-xl hover:bg-vault-blue-dark transition-colors"
+              className="w-full bg-vault-blue text-white text-xs font-bold py-3 rounded-xl hover:bg-vault-blue-dark transition-colors mt-2"
             >
-              Sign up as {role}
+              Register Account & Enter Portal
             </button>
-
-            <p className="text-xs text-center text-gray-400">
-              By signing up, you agree to our{' '}
-              <a href="#" className="underline">Terms of Service</a> and{' '}
-              <a href="#" className="underline">Privacy Policy</a>.
-            </p>
           </form>
+
+          <p className="text-center text-xs text-gray-400 mt-5">
+            By signing up, you agree to the ClassVault Academic Policy and Terms of Service.
+          </p>
         </div>
       </div>
     </div>

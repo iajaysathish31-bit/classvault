@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import StudentLayout from '../../layouts/StudentLayout.jsx'
 import { useUser } from '../../context/AuthContext.jsx'
+import { useData } from '../../context/DataContext.jsx'
 import {
   Calendar,
   Clock,
@@ -15,94 +16,19 @@ import {
   BookOpen,
   Send,
   Flame,
+  Check,
+  ListOrdered,
 } from 'lucide-react'
 
-const todayClasses = [
-  {
-    code: 'PHYS 401',
-    name: 'Advanced Thermodynamics',
-    time: '10:00 AM – 11:30 AM',
-    room: 'Science Hall 302',
-    prof: 'Prof. Chen Wei',
-    color: 'border-l-indigo-600 bg-indigo-50/40',
-  },
-  {
-    code: 'CS 302',
-    name: 'Data Structures & Algorithms',
-    time: '2:00 PM – 3:45 PM',
-    room: 'Alan Turing Hall 104',
-    prof: 'Prof. Sara Okafor',
-    color: 'border-l-violet-600 bg-violet-50/40',
-  },
-]
-
-const studentSubjects = [
-  {
-    code: 'PHYS 401',
-    name: 'Advanced Thermodynamics',
-    prof: 'Prof. Chen Wei',
-    done: 3,
-    total: 5,
-    nextDue: 'Problem Set 5 · 7d left',
-    urgent: true,
-  },
-  {
-    code: 'CS 302',
-    name: 'Data Structures & Algorithms',
-    prof: 'Prof. Sara Okafor',
-    done: 4,
-    total: 4,
-    nextDue: 'Project Proposal · 11d left',
-    urgent: false,
-  },
-  {
-    code: 'MATH 201',
-    name: 'Linear Algebra',
-    prof: 'Prof. James Erikson',
-    done: 4,
-    total: 6,
-    nextDue: 'Midterm Review · 14d left',
-    urgent: false,
-  },
-  {
-    code: 'HIST 210',
-    name: 'Modern World History',
-    prof: 'Prof. Anita Reyes',
-    done: 2,
-    total: 3,
-    nextDue: 'Research Essay · 26d left',
-    urgent: false,
-  },
-]
-
-const upcomingTasks = [
-  {
-    id: 1,
-    title: 'Problem Set 5: Carnot Engines & Entropy',
-    subject: 'PHYS 401',
-    due: 'Due in 7 days',
-    urgent: true,
-  },
-  {
-    id: 2,
-    title: 'Final Project Proposal: Graph Visualizer',
-    subject: 'CS 302',
-    due: 'Due in 11 days',
-    urgent: false,
-  },
-  {
-    id: 3,
-    title: 'Homework 5: Diagonalization Practice',
-    subject: 'MATH 201',
-    due: 'Due in 14 days',
-    urgent: false,
-  },
-]
-
 export default function StudentDashboard() {
-  const { firstName } = useUser()
+  const { user, firstName } = useUser()
+  const { classes, topics, getClassProgress, getTeacherForClass, contents } = useData()
+
   const [scratchpad, setScratchpad] = useState(() => {
-    return localStorage.getItem('classvault_student_notes') || '• Review Carnot theorem derivation before 10 AM\n• Submit CS 302 code draft'
+    return (
+      localStorage.getItem('classvault_student_notes') ||
+      '• Review Carnot theorem derivation before 10 AM\n• Check Dijkstra priority queue benchmark suite'
+    )
   })
   const [noteSaved, setNoteSaved] = useState(false)
 
@@ -112,6 +38,15 @@ export default function StudentDashboard() {
     setNoteSaved(true)
     setTimeout(() => setNoteSaved(false), 2000)
   }
+
+  // Calculate student overall topic progress
+  const totalTopics = topics.length
+  let totalReviewed = 0
+  classes.forEach((cls) => {
+    const p = getClassProgress(cls.class_id, user?.student_id)
+    totalReviewed += p.reviewed
+  })
+  const overallRate = totalTopics > 0 ? Math.round((totalReviewed / totalTopics) * 100) : 0
 
   return (
     <StudentLayout>
@@ -123,150 +58,162 @@ export default function StudentDashboard() {
             <div>
               <div className="flex items-center gap-2 text-indigo-200 text-xs font-semibold mb-2 tracking-wide uppercase">
                 <Sparkles size={14} className="text-amber-300" />
-                <span>Personal Study Workspace</span>
+                <span>Personal Study Workspace · {user?.department || 'Computer Science'}</span>
               </div>
               <h1 className="text-3xl font-serif font-bold">
                 Good morning, {firstName || 'Student'} 👋
               </h1>
               <p className="text-sm text-indigo-100/90 mt-1.5 max-w-xl leading-relaxed">
-                You have <strong>2 lectures today</strong> and <strong>1 urgent assignment</strong> due this week. Keep your study streak alive!
+                You have reviewed <strong>{totalReviewed} of {totalTopics} syllabus topics</strong> ({overallRate}%) across your university classes. Keep your study streak alive!
               </p>
             </div>
 
             <div className="flex items-center gap-3">
               <Link
-                to="/student/assignments"
+                to="/student/classes"
                 className="bg-white text-indigo-700 hover:bg-indigo-50 font-semibold px-5 py-3 rounded-2xl text-sm transition-all shadow-md shrink-0 flex items-center gap-2"
               >
-                <span>View Tasks</span>
-                <ArrowRight size={16} />
+                <ListOrdered size={16} /> Review Topics
               </Link>
               <Link
                 to="/student/vault"
-                className="bg-indigo-800/60 hover:bg-indigo-800 text-white font-semibold px-4 py-3 rounded-2xl text-sm transition-all border border-indigo-400/30 shrink-0"
+                className="bg-white/15 hover:bg-white/25 border border-white/20 text-white font-medium px-4 py-3 rounded-2xl text-sm transition-all shrink-0 flex items-center gap-2"
               >
-                Browse Vault
+                <BookOpen size={16} /> Open Vault
               </Link>
             </div>
           </div>
         </div>
 
-        {/* 4 Study Metric Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-          <div className="bg-white rounded-2xl border border-indigo-100/80 p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-3">
-              <BookOpen size={20} />
+        {/* Quick KPI Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-white rounded-2xl p-5 border border-indigo-100/80 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-slate-400">Enrolled Classes</span>
+              <BookOpen size={18} className="text-indigo-600" />
             </div>
-            <p className="text-2xl font-bold text-slate-900">4 Subjects</p>
-            <p className="text-xs text-slate-400 mt-0.5">Enrolled this term</p>
+            <p className="text-2xl font-bold text-slate-900 mt-2">{classes.length}</p>
+            <span className="text-[11px] text-indigo-600 font-medium mt-0.5 block">
+              Active Cohorts
+            </span>
           </div>
 
-          <div className="bg-white rounded-2xl border border-indigo-100/80 p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3">
-              <CheckCircle2 size={20} />
+          <div className="bg-white rounded-2xl p-5 border border-indigo-100/80 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-slate-400">Topics Reviewed</span>
+              <CheckCircle2 size={18} className="text-emerald-500" />
             </div>
-            <p className="text-2xl font-bold text-slate-900">13 / 18</p>
-            <p className="text-xs text-slate-400 mt-0.5">Assignments completed (72%)</p>
+            <p className="text-2xl font-bold text-slate-900 mt-2">
+              {totalReviewed} / {totalTopics}
+            </p>
+            <span className="text-[11px] text-emerald-600 font-medium mt-0.5 block">
+              {overallRate}% Course Progress
+            </span>
           </div>
 
-          <div className="bg-white rounded-2xl border border-indigo-100/80 p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center mb-3">
-              <Flame size={20} className="fill-amber-500" />
+          <div className="bg-white rounded-2xl p-5 border border-indigo-100/80 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-slate-400">Vault Resources</span>
+              <FileText size={18} className="text-violet-600" />
             </div>
-            <p className="text-2xl font-bold text-slate-900">5-Day Streak</p>
-            <p className="text-xs text-slate-400 mt-0.5">Active study habits</p>
+            <p className="text-2xl font-bold text-slate-900 mt-2">{contents.length}</p>
+            <span className="text-[11px] text-violet-600 font-medium mt-0.5 block">
+              Materials Published
+            </span>
           </div>
 
-          <div className="bg-white rounded-2xl border border-indigo-100/80 p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center mb-3">
-              <Bookmark size={20} />
+          <div className="bg-white rounded-2xl p-5 border border-indigo-100/80 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-slate-400">Daily Study Streak</span>
+              <Flame size={18} className="text-amber-500 fill-amber-500" />
             </div>
-            <p className="text-2xl font-bold text-slate-900">24 Files</p>
-            <p className="text-xs text-slate-400 mt-0.5">Saved in study vault</p>
+            <p className="text-2xl font-bold text-slate-900 mt-2">5 Days</p>
+            <span className="text-[11px] text-amber-600 font-medium mt-0.5 block">
+              Top 10% on Campus
+            </span>
           </div>
         </div>
 
-        {/* 2-Column Section */}
-        <div className="grid lg:grid-cols-3 gap-8 items-start">
-          {/* Left 2 Cols: Today's Schedule & Subjects */}
+        {/* 2-Column Core Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Column (2 cols) */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Today's Schedule */}
+            {/* Today's Classes */}
             <div className="bg-white rounded-3xl border border-indigo-100/80 p-6 shadow-xs">
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <Calendar size={18} className="text-indigo-600" />
-                  <h2 className="text-base font-bold text-slate-900">Today&apos;s Lecture Schedule</h2>
+                <div>
+                  <h2 className="text-base font-bold text-slate-900">Lecture Timetable</h2>
+                  <p className="text-xs text-slate-400">Classes and lecture halls</p>
                 </div>
                 <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">
-                  Monday, October 7
+                  Fall Term 2026
                 </span>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
-                {todayClasses.map((cls) => (
-                  <div
-                    key={cls.code}
-                    className={`border-l-4 rounded-2xl p-4 border border-slate-100 shadow-2xs ${cls.color}`}
-                  >
-                    <span className="text-[11px] font-bold text-indigo-700 bg-white px-2 py-0.5 rounded-md border border-indigo-100">
-                      {cls.code}
-                    </span>
-                    <h3 className="font-bold text-slate-900 text-sm mt-2">{cls.name}</h3>
-                    <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
-                      <Clock size={13} /> {cls.time}
-                    </p>
-                    <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5">
-                      <MapPin size={13} /> {cls.room} · {cls.prof}
-                    </p>
-                  </div>
-                ))}
+                {classes.slice(0, 2).map((cls) => {
+                  const teacher = getTeacherForClass(cls.teacher_id)
+                  return (
+                    <div
+                      key={cls.class_id}
+                      className="border-l-4 border-indigo-600 rounded-2xl p-4 border border-slate-100 bg-indigo-50/20 shadow-2xs"
+                    >
+                      <span className="text-[11px] font-bold text-indigo-700 bg-white px-2 py-0.5 rounded-md border border-indigo-100">
+                        {cls.class_id}
+                      </span>
+                      <h3 className="font-bold text-slate-900 text-sm mt-2">{cls.subject}</h3>
+                      <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
+                        <Clock size={13} /> {cls.class_date}
+                      </p>
+                      <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5">
+                        <MapPin size={13} /> Campus Hall · {teacher.name}
+                      </p>
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
-            {/* Enrolled Subjects with Progress */}
+            {/* Enrolled Subjects with TOPIC_PROGRESS */}
             <div className="bg-white rounded-3xl border border-indigo-100/80 p-6 shadow-xs">
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <h2 className="text-base font-bold text-slate-900">Enrolled Subjects</h2>
-                  <p className="text-xs text-slate-400">Track your coursework progression</p>
+                  <h2 className="text-base font-bold text-slate-900">Enrolled Classes</h2>
+                  <p className="text-xs text-slate-400">Track your topic progression in real-time</p>
                 </div>
                 <Link
                   to="/student/classes"
                   className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
                 >
-                  View All Subjects →
+                  View All Classes →
                 </Link>
               </div>
 
               <div className="space-y-4">
-                {studentSubjects.map((sub) => {
-                  const pct = Math.round((sub.done / sub.total) * 100)
+                {classes.map((cls) => {
+                  const progress = getClassProgress(cls.class_id, user?.student_id)
+                  const teacher = getTeacherForClass(cls.teacher_id)
+
                   return (
                     <Link
-                      key={sub.code}
-                      to={`/classes/${sub.code.replace(/\s+/g, '-')}`}
+                      key={cls.class_id}
+                      to="/student/classes"
                       className="block p-4 rounded-2xl border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/30 transition-all group"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-                              {sub.code}
+                            <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded font-mono">
+                              {cls.class_id}
                             </span>
                             <span className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
-                              {sub.name}
+                              {cls.subject}
                             </span>
                           </div>
-                          <p className="text-xs text-slate-400 mt-0.5">{sub.prof}</p>
+                          <p className="text-xs text-slate-400 mt-0.5">{teacher.name} · {teacher.department}</p>
                         </div>
-                        <span
-                          className={`text-xs font-semibold px-2.5 py-1 rounded-lg ${
-                            sub.urgent
-                              ? 'bg-rose-50 text-rose-600 border border-rose-200/60'
-                              : 'bg-slate-100 text-slate-600'
-                          }`}
-                        >
-                          {sub.nextDue}
+                        <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">
+                          {progress.reviewed}/{progress.total} topics reviewed
                         </span>
                       </div>
 
@@ -275,10 +222,12 @@ export default function StudentDashboard() {
                         <div className="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden">
                           <div
                             className="bg-indigo-600 h-full rounded-full transition-all duration-500"
-                            style={{ width: `${pct}%` }}
+                            style={{ width: `${progress.percent}%` }}
                           />
                         </div>
-                        <span className="text-xs font-bold text-slate-600">{pct}%</span>
+                        <span className="text-xs font-bold text-slate-600 shrink-0">
+                          {progress.percent}%
+                        </span>
                       </div>
                     </Link>
                   )
@@ -287,66 +236,72 @@ export default function StudentDashboard() {
             </div>
           </div>
 
-          {/* Right Col: Tasks & Quick Scratchpad */}
-          <div className="space-y-8">
-            {/* Upcoming Deadlines */}
+          {/* Right Sidebar (1 col) */}
+          <div className="space-y-6">
+            {/* Quick Study Scratchpad */}
+            <div className="bg-white rounded-3xl border border-indigo-100/80 p-6 shadow-xs">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                  <FileText size={16} className="text-indigo-600" />
+                  Study Scratchpad
+                </h3>
+                {noteSaved && (
+                  <span className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+                    <Check size={12} /> Saved
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-slate-400 mb-3">
+                Quick study reminders, formulas, or lecture thoughts.
+              </p>
+              <textarea
+                rows={4}
+                value={scratchpad}
+                onChange={(e) => setScratchpad(e.target.value)}
+                placeholder="Type your notes here..."
+                className="w-full text-xs p-3 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-slate-700 resize-none font-sans"
+              />
+              <div className="mt-3 flex justify-end">
+                <button
+                  onClick={handleSaveNotes}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors"
+                >
+                  Save Notes
+                </button>
+              </div>
+            </div>
+
+            {/* Recent Vault Additions */}
             <div className="bg-white rounded-3xl border border-indigo-100/80 p-6 shadow-xs">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-bold text-slate-900">Upcoming Deadlines</h2>
-                <Link to="/student/assignments" className="text-xs font-bold text-indigo-600 hover:underline">
-                  All Tasks →
+                <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                  <Bookmark size={16} className="text-amber-500" />
+                  New in Study Vault
+                </h3>
+                <Link to="/student/vault" className="text-xs text-indigo-600 font-bold hover:underline">
+                  Browse All
                 </Link>
               </div>
 
               <div className="space-y-3">
-                {upcomingTasks.map((t) => (
+                {contents.slice(0, 3).map((cnt) => (
                   <div
-                    key={t.id}
-                    className="p-3.5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-white transition-colors"
+                    key={cnt.content_id}
+                    className="p-3 rounded-2xl border border-slate-100 hover:border-indigo-100 transition-colors bg-slate-50/50"
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">
-                        {t.subject}
+                      <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded font-mono">
+                        {cnt.type}
                       </span>
-                      <span
-                        className={`text-[11px] font-semibold ${
-                          t.urgent ? 'text-rose-600 font-bold' : 'text-slate-500'
-                        }`}
-                      >
-                        {t.due}
-                      </span>
+                      <span className="text-[10px] text-slate-400">{cnt.created_at}</span>
                     </div>
-                    <p className="text-xs font-semibold text-slate-900 line-clamp-1">{t.title}</p>
+                    <p className="text-xs font-bold text-slate-800 line-clamp-1">{cnt.title}</p>
+                    <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
+                      {cnt.description}
+                    </p>
                   </div>
                 ))}
               </div>
-            </div>
-
-            {/* Quick Study Scratchpad */}
-            <div className="bg-white rounded-3xl border border-indigo-100/80 p-6 shadow-xs">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-base font-bold text-slate-900">Study Scratchpad</h2>
-                {noteSaved && (
-                  <span className="text-[11px] font-bold text-emerald-600">Saved!</span>
-                )}
-              </div>
-              <p className="text-xs text-slate-400 mb-3">Quick notes & personal reminders</p>
-
-              <form onSubmit={handleSaveNotes} className="space-y-3">
-                <textarea
-                  rows={4}
-                  value={scratchpad}
-                  onChange={(e) => setScratchpad(e.target.value)}
-                  placeholder="Jot down quick thoughts or homework ideas..."
-                  className="w-full p-3 text-xs rounded-xl bg-slate-50 border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 resize-none font-mono"
-                />
-                <button
-                  type="submit"
-                  className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
-                >
-                  Save Notes
-                </button>
-              </form>
             </div>
           </div>
         </div>

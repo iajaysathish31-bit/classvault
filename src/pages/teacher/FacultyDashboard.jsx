@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import TeacherLayout from '../../layouts/TeacherLayout.jsx'
+import { useUser } from '../../context/AuthContext.jsx'
+import { useData } from '../../context/DataContext.jsx'
 import {
   Users,
   Award,
@@ -19,6 +21,7 @@ import {
   X,
   ShieldCheck,
   Layers,
+  ListOrdered,
 } from 'lucide-react'
 
 const initialSubmissions = [
@@ -26,7 +29,7 @@ const initialSubmissions = [
     id: 1,
     student: 'Liam Nakamura',
     avatar: 'LN',
-    cohort: 'PHYS 401',
+    cohort: 'CLS-401',
     assignment: 'Problem Set 5: Carnot Engines & Entropy',
     submittedAt: '2 hours ago',
     file: 'Liam_Nakamura_PSet5.pdf',
@@ -37,7 +40,7 @@ const initialSubmissions = [
     id: 2,
     student: 'Elena Rostov',
     avatar: 'ER',
-    cohort: 'CS 302',
+    cohort: 'CLS-302',
     assignment: 'Red-Black Tree Self-Balancing Implementation',
     submittedAt: '4 hours ago',
     file: 'elena_rbt_solution.zip',
@@ -48,27 +51,19 @@ const initialSubmissions = [
     id: 3,
     student: 'Marcus Bell',
     avatar: 'MB',
-    cohort: 'PHYS 401',
+    cohort: 'CLS-401',
     assignment: 'First & Second Laws Lab Verification',
     submittedAt: 'Yesterday',
     file: 'MBell_LabReport_v2.pdf',
     suggestedGrade: '88',
     status: 'pending',
   },
-  {
-    id: 4,
-    student: 'Aria Montgomery',
-    avatar: 'AM',
-    cohort: 'MATH 201',
-    assignment: 'Eigenvalue Decomposition Proofs',
-    submittedAt: 'Yesterday',
-    file: 'Montgomery_Math201_Proof.pdf',
-    suggestedGrade: '92',
-    status: 'pending',
-  },
 ]
 
 export default function FacultyDashboard() {
+  const { user } = useUser()
+  const { classes, topics, contents, topicProgress } = useData()
+
   const [submissions, setSubmissions] = useState(initialSubmissions)
   const [gradingModalOpen, setGradingModalOpen] = useState(false)
   const [activeItem, setActiveItem] = useState(null)
@@ -97,6 +92,8 @@ export default function FacultyDashboard() {
     showToast(`Graded ${activeItem.student} (${activeItem.cohort}): ${enteredGrade}/100 recorded!`)
   }
 
+  const totalReviews = topicProgress.filter((p) => p.status === 'Reviewed').length
+
   return (
     <TeacherLayout>
       <div className="space-y-6">
@@ -116,18 +113,18 @@ export default function FacultyDashboard() {
             <div>
               <div className="flex items-center gap-2.5 mb-2">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-1 rounded-md">
-                  Faculty Operations Console
+                  {user?.department || 'Faculty Console'} · {user?.teacher_id || 'TCH-101'}
                 </span>
                 <span className="text-xs text-slate-400 flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  Realtime Sync Active
+                  Live Sync Active
                 </span>
               </div>
               <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">
                 Academic Command Center
               </h1>
               <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl">
-                Overview of active student cohorts, grading backlog, curriculum distribution, and term metrics.
+                Real-time tracking of created classes, authored topics, uploaded curriculum content, and student topic review progress.
               </p>
             </div>
 
@@ -136,13 +133,13 @@ export default function FacultyDashboard() {
                 to="/teacher/classes"
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-all"
               >
-                <Users size={15} /> Manage Cohorts
+                <ListOrdered size={15} /> Manage Classes
               </Link>
               <Link
-                to="/teacher/gradebook"
+                to="/teacher/materials"
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950 transition-all"
               >
-                <Award size={15} /> Open Gradebook
+                <Plus size={15} /> Upload Content
               </Link>
             </div>
           </div>
@@ -152,53 +149,53 @@ export default function FacultyDashboard() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-400">Total Enrolled</span>
+              <span className="text-xs font-bold text-slate-400">Created Classes</span>
               <div className="w-8 h-8 rounded-xl bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 flex items-center justify-center">
-                <Users size={16} />
-              </div>
-            </div>
-            <p className="text-2xl font-black text-white mt-3">118</p>
-            <span className="text-[11px] text-emerald-400 flex items-center gap-1 mt-1 font-semibold">
-              <TrendingUp size={12} /> Across 4 active courses
-            </span>
-          </div>
-
-          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-400">Pending Evaluation</span>
-              <div className="w-8 h-8 rounded-xl bg-amber-950/80 text-amber-400 border border-amber-800/60 flex items-center justify-center">
-                <Clock size={16} />
-              </div>
-            </div>
-            <p className="text-2xl font-black text-white mt-3">{submissions.length}</p>
-            <span className="text-[11px] text-amber-400 flex items-center gap-1 mt-1 font-semibold">
-              <AlertCircle size={12} /> 2 submissions priority
-            </span>
-          </div>
-
-          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-400">Mean Term Grade</span>
-              <div className="w-8 h-8 rounded-xl bg-teal-950/80 text-teal-400 border border-teal-800/60 flex items-center justify-center">
-                <Award size={16} />
-              </div>
-            </div>
-            <p className="text-2xl font-black text-white mt-3">88.4%</p>
-            <span className="text-[11px] text-teal-400 flex items-center gap-1 mt-1 font-semibold">
-              +3.2% vs previous term
-            </span>
-          </div>
-
-          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-400">Vault Materials</span>
-              <div className="w-8 h-8 rounded-xl bg-blue-950/80 text-blue-400 border border-blue-800/60 flex items-center justify-center">
                 <BookOpen size={16} />
               </div>
             </div>
-            <p className="text-2xl font-black text-white mt-3">24</p>
+            <p className="text-2xl font-black text-white mt-3">{classes.length}</p>
+            <span className="text-[11px] text-emerald-400 flex items-center gap-1 mt-1 font-semibold">
+              <TrendingUp size={12} /> University Classes
+            </span>
+          </div>
+
+          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-400">Authored Topics</span>
+              <div className="w-8 h-8 rounded-xl bg-teal-950/80 text-teal-400 border border-teal-800/60 flex items-center justify-center">
+                <ListOrdered size={16} />
+              </div>
+            </div>
+            <p className="text-2xl font-black text-white mt-3">{topics.length}</p>
+            <span className="text-[11px] text-teal-400 flex items-center gap-1 mt-1 font-semibold">
+              Syllabus Units
+            </span>
+          </div>
+
+          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-400">Topic Reviews</span>
+              <div className="w-8 h-8 rounded-xl bg-blue-950/80 text-blue-400 border border-blue-800/60 flex items-center justify-center">
+                <CheckCircle2 size={16} />
+              </div>
+            </div>
+            <p className="text-2xl font-black text-white mt-3">{totalReviews}</p>
             <span className="text-[11px] text-blue-400 flex items-center gap-1 mt-1 font-semibold">
-              100% syllabi published
+              Student Completions
+            </span>
+          </div>
+
+          <div className="bg-slate-950 p-5 rounded-3xl border border-slate-800/80 shadow-md">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-400">Vault Content</span>
+              <div className="w-8 h-8 rounded-xl bg-purple-950/80 text-purple-400 border border-purple-800/60 flex items-center justify-center">
+                <Layers size={16} />
+              </div>
+            </div>
+            <p className="text-2xl font-black text-white mt-3">{contents.length}</p>
+            <span className="text-[11px] text-purple-400 flex items-center gap-1 mt-1 font-semibold">
+              Resources Uploaded
             </span>
           </div>
         </div>
@@ -212,25 +209,25 @@ export default function FacultyDashboard() {
                 <div>
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
                     <FileCheck2 size={18} className="text-emerald-400" />
-                    Pending Evaluation Queue
+                    Pending Student Submissions
                   </h3>
                   <p className="text-xs text-slate-400">
-                    Student work awaiting rubric review and final score entry
+                    Student work awaiting rubric review and evaluation
                   </p>
                 </div>
                 <Link
                   to="/teacher/gradebook"
                   className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
                 >
-                  Full Gradebook <ArrowRight size={13} />
+                  Gradebook <ArrowRight size={13} />
                 </Link>
               </div>
 
               {submissions.length === 0 ? (
                 <div className="text-center py-10 text-slate-400">
                   <ShieldCheck size={36} className="mx-auto text-emerald-400 mb-2" />
-                  <p className="text-sm font-bold text-white">Grading Queue Empty!</p>
-                  <p className="text-xs text-slate-500 mt-1">All student submissions are up to date.</p>
+                  <p className="text-sm font-bold text-white">Grading Queue Clear!</p>
+                  <p className="text-xs text-slate-500 mt-1">All submissions evaluated.</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -246,12 +243,12 @@ export default function FacultyDashboard() {
                         <div>
                           <div className="flex items-center gap-2">
                             <h4 className="text-sm font-bold text-white">{sub.student}</h4>
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/60">
+                            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/60">
                               {sub.cohort}
                             </span>
                           </div>
                           <p className="text-xs text-slate-300 mt-0.5">{sub.assignment}</p>
-                          <span className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5">
+                          <span className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5 font-mono">
                             <Clock size={11} /> {sub.submittedAt} · {sub.file}
                           </span>
                         </div>
@@ -270,8 +267,8 @@ export default function FacultyDashboard() {
             </div>
 
             <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-              <span>Rubric auto-weighting enabled</span>
-              <span className="text-emerald-400 font-semibold">Ready for Fall 2026</span>
+              <span>Rubric evaluation active</span>
+              <span className="text-emerald-400 font-semibold font-mono">Fall 2026 Academic Term</span>
             </div>
           </div>
 
@@ -282,74 +279,54 @@ export default function FacultyDashboard() {
                 <Calendar size={18} className="text-emerald-400" />
                 Teaching Schedule
               </h3>
-              <span className="text-[10px] font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+              <span className="text-[10px] font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800 font-mono">
                 Today
               </span>
             </div>
 
             <div className="space-y-3">
-              <div className="bg-slate-900/90 border-l-4 border-emerald-500 p-4 rounded-2xl border-y border-r border-slate-800">
-                <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wide">
-                  PHYS 401 · Lecture 14
-                </span>
-                <h4 className="text-sm font-bold text-white mt-1">
-                  Carnot Cycle Derivations & Refrigerators
-                </h4>
-                <div className="flex items-center gap-3 text-xs text-slate-400 mt-2">
-                  <span className="flex items-center gap-1">
-                    <Clock size={12} className="text-slate-500" /> 10:00 AM – 11:30 AM
+              {classes.slice(0, 2).map((cls, idx) => (
+                <div
+                  key={cls.class_id}
+                  className={`bg-slate-900/90 border-l-4 p-4 rounded-2xl border-y border-r border-slate-800 ${
+                    idx === 0 ? 'border-emerald-500' : 'border-teal-500'
+                  }`}
+                >
+                  <span className="text-[10px] font-bold text-emerald-400 font-mono uppercase tracking-wide">
+                    {cls.class_id}
                   </span>
-                  <span>·</span>
-                  <span>Science Hall 302</span>
+                  <h4 className="text-sm font-bold text-white mt-1">{cls.subject}</h4>
+                  <div className="flex items-center gap-2 text-xs text-slate-400 mt-2">
+                    <Clock size={12} className="text-slate-500 shrink-0" />
+                    <span>{cls.class_date}</span>
+                  </div>
+                  <div className="mt-3 flex items-center justify-between text-[11px] text-slate-400">
+                    <span>{topics.filter((t) => t.class_id === cls.class_id).length} Topics Defined</span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-950 text-emerald-400 rounded">
+                      Active
+                    </span>
+                  </div>
                 </div>
-                <div className="mt-3 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400">28 Students Enrolled</span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-950 text-emerald-400 rounded">
-                    In Progress
-                  </span>
-                </div>
-              </div>
-
-              <div className="bg-slate-900/90 border-l-4 border-teal-500 p-4 rounded-2xl border-y border-r border-slate-800">
-                <span className="text-[10px] font-bold text-teal-400 uppercase tracking-wide">
-                  CS 302 · Practical Lab
-                </span>
-                <h4 className="text-sm font-bold text-white mt-1">
-                  Red-Black Insertion Rotations Lab
-                </h4>
-                <div className="flex items-center gap-3 text-xs text-slate-400 mt-2">
-                  <span className="flex items-center gap-1">
-                    <Clock size={12} className="text-slate-500" /> 2:00 PM – 3:45 PM
-                  </span>
-                  <span>·</span>
-                  <span>Turing Hall 104</span>
-                </div>
-                <div className="mt-3 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400">35 Students Enrolled</span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-slate-800 text-slate-400 rounded">
-                    Upcoming
-                  </span>
-                </div>
-              </div>
+              ))}
             </div>
 
             {/* Quick Actions Panel */}
             <div className="mt-6 pt-5 border-t border-slate-800">
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-3">
-                Faculty Actions
+                Quick Actions
               </span>
               <div className="grid grid-cols-2 gap-2">
+                <Link
+                  to="/teacher/classes"
+                  className="p-3 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl text-center text-xs font-bold text-slate-200 transition-colors"
+                >
+                  + Add Topic
+                </Link>
                 <Link
                   to="/teacher/materials"
                   className="p-3 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl text-center text-xs font-bold text-slate-200 transition-colors"
                 >
-                  Upload Syllabus
-                </Link>
-                <Link
-                  to="/teacher/broadcast"
-                  className="p-3 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl text-center text-xs font-bold text-slate-200 transition-colors"
-                >
-                  Broadcast Notice
+                  + Add Content
                 </Link>
               </div>
             </div>
@@ -358,7 +335,7 @@ export default function FacultyDashboard() {
 
         {/* Grading Evaluation Modal */}
         {gradingModalOpen && activeItem && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-xs p-4">
             <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-800 animate-in fade-in zoom-in-95 duration-200 text-slate-100">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="flex items-center gap-3">
@@ -397,7 +374,7 @@ export default function FacultyDashboard() {
                     max="100"
                     value={enteredGrade}
                     onChange={(e) => setEnteredGrade(e.target.value)}
-                    className="w-full text-lg font-bold px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-emerald-400 focus:outline-none focus:border-emerald-500"
+                    className="w-full text-lg font-bold px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-emerald-400 focus:outline-none focus:border-emerald-500 font-mono"
                     required
                   />
                 </div>
