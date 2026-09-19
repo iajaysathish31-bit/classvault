@@ -35,16 +35,16 @@ export default function Landing() {
 
         <div className="flex items-center gap-3">
           <Link
-            to="/student/dashboard"
+            to="/login?role=student"
             className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-colors"
           >
-            <GraduationCap size={14} /> Student View
+            <GraduationCap size={14} /> Student Portal
           </Link>
           <Link
-            to="/teacher/dashboard"
+            to="/login?role=teacher"
             className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors"
           >
-            <ShieldAlert size={14} /> Faculty View
+            <ShieldAlert size={14} /> Teacher Portal
           </Link>
           <Link
             to="/login"
@@ -124,7 +124,7 @@ export default function Landing() {
 
             <div className="mt-8 pt-6 border-t border-slate-100">
               <Link
-                to="/student/dashboard"
+                to="/login?role=student"
                 className="w-full py-3.5 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-200 group-hover:gap-3 transition-all"
               >
                 Enter Student Portal <ArrowRight size={16} />
@@ -174,7 +174,7 @@ export default function Landing() {
 
             <div className="mt-8 pt-6 border-t border-slate-800">
               <Link
-                to="/teacher/dashboard"
+                to="/login?role=teacher"
                 className="w-full py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-950 group-hover:gap-3 transition-all"
               >
                 Enter Faculty Portal <ArrowRight size={16} />
