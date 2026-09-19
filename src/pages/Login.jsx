@@ -6,13 +6,17 @@ import { useUser } from '../context/AuthContext.jsx'
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { login } = useUser()
+  const { user, login } = useUser()
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     login({ email })
-    navigate('/dashboard')
+    if (user?.role === 'Teacher') {
+      navigate('/teacher/dashboard')
+    } else {
+      navigate('/dashboard')
+    }
   }
 
   return (

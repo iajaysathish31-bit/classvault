@@ -19,12 +19,17 @@ export default function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    const formattedRole = role.charAt(0).toUpperCase() + role.slice(1)
     signup({
-      name: name.trim() || 'Student User',
-      email: email.trim() || 'student@university.edu',
-      role: role.charAt(0).toUpperCase() + role.slice(1),
+      name: name.trim() || (formattedRole === 'Teacher' ? 'Instructor' : 'Student'),
+      email: email.trim() || `${role}@university.edu`,
+      role: formattedRole,
     })
-    navigate('/dashboard')
+    if (formattedRole === 'Teacher') {
+      navigate('/teacher/dashboard')
+    } else {
+      navigate('/dashboard')
+    }
   }
 
   return (

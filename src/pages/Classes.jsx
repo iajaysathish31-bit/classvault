@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar.jsx'
-import { Plus, Search, X, Check } from 'lucide-react'
+import { Plus, Search, X, Check, ChevronRight } from 'lucide-react'
 
 const initialClasses = [
   {
@@ -135,19 +136,22 @@ export default function Classes() {
           ) : (
             filteredClasses.map((c) => {
               const progressPct = Math.min(100, Math.round((c.done / c.total) * 100))
+              const classUrl = `/classes/${c.code.replace(/\s+/g, '-')}`
               return (
-                <div
+                <Link
                   key={c.id}
-                  className="bg-white rounded-2xl border border-gray-100 p-5 hover:border-gray-200 transition-colors shadow-sm"
+                  to={classUrl}
+                  className="block bg-white rounded-2xl border border-gray-100 p-5 hover:border-vault-blue/40 hover:shadow-md transition-all group"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-vault-blue text-white flex items-center justify-center font-semibold text-sm shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-vault-blue text-white flex items-center justify-center font-semibold text-sm shrink-0 group-hover:scale-105 transition-transform">
                         {c.initial}
                       </div>
                       <div>
-                        <h3 className="font-semibold text-vault-navy text-sm md:text-base leading-tight">
+                        <h3 className="font-semibold text-vault-navy text-sm md:text-base leading-tight group-hover:text-vault-blue transition-colors flex items-center gap-1.5">
                           {c.name}
+                          <ChevronRight size={15} className="opacity-0 group-hover:opacity-100 transition-opacity text-vault-blue" />
                         </h3>
                         <p className="text-xs text-gray-400 mt-0.5">
                           {c.code} · {c.prof}
@@ -178,7 +182,7 @@ export default function Classes() {
                       {c.done}/{c.total} done
                     </span>
                   </div>
-                </div>
+                </Link>
               )
             })
           )}

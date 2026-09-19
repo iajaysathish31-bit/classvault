@@ -8,19 +8,35 @@ import {
   Settings,
   LogOut,
   Library,
+  CheckSquare,
+  GraduationCap,
+  Presentation,
 } from 'lucide-react'
-
-const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'My Classes', icon: BookOpen, path: '/classes' },
-  { label: 'Resources', icon: FileText, path: '/resources' },
-  { label: 'Profile', icon: User, path: '/profile' },
-  { label: 'Settings', icon: Settings, path: '/settings' },
-]
 
 export default function Sidebar() {
   const location = useLocation()
-  const { user, initials, logout } = useUser()
+  const { user, initials, logout, updateUser } = useUser()
+
+  const isTeacher = user?.role === 'Teacher'
+
+  const studentNavItems = [
+    { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+    { label: 'My Classes', icon: BookOpen, path: '/classes' },
+    { label: 'Resources', icon: FileText, path: '/resources' },
+    { label: 'Profile', icon: User, path: '/profile' },
+    { label: 'Settings', icon: Settings, path: '/settings' },
+  ]
+
+  const teacherNavItems = [
+    { label: 'Dashboard', icon: LayoutDashboard, path: '/teacher/dashboard' },
+    { label: 'Classes Taught', icon: BookOpen, path: '/teacher/classes' },
+    { label: 'Submissions & Grading', icon: CheckSquare, path: '/teacher/grading' },
+    { label: 'Resources Vault', icon: FileText, path: '/resources' },
+    { label: 'Profile', icon: User, path: '/profile' },
+    { label: 'Settings', icon: Settings, path: '/settings' },
+  ]
+
+  const navItems = isTeacher ? teacherNavItems : studentNavItems
 
   return (
     <aside className="w-64 shrink-0 bg-white border-r border-gray-100 flex flex-col justify-between h-screen sticky top-0">
@@ -29,7 +45,28 @@ export default function Sidebar() {
           <div className="w-8 h-8 rounded-lg bg-vault-blue flex items-center justify-center">
             <Library size={18} className="text-white" />
           </div>
-          <span className="font-semibold text-vault-navy text-lg">ClassVault</span>
+          <div>
+            <span className="font-semibold text-vault-navy text-lg block leading-none">ClassVault</span>
+            <span className="text-[10px] font-semibold text-gray-400 tracking-wider uppercase">
+              {isTeacher ? 'Teacher Portal' : 'Student Portal'}
+            </span>
+          </div>
+        </div>
+
+        {/* Quick Role Switcher Pill */}
+        <div className="px-4 mb-2">
+          <button
+            type="button"
+            onClick={() => updateUser({ role: isTeacher ? 'Student' : 'Teacher' })}
+            className="w-full text-xs font-semibold py-1.5 px-3 rounded-xl bg-gray-50 border border-gray-200 hover:bg-vault-blue/10 hover:text-vault-blue hover:border-vault-blue/30 text-gray-600 transition-colors flex items-center justify-between"
+            title="Toggle between Student and Teacher module views"
+          >
+            <span className="flex items-center gap-1.5">
+              {isTeacher ? <Presentation size={13} className="text-vault-blue" /> : <GraduationCap size={13} className="text-vault-blue" />}
+              {isTeacher ? 'Teacher View' : 'Student View'}
+            </span>
+            <span className="text-[10px] text-vault-blue font-bold underline">Switch</span>
+          </button>
         </div>
 
         <div className="px-6 pt-2 pb-2">

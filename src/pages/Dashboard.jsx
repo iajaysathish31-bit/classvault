@@ -90,18 +90,22 @@ export default function Dashboard() {
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-medium text-vault-navy">My Classes</h3>
-              <a href="#" className="text-sm text-vault-blue font-medium hover:underline">View all →</a>
+              <Link to="/classes" className="text-sm text-vault-blue font-medium hover:underline">View all →</Link>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               {classes.map((c) => (
-                <div key={c.code} className="bg-white rounded-xl border border-gray-100 p-5">
+                <Link
+                  key={c.code}
+                  to={`/classes/${c.code.replace(/\s+/g, '-')}`}
+                  className="bg-white rounded-xl border border-gray-100 p-5 hover:border-vault-blue/40 hover:shadow-md transition-all group block"
+                >
                   <div className="flex items-center justify-between mb-3">
-                    <div className={`w-9 h-9 rounded-lg ${c.color} text-white flex items-center justify-center font-semibold text-sm`}>
+                    <div className={`w-9 h-9 rounded-lg ${c.color} text-white flex items-center justify-center font-semibold text-sm group-hover:scale-105 transition-transform`}>
                       {c.initial}
                     </div>
                     <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">{c.code}</span>
                   </div>
-                  <h4 className="font-medium text-vault-navy mb-1">{c.name}</h4>
+                  <h4 className="font-medium text-vault-navy mb-1 group-hover:text-vault-blue transition-colors">{c.name}</h4>
                   {c.prof && <p className="text-xs text-gray-400 mb-3">{c.prof}</p>}
                   {c.students && (
                     <div className="flex items-center justify-between text-xs text-gray-400">
@@ -109,7 +113,7 @@ export default function Dashboard() {
                       <span className="text-vault-blue font-medium">{c.due}</span>
                     </div>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
           </div>
