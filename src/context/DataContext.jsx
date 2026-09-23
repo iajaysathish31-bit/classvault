@@ -6,21 +6,21 @@ const INITIAL_TEACHERS = [
   {
     teacher_id: 'TCH-101',
     name: 'Prof. Chen Wei',
-    email: 'chen.wei@university.edu',
+    email: 'chen.wei@kristujayanti.com',
     password: '••••••••',
     department: 'Physics & Applied Sciences',
   },
   {
     teacher_id: 'TCH-102',
     name: 'Prof. Sara Okafor',
-    email: 'sara.okafor@university.edu',
+    email: 'sara.okafor@kristujayanti.com',
     password: '••••••••',
     department: 'Computer Science & Engineering',
   },
   {
     teacher_id: 'TCH-103',
     name: 'Prof. James Erikson',
-    email: 'james.erikson@university.edu',
+    email: 'james.erikson@kristujayanti.com',
     password: '••••••••',
     department: 'Mathematics',
   },
@@ -30,7 +30,7 @@ const INITIAL_STUDENTS = [
   {
     student_id: 'STU-8821',
     name: 'Student User',
-    email: 'student@university.edu',
+    email: 'student@kristujayanti.com',
     password: '••••••••',
     department: 'Computer Science & Engineering',
     year: 'Year 3 (Junior)',
@@ -39,7 +39,7 @@ const INITIAL_STUDENTS = [
   {
     student_id: 'STU-8822',
     name: 'Liam Nakamura',
-    email: 'liam.n@university.edu',
+    email: 'liam.n@kristujayanti.com',
     password: '••••••••',
     department: 'Physics & Applied Sciences',
     year: 'Year 3 (Junior)',
@@ -48,7 +48,7 @@ const INITIAL_STUDENTS = [
   {
     student_id: 'STU-8823',
     name: 'Elena Rostov',
-    email: 'elena.r@university.edu',
+    email: 'elena.r@kristujayanti.com',
     password: '••••••••',
     department: 'Computer Science & Engineering',
     year: 'Year 4 (Senior)',
@@ -303,6 +303,14 @@ export function DataProvider({ children }) {
 
   // Persistence side effects
   useEffect(() => {
+    localStorage.setItem('cv_teachers', JSON.stringify(teachers))
+  }, [teachers])
+
+  useEffect(() => {
+    localStorage.setItem('cv_students', JSON.stringify(students))
+  }, [students])
+
+  useEffect(() => {
     localStorage.setItem('cv_classes', JSON.stringify(classes))
   }, [classes])
 
@@ -319,6 +327,34 @@ export function DataProvider({ children }) {
   }, [contents])
 
   // --- ACTIONS ---
+
+  // Register a new student or faculty member into the university dataset
+  const registerMember = ({ name, email, role, department, student_id, teacher_id }) => {
+    const isTeacher = role === 'Teacher'
+    if (isTeacher) {
+      const newTeacher = {
+        teacher_id: teacher_id || `TCH-${Math.floor(100 + Math.random() * 900)}`,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password: '••••••••',
+        department: department || 'Physics & Applied Sciences',
+      }
+      setTeachers((prev) => [...prev.filter((t) => t.email !== newTeacher.email), newTeacher])
+      return newTeacher
+    } else {
+      const newStudent = {
+        student_id: student_id || `STU-${Math.floor(1000 + Math.random() * 9000)}`,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password: '••••••••',
+        department: department || 'Computer Science & Engineering',
+        year: 'Year 1 (Freshman)',
+        phone: '+91 98765 43210',
+      }
+      setStudents((prev) => [...prev.filter((s) => s.email !== newStudent.email), newStudent])
+      return newStudent
+    }
+  }
 
   // 1. TEACHER Creates CLASS
   const createClass = ({ subject, class_date, description }) => {
@@ -444,6 +480,7 @@ export function DataProvider({ children }) {
         topics,
         topicProgress,
         contents,
+        registerMember,
         createClass,
         addTopic,
         deleteTopic,

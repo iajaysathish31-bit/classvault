@@ -99,7 +99,7 @@ export default function Settings() {
     e.preventDefault()
     updateUser({
       name: formData.name.trim() || 'Student',
-      email: formData.email.trim() || 'student@university.edu',
+      email: formData.email.trim() || 'student@kristujayanti.com',
     })
     showSuccessToast('Personal information updated successfully!')
   }

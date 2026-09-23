@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react'
 
 const DEFAULT_USER = {
   name: 'Student User',
-  email: 'student@university.edu',
+  email: 'student@kristujayanti.com',
   role: 'Student',
   student_id: 'STU-8821',
   teacher_id: 'TCH-101',
@@ -60,10 +60,12 @@ export function UserProvider({ children }) {
 
   const signup = ({ name, email, role, department, year, phone, bio }) => {
     const formattedRole = role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Student'
+    const cleanEmail = email?.trim() || `${formattedRole.toLowerCase()}@kristujayanti.com`
+
     const newUser = {
       ...DEFAULT_USER,
       name: name?.trim() || (formattedRole === 'Teacher' ? 'Faculty Member' : 'Student User'),
-      email: email?.trim() || `${formattedRole.toLowerCase()}@university.edu`,
+      email: cleanEmail,
       role: formattedRole,
       department: department || (formattedRole === 'Teacher' ? 'Physics & Applied Sciences' : 'Computer Science & Engineering'),
       year: year || 'Year 3 (Junior)',
@@ -79,6 +81,7 @@ export function UserProvider({ children }) {
     } catch (e) {
       console.error(e)
     }
+    return newUser
   }
 
   const login = ({ email, name }) => {

@@ -34,7 +34,7 @@ export default function Login() {
     if (demoRole === 'teacher') {
       const demoTeacher = teachers[0] || {
         name: 'Prof. Chen Wei',
-        email: 'chen.wei@university.edu',
+        email: 'chen.wei@kristujayanti.com',
         teacher_id: 'TCH-101',
         department: 'Physics & Applied Sciences',
       }
@@ -49,7 +49,7 @@ export default function Login() {
     } else {
       const demoStudent = students[0] || {
         name: 'Student User',
-        email: 'student@university.edu',
+        email: 'student@kristujayanti.com',
         student_id: 'STU-8821',
         department: 'Computer Science & Engineering',
         year: 'Year 3 (Junior)',
@@ -70,7 +70,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const emailVal = identifier.includes('@') ? identifier.trim() : `${identifier.trim().toLowerCase()}@university.edu`
+    const emailVal = identifier.includes('@') ? identifier.trim() : `${identifier.trim().toLowerCase()}@kristujayanti.com`
 
     if (role === 'teacher') {
       updateUser({
@@ -170,7 +170,7 @@ export default function Login() {
                 type="text"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
-                placeholder={isTeacher ? 'e.g. chen.wei@university.edu or TCH-101' : 'e.g. student@university.edu or STU-8821'}
+                placeholder={isTeacher ? 'e.g. chen.wei@kristujayanti.com or TCH-101' : 'e.g. student@kristujayanti.com or STU-8821'}
                 className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50/80 border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-all ${
                   isTeacher ? 'focus:ring-emerald-500/20 focus:border-emerald-600' : 'focus:ring-indigo-500/20 focus:border-indigo-600'
                 }`}
@@ -226,7 +226,7 @@ export default function Login() {
             }`}
           >
             <Sparkles size={14} />
-            Instant Demo Access: {isTeacher ? 'Prof. Chen Wei (TCH-101)' : 'Student User (STU-8821)'}
+            Instant Demo Access: {isTeacher ? 'Prof. Chen Wei (chen.wei@kristujayanti.com)' : 'Student User (student@kristujayanti.com)'}
           </button>
         </div>
 
