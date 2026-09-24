@@ -40,7 +40,7 @@ const uploads = [
 ]
 
 export default function Dashboard() {
-  const { firstName } = useUser()
+  const { user, firstName } = useUser()
 
   return (
     <div className="flex min-h-screen bg-vault-bg">
@@ -67,7 +67,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <h2 className="text-lg font-serif font-semibold text-vault-navy">Good morning, {firstName} 👋</h2>
+        <h2 className="text-lg font-serif font-semibold text-vault-navy">Hello, {user?.name || firstName || 'User'}</h2>
         <p className="text-sm text-gray-400 mb-6">You have 3 upcoming deadlines this week.</p>
 
         {/* Overview cards */}

@@ -61,7 +61,7 @@ export default function StudentDashboard() {
                 <span>Personal Study Workspace · {user?.department || 'Computer Science'}</span>
               </div>
               <h1 className="text-3xl font-serif font-bold">
-                Good morning, {firstName || 'Student'} 👋
+                Hello, {user?.name || firstName || 'Student'}
               </h1>
               <p className="text-sm text-indigo-100/90 mt-1.5 max-w-xl leading-relaxed">
                 You have reviewed <strong>{totalReviewed} of {totalTopics} syllabus topics</strong> ({overallRate}%) across your university classes. Keep your study streak alive!
