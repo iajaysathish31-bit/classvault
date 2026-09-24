@@ -28,31 +28,31 @@ const INITIAL_TEACHERS = [
 
 const INITIAL_STUDENTS = [
   {
-    student_id: 'STU-8821',
+    student_id: '24CPEB27',
     name: 'Student User',
-    email: 'student@kristujayanti.com',
+    email: '24cpeb27@kristujayanti.com',
     password: '••••••••',
     department: 'Computer Science & Engineering',
-    year: 'Year 3 (Junior)',
-    phone: '+1 (555) 349-8821',
+    year: 'Year 1 (Freshman)',
+    phone: '+91 98765 43210',
   },
   {
-    student_id: 'STU-8822',
+    student_id: '24CPEB28',
     name: 'Liam Nakamura',
-    email: 'liam.n@kristujayanti.com',
+    email: '24cpeb28@kristujayanti.com',
     password: '••••••••',
     department: 'Physics & Applied Sciences',
-    year: 'Year 3 (Junior)',
-    phone: '+1 (555) 912-4412',
+    year: 'Year 1 (Freshman)',
+    phone: '+91 98765 43211',
   },
   {
-    student_id: 'STU-8823',
+    student_id: '23CS0115',
     name: 'Elena Rostov',
-    email: 'elena.r@kristujayanti.com',
+    email: '23cs0115@kristujayanti.com',
     password: '••••••••',
     department: 'Computer Science & Engineering',
-    year: 'Year 4 (Senior)',
-    phone: '+1 (555) 723-9090',
+    year: 'Year 2 (Sophomore)',
+    phone: '+91 98765 43212',
   },
 ]
 
@@ -245,7 +245,14 @@ export function DataProvider({ children }) {
   const [teachers, setTeachers] = useState(() => {
     try {
       const saved = localStorage.getItem('cv_teachers')
-      return saved ? JSON.parse(saved) : INITIAL_TEACHERS
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        return parsed.map((t) => ({
+          ...t,
+          email: t.email ? t.email.replace('@university.edu', '@kristujayanti.com') : 'faculty@kristujayanti.com',
+        }))
+      }
+      return INITIAL_TEACHERS
     } catch {
       return INITIAL_TEACHERS
     }
@@ -255,7 +262,14 @@ export function DataProvider({ children }) {
   const [students, setStudents] = useState(() => {
     try {
       const saved = localStorage.getItem('cv_students')
-      return saved ? JSON.parse(saved) : INITIAL_STUDENTS
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        return parsed.map((s) => ({
+          ...s,
+          email: s.email ? s.email.replace('@university.edu', '@kristujayanti.com') : 'student@kristujayanti.com',
+        }))
+      }
+      return INITIAL_STUDENTS
     } catch {
       return INITIAL_STUDENTS
     }

@@ -34,15 +34,20 @@ export default function Signup() {
 
   const isTeacher = role === 'teacher'
 
+  const STUDENT_ROLL_REGEX = /^[0-9]{2}[a-z]{2,8}[0-9]{1,5}$/i
+
   // Validate email domain in real time
   const trimmedEmail = email.trim().toLowerCase()
   const hasInput = trimmedEmail.length > 0
   const isGmail = trimmedEmail.includes('@gmail.com') || trimmedEmail.endsWith('@gmail')
-  const isAllowedDomain = trimmedEmail.endsWith(ALLOWED_DOMAIN) && trimmedEmail.split('@')[0].length > 0
+  const emailPrefix = trimmedEmail.split('@')[0]
+  const isAllowedDomain = trimmedEmail.endsWith(ALLOWED_DOMAIN) && emailPrefix.length > 0
   const hasInvalidOtherDomain =
     hasInput &&
     trimmedEmail.includes('@') &&
     !trimmedEmail.endsWith(ALLOWED_DOMAIN)
+
+  const isStudentRollFormat = STUDENT_ROLL_REGEX.test(emailPrefix)
 
   const handleAppendDomain = () => {
     const prefix = trimmedEmail.includes('@') ? trimmedEmail.split('@')[0] : trimmedEmail
@@ -74,19 +79,29 @@ export default function Signup() {
       return
     }
 
-    const emailPrefix = cleanEmail.split('@')[0]
-    if (!emailPrefix || emailPrefix.length < 2) {
+    const cleanPrefix = cleanEmail.split('@')[0]
+    if (!cleanPrefix || cleanPrefix.length < 2) {
       setErrorMessage('Please provide a valid username before @kristujayanti.com.')
       return
     }
 
+    // 3. For students, enforce College Roll ID format (e.g. 24cpeb27@kristujayanti.com)
+    if (!isTeacher) {
+      if (!STUDENT_ROLL_REGEX.test(cleanPrefix)) {
+        setErrorMessage(
+          'Invalid Student Email: Students must register using their official College Registration ID format (e.g. 24cpeb27@kristujayanti.com). Personal names like name@kristujayanti.com are not permitted.'
+        )
+        return
+      }
+    }
+
     const formattedRole = isTeacher ? 'Teacher' : 'Student'
-    const studentId = !isTeacher ? `STU-${Math.floor(1000 + Math.random() * 9000)}` : ''
+    const studentId = !isTeacher ? cleanPrefix.toUpperCase() : ''
     const teacherId = isTeacher ? `TCH-${Math.floor(100 + Math.random() * 900)}` : ''
 
     // Register user in AuthContext
     signup({
-      name: name.trim() || (isTeacher ? 'Faculty Instructor' : 'Student User'),
+      name: name.trim() || (!isTeacher ? `Student (${studentId})` : 'Faculty Instructor'),
       email: cleanEmail,
       role: formattedRole,
       department: department.trim() || (isTeacher ? 'Physics & Applied Sciences' : 'Computer Science & Engineering'),
@@ -97,7 +112,7 @@ export default function Signup() {
     // Register user in DataContext database
     if (registerMember) {
       registerMember({
-        name: name.trim() || (isTeacher ? 'Faculty Instructor' : 'Student User'),
+        name: name.trim() || (!isTeacher ? `Student (${studentId})` : 'Faculty Instructor'),
         email: cleanEmail,
         role: formattedRole,
         department: department.trim() || (isTeacher ? 'Physics & Applied Sciences' : 'Computer Science & Engineering'),
@@ -297,10 +312,10 @@ export default function Signup() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block text-xs font-bold text-slate-700">
-                  Institutional Email Address
+                  {isTeacher ? 'Institutional Faculty Email' : 'College Roll Email ID (e.g. 24cpeb27@kristujayanti.com)'}
                 </label>
                 <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
-                  @kristujayanti.com ONLY
+                  {isTeacher ? '@kristujayanti.com' : 'Roll No Format'}
                 </span>
               </div>
 
@@ -313,11 +328,11 @@ export default function Signup() {
                     setEmail(e.target.value)
                     setErrorMessage('')
                   }}
-                  placeholder="e.g. student.name@kristujayanti.com"
+                  placeholder={isTeacher ? 'e.g. chen.wei@kristujayanti.com' : 'e.g. 24cpeb27@kristujayanti.com'}
                   className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-all ${
-                    isGmail || hasInvalidOtherDomain
+                    isGmail || hasInvalidOtherDomain || (!isTeacher && trimmedEmail.length > 3 && !isStudentRollFormat)
                       ? 'border-rose-400 focus:border-rose-600 focus:ring-rose-500/20 bg-rose-50/20'
-                      : isAllowedDomain
+                      : isAllowedDomain && (isTeacher || isStudentRollFormat)
                       ? 'border-emerald-400 focus:border-emerald-600 focus:ring-emerald-500/20 bg-emerald-50/20'
                       : isTeacher
                       ? 'border-slate-200 focus:border-emerald-600 focus:ring-emerald-500/20'
@@ -328,7 +343,7 @@ export default function Signup() {
               </div>
 
               {/* Dynamic Live Domain Feedback */}
-              <div className="mt-1.5">
+              <div className="mt-1.5 space-y-1">
                 {isGmail && (
                   <div className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-semibold flex items-center gap-2">
                     <AlertCircle size={14} className="text-rose-600 shrink-0" />
@@ -354,22 +369,31 @@ export default function Signup() {
                   </div>
                 )}
 
-                {isAllowedDomain && (
+                {!isTeacher && trimmedEmail.length > 2 && !isStudentRollFormat && !isGmail && (
+                  <div className="p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-semibold flex items-center gap-1.5">
+                    <AlertCircle size={14} className="text-rose-600 shrink-0" />
+                    <span>
+                      Students must register using their Roll ID format (e.g. <strong>24cpeb27@kristujayanti.com</strong>). Names are not permitted.
+                    </span>
+                  </div>
+                )}
+
+                {isAllowedDomain && (isTeacher || isStudentRollFormat) && (
                   <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-semibold flex items-center gap-1.5">
                     <CheckCircle2 size={14} className="text-emerald-700 shrink-0" />
-                    <span>Verified Kristu Jayanti College institutional email domain.</span>
+                    <span>Verified {isTeacher ? 'Faculty' : 'Student Roll'} account: {trimmedEmail}</span>
                   </div>
                 )}
 
                 {!hasInput && (
                   <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1">
-                    <span>Must end with @kristujayanti.com</span>
+                    <span>{isTeacher ? 'e.g. faculty.name@kristujayanti.com' : 'e.g. 24cpeb27@kristujayanti.com'}</span>
                     <button
                       type="button"
-                      onClick={() => setEmail('alex.kumar@kristujayanti.com')}
+                      onClick={() => setEmail(isTeacher ? 'chen.wei@kristujayanti.com' : '24cpeb27@kristujayanti.com')}
                       className="text-[10px] text-indigo-600 hover:underline font-semibold"
                     >
-                      Fill sample email
+                      Fill sample {isTeacher ? 'faculty' : 'student roll'} ID
                     </button>
                   </div>
                 )}
@@ -425,9 +449,9 @@ export default function Signup() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isGmail}
+              disabled={isGmail || (!isTeacher && trimmedEmail.length > 2 && !isStudentRollFormat)}
               className={`w-full text-white text-xs font-bold py-3.5 rounded-xl transition-all shadow-md mt-4 flex items-center justify-center gap-2 ${
-                isGmail
+                isGmail || (!isTeacher && trimmedEmail.length > 2 && !isStudentRollFormat)
                   ? 'bg-slate-300 cursor-not-allowed text-slate-500 shadow-none'
                   : isTeacher
                   ? 'bg-emerald-700 hover:bg-emerald-800 shadow-emerald-200'
@@ -447,15 +471,15 @@ export default function Signup() {
               <button
                 type="button"
                 onClick={() => {
-                  setName('Ajay Sathish')
-                  setEmail('ajay.s@kristujayanti.com')
+                  setName('Student User')
+                  setEmail('24cpeb27@kristujayanti.com')
                   setPassword('password123')
                   setRole('student')
                   setErrorMessage('')
                 }}
                 className="text-[11px] font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1 rounded-lg border border-indigo-200"
               >
-                Sample Student
+                Sample Student (24cpeb27)
               </button>
               <button
                 type="button"

@@ -2,14 +2,14 @@ import { createContext, useContext, useState, useEffect } from 'react'
 
 const DEFAULT_USER = {
   name: 'Student User',
-  email: 'student@kristujayanti.com',
+  email: '24cpeb27@kristujayanti.com',
   role: 'Student',
-  student_id: 'STU-8821',
+  student_id: '24CPEB27',
   teacher_id: 'TCH-101',
   department: 'Computer Science & Engineering',
-  year: 'Year 3 (Junior)',
-  phone: '+1 (555) 349-8821',
-  bio: 'Welcome to ClassVault! Your academic records are synced with university cohorts.',
+  year: 'Year 1 (Freshman)',
+  phone: '+91 98765 43210',
+  bio: 'Welcome to ClassVault! Your academic records are synced with Kristu Jayanti cohorts.',
   joinedDate: 'September 2026',
 }
 
@@ -21,9 +21,14 @@ export function UserProvider({ children }) {
       const saved = localStorage.getItem('classvault_user')
       if (saved) {
         const parsed = JSON.parse(saved)
+        let cleanEmail = parsed.email || DEFAULT_USER.email
+        if (!cleanEmail.toLowerCase().endsWith('@kristujayanti.com')) {
+          cleanEmail = '24cpeb27@kristujayanti.com'
+        }
         return {
           ...DEFAULT_USER,
           ...parsed,
+          email: cleanEmail,
         }
       }
       return DEFAULT_USER
