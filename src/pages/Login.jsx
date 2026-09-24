@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { GraduationCap, ShieldAlert, ArrowLeft, Check, Sparkles, Lock, Mail } from 'lucide-react'
+import { GraduationCap, Shield, ArrowLeft, Sparkles, Lock, Mail, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { useUser } from '../context/AuthContext.jsx'
 import { useData } from '../context/DataContext.jsx'
 
@@ -11,6 +11,7 @@ export default function Login() {
   const [role, setRole] = useState(roleParam === 'teacher' ? 'teacher' : 'student')
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const { updateUser } = useUser()
   const { teachers, students } = useData()
@@ -97,7 +98,7 @@ export default function Login() {
     // 1. Explicit check: @gmail.com is strictly forbidden
     if (cleanId.includes('@gmail.com') || cleanId.endsWith('@gmail')) {
       setErrorMessage(
-        'Login Blocked: @gmail.com accounts are not allowed. You must log in using your official @kristujayanti.com email address.'
+        '@gmail.com accounts are not allowed. You must sign in with your official @kristujayanti.com account.'
       )
       return
     }
@@ -105,7 +106,7 @@ export default function Login() {
     // 2. Enforce @kristujayanti.com if an email is provided
     if (cleanId.includes('@') && !cleanId.endsWith('@kristujayanti.com')) {
       setErrorMessage(
-        'Domain Restricted: Only institutional @kristujayanti.com accounts are permitted to log in.'
+        'Only institutional @kristujayanti.com accounts are permitted to sign in.'
       )
       return
     }
@@ -114,7 +115,7 @@ export default function Login() {
     if (role === 'student') {
       if (!isStudentRollFormat) {
         setErrorMessage(
-          'Invalid Student Email: Students must sign in using their official College Registration ID (e.g. 24cpeb27@kristujayanti.com). Personal names like name@kristujayanti.com are not permitted.'
+          'Students must sign in using their College Roll ID (e.g. 24cpeb27@kristujayanti.com). Personal names are not accepted.'
         )
         return
       }
@@ -152,221 +153,257 @@ export default function Login() {
   }
 
   const isTeacher = role === 'teacher'
+  const isInputInvalid = isGmail || hasInvalidOtherDomain || (!isTeacher && cleanId.length > 3 && !isStudentRollFormat)
+  const isInputValid = isAllowedDomain && (isTeacher || isStudentRollFormat)
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center px-4 py-12 font-sans text-slate-800">
-      {/* Brand Header */}
-      <Link to="/" className="flex items-center gap-2.5 mb-8 group">
-        <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105 ${isTeacher ? 'bg-emerald-700 shadow-emerald-200' : 'bg-indigo-600 shadow-indigo-200'}`}>
-          {isTeacher ? <ShieldAlert size={22} /> : <GraduationCap size={22} />}
-        </div>
-        <div>
-          <span className="font-black text-xl tracking-tight text-slate-900 block leading-none">ClassVault</span>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-            {isTeacher ? 'Faculty Portal Access' : 'Student Portal Access'}
-          </span>
-        </div>
-      </Link>
-
-      {/* Login Card */}
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-200/80 p-8 sm:p-10 relative overflow-hidden">
-        {/* Subtle decorative glow */}
-        <div className={`absolute top-0 right-0 w-32 h-32 rounded-bl-full pointer-events-none opacity-20 ${isTeacher ? 'bg-emerald-500' : 'bg-indigo-500'}`} />
-
-        {/* Portal Role Switcher Tabs */}
-        <div className="grid grid-cols-2 gap-1.5 p-1.5 bg-slate-100 rounded-2xl mb-6">
-          <button
-            type="button"
-            onClick={() => handleRoleTabChange('student')}
-            className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all ${
-              !isTeacher
-                ? 'bg-white text-indigo-700 shadow-sm'
-                : 'text-slate-500 hover:text-slate-800 hover:bg-slate-200/60'
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      {/* Brand Logo & Name */}
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center mb-6">
+        <Link to="/" className="inline-flex items-center gap-2.5 group">
+          <div
+            className={`w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105 ${
+              isTeacher ? 'bg-emerald-700 shadow-emerald-200' : 'bg-indigo-600 shadow-indigo-200'
             }`}
           >
-            <GraduationCap size={16} /> Student Portal
-          </button>
-          <button
-            type="button"
-            onClick={() => handleRoleTabChange('teacher')}
-            className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all ${
-              isTeacher
-                ? 'bg-emerald-700 text-white shadow-sm shadow-emerald-200'
-                : 'text-slate-500 hover:text-slate-800 hover:bg-slate-200/60'
-            }`}
-          >
-            <ShieldAlert size={16} /> Teacher Portal
-          </button>
-        </div>
-
-        {/* Title & Context */}
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-1">
-            <span className={`text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${isTeacher ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-indigo-50 text-indigo-700 border border-indigo-200'}`}>
-              {isTeacher ? 'Teacher / Faculty Access' : 'Student Access'}
-            </span>
+            {isTeacher ? <Shield size={20} /> : <GraduationCap size={20} />}
           </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-            {isTeacher ? 'Faculty Console Login' : 'Student Study Hub Login'}
-          </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            {isTeacher
-              ? 'Enter your official @kristujayanti.com faculty email address.'
-              : 'Enter your College Registration Email ID (e.g. 24cpeb27@kristujayanti.com). Names are not accepted.'}
-          </p>
-        </div>
+          <span className="text-2xl font-bold tracking-tight text-slate-900 font-serif">ClassVault</span>
+        </Link>
+      </div>
 
-        {/* Error Alert Banner */}
-        {errorMessage && (
-          <div className="mb-5 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold flex items-start gap-2.5 animate-bounce shadow-sm">
-            <span className="text-base">🚫</span>
+      {/* Main Card */}
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-6 shadow-xl shadow-slate-200/50 rounded-3xl sm:px-8 border border-slate-200/70">
+          
+          {/* Segmented Role Switcher */}
+          <div className="flex bg-slate-100/90 p-1 rounded-2xl mb-6 border border-slate-200/50">
+            <button
+              type="button"
+              onClick={() => handleRoleTabChange('student')}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-semibold transition-all ${
+                !isTeacher
+                  ? 'bg-white text-indigo-700 shadow-xs font-bold'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              <GraduationCap size={15} />
+              <span>Student Portal</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleRoleTabChange('teacher')}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-semibold transition-all ${
+                isTeacher
+                  ? 'bg-emerald-700 text-white shadow-xs font-bold'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              <Shield size={15} />
+              <span>Teacher Portal</span>
+            </button>
+          </div>
+
+          {/* Heading */}
+          <div className="mb-6">
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+              {isTeacher ? 'Faculty Portal Sign In' : 'Student Portal Sign In'}
+            </h1>
+            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+              {isTeacher
+                ? 'Sign in with your official Kristu Jayanti faculty email.'
+                : 'Sign in with your official College Roll ID (e.g. 24cpeb27@kristujayanti.com).'}
+            </p>
+          </div>
+
+          {/* Error Message */}
+          {errorMessage && (
+            <div className="mb-5 p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start gap-2.5">
+              <AlertCircle size={16} className="text-rose-600 shrink-0 mt-0.5" />
+              <div className="leading-tight">
+                <span className="font-semibold block mb-0.5">Authentication Error</span>
+                <span className="text-rose-700">{errorMessage}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Email Field */}
             <div>
-              <strong className="block text-rose-900">Access Denied</strong>
-              <span className="text-rose-700 font-normal">{errorMessage}</span>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700">
+                  {isTeacher ? 'Faculty Email' : 'College Roll Email'}
+                </label>
+                <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
+                  @kristujayanti.com
+                </span>
+              </div>
+              <div className="relative">
+                <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <input
+                  type="text"
+                  value={identifier}
+                  onChange={(e) => {
+                    setIdentifier(e.target.value)
+                    setErrorMessage('')
+                  }}
+                  placeholder={isTeacher ? 'chen.wei@kristujayanti.com' : '24cpeb27@kristujayanti.com'}
+                  className={`w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-white rounded-xl border transition-all placeholder:text-slate-400 focus:outline-none focus:ring-2 ${
+                    isInputInvalid
+                      ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-100 bg-rose-50/20'
+                      : isInputValid
+                      ? 'border-emerald-300 focus:border-emerald-500 focus:ring-emerald-100 bg-emerald-50/20'
+                      : isTeacher
+                      ? 'border-slate-200 focus:border-emerald-600 focus:ring-emerald-100'
+                      : 'border-slate-200 focus:border-indigo-600 focus:ring-indigo-100'
+                  }`}
+                  required
+                />
+              </div>
+
+              {/* Dynamic Live Feedback */}
+              <div className="mt-1.5 space-y-1">
+                {isGmail && (
+                  <div className="p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-medium flex items-center gap-1.5">
+                    <AlertCircle size={14} className="text-rose-600 shrink-0" />
+                    <span>@gmail.com accounts are not allowed. Please use your college email.</span>
+                  </div>
+                )}
+
+                {!isGmail && hasInvalidOtherDomain && (
+                  <div className="p-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-medium flex items-center justify-between gap-1.5">
+                    <span>Only @kristujayanti.com domain is permitted.</span>
+                    <button
+                      type="button"
+                      onClick={handleAppendDomain}
+                      className="px-2 py-0.5 rounded bg-white text-emerald-800 border border-emerald-300 text-[10px] font-bold hover:bg-emerald-50"
+                    >
+                      Use @kristujayanti.com
+                    </button>
+                  </div>
+                )}
+
+                {!isTeacher && cleanId.length > 2 && !isStudentRollFormat && !isGmail && (
+                  <div className="p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-medium flex items-center gap-1.5">
+                    <AlertCircle size={14} className="text-rose-600 shrink-0" />
+                    <span>Students must use Roll ID format (e.g. 24cpeb27@kristujayanti.com).</span>
+                  </div>
+                )}
+
+                {isInputValid && (
+                  <div className="p-1.5 px-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-medium flex items-center gap-1.5">
+                    <CheckCircle2 size={14} className="text-emerald-700 shrink-0" />
+                    <span>Verified {isTeacher ? 'Faculty' : 'Student Roll'} ID: {cleanId}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Password Field */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700">Password</label>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    alert('Demo mode: you can enter any password (e.g. password123)')
+                  }}
+                  className="text-[11px] text-slate-400 hover:text-slate-600 font-medium transition-colors"
+                >
+                  Forgot password?
+                </a>
+              </div>
+              <div className="relative">
+                <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className={`w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm bg-white rounded-xl border border-slate-200 transition-all placeholder:text-slate-400 focus:outline-none focus:ring-2 ${
+                    isTeacher
+                      ? 'focus:border-emerald-600 focus:ring-emerald-100'
+                      : 'focus:border-indigo-600 focus:ring-indigo-100'
+                  }`}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 rounded-md transition-colors"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isGmail || (!isTeacher && cleanId.length > 2 && !isStudentRollFormat)}
+              className={`w-full text-white text-xs sm:text-sm font-semibold py-2.5 rounded-xl transition-all shadow-sm mt-3 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99] ${
+                isGmail || (!isTeacher && cleanId.length > 2 && !isStudentRollFormat)
+                  ? 'bg-slate-300 cursor-not-allowed text-slate-500 shadow-none'
+                  : isTeacher
+                  ? 'bg-emerald-700 hover:bg-emerald-800 shadow-emerald-200'
+                  : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200'
+              }`}
+            >
+              Sign In
+            </button>
+          </form>
+
+          {/* Quick Demo Divider */}
+          <div className="relative my-5">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-100" />
+            </div>
+            <div className="relative flex justify-center text-[10px] uppercase tracking-wider">
+              <span className="bg-white px-2.5 text-slate-400 font-semibold">Demo Access</span>
             </div>
           </div>
-        )}
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold text-slate-700">
-                {isTeacher ? 'Faculty Email ID' : 'College Roll Email ID (e.g. 24cpeb27@kristujayanti.com)'}
-              </label>
-              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
-                {isTeacher ? '@kristujayanti.com' : 'Roll No Format'}
-              </span>
-            </div>
-            <div className="relative">
-              <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                value={identifier}
-                onChange={(e) => {
-                  setIdentifier(e.target.value)
-                  setErrorMessage('')
-                }}
-                placeholder={isTeacher ? 'e.g. chen.wei@kristujayanti.com' : 'e.g. 24cpeb27@kristujayanti.com'}
-                className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50/80 border text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-all ${
-                  isGmail || hasInvalidOtherDomain || (!isTeacher && cleanId.length > 3 && !isStudentRollFormat)
-                    ? 'border-rose-400 focus:border-rose-600 focus:ring-rose-500/20 bg-rose-50/20'
-                    : isAllowedDomain && (isTeacher || isStudentRollFormat)
-                    ? 'border-emerald-400 focus:border-emerald-600 focus:ring-emerald-500/20 bg-emerald-50/20'
-                    : isTeacher
-                    ? 'border-slate-200 focus:border-emerald-600 focus:ring-emerald-500/20'
-                    : 'border-slate-200 focus:border-indigo-600 focus:ring-indigo-500/20'
-                }`}
-                required
-              />
-            </div>
-
-            {/* Dynamic Live Domain & Roll Feedback */}
-            <div className="mt-1.5 space-y-1">
-              {isGmail && (
-                <div className="p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-semibold flex items-center gap-1.5">
-                  <span>❌</span>
-                  <span><strong>@gmail.com is not allowed!</strong> Please use your college email ID.</span>
-                </div>
-              )}
-
-              {!isGmail && hasInvalidOtherDomain && (
-                <div className="p-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-semibold flex items-center justify-between gap-1.5">
-                  <span>⚠️ Only <strong>@kristujayanti.com</strong> domain is permitted.</span>
-                  <button
-                    type="button"
-                    onClick={handleAppendDomain}
-                    className="px-2 py-0.5 rounded bg-white text-emerald-800 border border-emerald-300 text-[10px] font-bold hover:bg-emerald-50"
-                  >
-                    Use @kristujayanti.com
-                  </button>
-                </div>
-              )}
-
-              {!isTeacher && cleanId.length > 2 && !isStudentRollFormat && !isGmail && (
-                <div className="p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-semibold flex items-center gap-1.5">
-                  <span>❌</span>
-                  <span>
-                    Must be in College Roll format (e.g. <strong>24cpeb27@kristujayanti.com</strong>). Names are not permitted.
-                  </span>
-                </div>
-              )}
-
-              {isAllowedDomain && (isTeacher || isStudentRollFormat) && (
-                <div className="p-1.5 px-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-semibold flex items-center gap-1.5">
-                  <span>✅</span>
-                  <span>Verified {isTeacher ? 'Faculty' : 'Student Roll'} account: {cleanId}</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold text-slate-700">Password</label>
-              <a href="#" onClick={(e) => { e.preventDefault(); alert('Demo environment: any password will be accepted.'); }} className="text-xs text-slate-400 hover:text-slate-700">
-                Forgot password?
-              </a>
-            </div>
-            <div className="relative">
-              <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50/80 border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-all ${
-                  isTeacher ? 'focus:ring-emerald-500/20 focus:border-emerald-600' : 'focus:ring-indigo-500/20 focus:border-indigo-600'
-                }`}
-                required
-              />
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={isGmail}
-            className={`w-full text-white text-xs font-bold py-3 rounded-xl transition-all shadow-md mt-2 flex items-center justify-center gap-2 ${
-              isGmail
-                ? 'bg-slate-300 cursor-not-allowed text-slate-500 shadow-none'
-                : isTeacher
-                ? 'bg-emerald-700 hover:bg-emerald-800 shadow-emerald-200'
-                : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200'
-            }`}
-          >
-            {isTeacher ? <ShieldAlert size={15} /> : <GraduationCap size={15} />}
-            Log In to {isTeacher ? 'Teacher Portal' : 'Student Portal'}
-          </button>
-        </form>
-
-        {/* 1-Click Fast Demo Login Button */}
-        <div className="mt-5 pt-4 border-t border-slate-100">
+          {/* 1-Click Fast Demo Login Pill */}
           <button
             type="button"
             onClick={() => handleDemoLogin(role)}
-            className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all border flex items-center justify-center gap-2 ${
+            className={`w-full py-2 px-3 rounded-xl text-xs font-medium transition-all border flex items-center justify-center gap-2 ${
               isTeacher
-                ? 'bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-800'
-                : 'bg-indigo-50 hover:bg-indigo-100 border-indigo-200 text-indigo-800'
+                ? 'bg-emerald-50/70 hover:bg-emerald-100/70 border-emerald-200/80 text-emerald-800'
+                : 'bg-indigo-50/70 hover:bg-indigo-100/70 border-indigo-200/80 text-indigo-700'
             }`}
           >
-            <Sparkles size={14} />
-            Instant Demo Access: {isTeacher ? 'Prof. Chen Wei (chen.wei@kristujayanti.com)' : 'Student User (student@kristujayanti.com)'}
+            <Sparkles size={13} className="shrink-0" />
+            <span>
+              1-Click Demo: <strong>{isTeacher ? 'Prof. Chen Wei' : '24cpeb27@kristujayanti.com'}</strong>
+            </span>
           </button>
+
+          {/* Sign Up Redirect */}
+          <p className="text-center text-xs text-slate-500 mt-5">
+            Don&apos;t have an account yet?{' '}
+            <Link
+              to={`/signup?role=${role}`}
+              className={`font-semibold hover:underline ${isTeacher ? 'text-emerald-700' : 'text-indigo-600'}`}
+            >
+              Register here
+            </Link>
+          </p>
         </div>
 
-        {/* Sign Up Redirect */}
-        <p className="text-center text-xs text-slate-500 mt-6">
-          Don&apos;t have an account yet?{' '}
-          <Link to="/signup" className="font-bold text-indigo-600 hover:text-indigo-800">
-            Register with @kristujayanti.com
+        {/* Back to Homepage */}
+        <div className="text-center mt-5">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 font-medium transition-colors"
+          >
+            <ArrowLeft size={13} /> Back to homepage
           </Link>
-        </p>
+        </div>
       </div>
-
-      <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-700 mt-6 font-medium">
-        <ArrowLeft size={13} /> Return to homepage
-      </Link>
     </div>
   )
 }
