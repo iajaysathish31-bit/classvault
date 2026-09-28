@@ -17,39 +17,39 @@ import {
 const initialBroadcasts = [
   {
     id: 1,
-    title: 'Midterm 1 Examination Logistics & Approved Formula Sheets',
-    cohort: 'CLS-401',
+    title: 'Software Engineering Sprint Review & GitHub Repositories Due',
+    cohort: '24CSC2T351',
     timestamp: 'Today at 8:45 AM',
     pinned: true,
     urgent: true,
-    views: 26,
-    totalEnrolled: 28,
+    views: 28,
+    totalEnrolled: 30,
     content:
-      'Midterm 1 is scheduled for next Wednesday at 10:00 AM in Science Hall 302. Please bring an approved non-programmable calculator. Only the official formula sheet posted in the Curriculum Vault is permitted.',
+      'Sprint Review 1 is scheduled for this Friday. All repository pull requests must pass the CI unit test runner before submission. Upload your UML diagrams to the Curriculum Vault.',
   },
   {
     id: 2,
-    title: 'Red-Black Tree Assignment Extension (24 Hours)',
-    cohort: 'CLS-302',
+    title: 'Atomic & Nuclear Physics Spectroscopic Lab Guidelines',
+    cohort: '24PHY2T351',
     timestamp: 'Yesterday at 3:15 PM',
     pinned: false,
     urgent: false,
-    views: 34,
+    views: 32,
     totalEnrolled: 35,
     content:
-      'Due to maintenance on the automated unit test runner, the deadline for PSet 2 (Red-Black Trees) has been extended by 24 hours to Friday at 11:59 PM. Please verify your tests against edge case inputs.',
+      'Please review the Zeeman effect derivation and Lande g-factor formula handbook in the Curriculum Vault prior to Tuesday lab sessions.',
   },
   {
     id: 3,
-    title: 'Office Hours Relocated to Turing 104 Lab',
-    cohort: 'ALL COHORTS',
-    timestamp: 'Sep 14, 2026',
+    title: 'Research Methodology Ethics Committee (IRB) Clearance Notice',
+    cohort: '24CPL2T451',
+    timestamp: '2 days ago',
     pinned: false,
     urgent: false,
-    views: 98,
-    totalEnrolled: 118,
+    views: 24,
+    totalEnrolled: 26,
     content:
-      'Thursday faculty office hours will take place in the computer lab rather than the faculty annex to accommodate coding questions directly on student laptops.',
+      'Draft proposals must include informed consent forms and plagiarism report from Turnitin (must be below 10% similarity index).',
   },
 ]
 
@@ -234,9 +234,10 @@ export default function FacultyBroadcast() {
                     className="w-full text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600"
                   >
                     <option value="ALL COHORTS">All Enrolled Cohorts (Entire Term)</option>
-                    <option value="CLS-401">CLS-401 - Advanced Thermodynamics</option>
-                    <option value="CLS-302">CLS-302 - Data Structures & Algorithms</option>
-                    <option value="CLS-201">CLS-201 - Linear Algebra</option>
+                    <option value="24CSC2T351">24CSC2T351 - Software Engineering</option>
+                    <option value="24PHY2T351">24PHY2T351 - Atomic, Molecular and Nuclear Physics</option>
+                    <option value="24CPL2T451">24CPL2T451 - Research Methodology</option>
+                    <option value="24ELE2T351">24ELE2T351 - Microcontroller and IoT</option>
                   </select>
                 </div>
 

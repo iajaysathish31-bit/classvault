@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { UserProvider } from './context/AuthContext.jsx'
+import { UserProvider, useUser } from './context/AuthContext.jsx'
 import { DataProvider } from './context/DataContext.jsx'
 
 // Shared Pages
@@ -23,6 +23,22 @@ import FacultyGradebook from './pages/teacher/FacultyGradebook.jsx'
 import FacultyMaterials from './pages/teacher/FacultyMaterials.jsx'
 import FacultyBroadcast from './pages/teacher/FacultyBroadcast.jsx'
 
+function FacultyRoute({ children }) {
+  const { user } = useUser()
+  if (user?.role !== 'Teacher') {
+    return <Navigate to="/student/dashboard" replace />
+  }
+  return children
+}
+
+function StudentRoute({ children }) {
+  const { user } = useUser()
+  if (user?.role === 'Teacher') {
+    return <Navigate to="/teacher/dashboard" replace />
+  }
+  return children
+}
+
 export default function App() {
   return (
     <UserProvider>
@@ -34,27 +50,27 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
 
-            {/* Student Dedicated Portal */}
-            <Route path="/dashboard" element={<StudentDashboard />} />
+            {/* Student Dedicated Portal (Protected) */}
+            <Route path="/dashboard" element={<StudentRoute><StudentDashboard /></StudentRoute>} />
             <Route path="/student" element={<Navigate to="/student/dashboard" replace />} />
-            <Route path="/student/dashboard" element={<StudentDashboard />} />
-            <Route path="/student/classes" element={<StudentClasses />} />
-            <Route path="/student/assignments" element={<StudentAssignments />} />
-            <Route path="/student/vault" element={<StudentVault />} />
+            <Route path="/student/dashboard" element={<StudentRoute><StudentDashboard /></StudentRoute>} />
+            <Route path="/student/classes" element={<StudentRoute><StudentClasses /></StudentRoute>} />
+            <Route path="/student/assignments" element={<StudentRoute><StudentAssignments /></StudentRoute>} />
+            <Route path="/student/vault" element={<StudentRoute><StudentVault /></StudentRoute>} />
 
-            {/* Student Aliases for backward compatibility */}
-            <Route path="/classes" element={<StudentClasses />} />
-            <Route path="/resources" element={<StudentVault />} />
-            <Route path="/classes/:code" element={<ClassDetails />} />
+            {/* Student Aliases */}
+            <Route path="/classes" element={<StudentRoute><StudentClasses /></StudentRoute>} />
+            <Route path="/resources" element={<StudentRoute><StudentVault /></StudentRoute>} />
+            <Route path="/classes/:code" element={<StudentRoute><ClassDetails /></StudentRoute>} />
 
-            {/* Teacher / Faculty Dedicated Portal */}
+            {/* Teacher / Faculty Dedicated Portal (Protected from Students) */}
             <Route path="/teacher" element={<Navigate to="/teacher/dashboard" replace />} />
-            <Route path="/teacher/dashboard" element={<FacultyDashboard />} />
-            <Route path="/teacher/classes" element={<FacultyClasses />} />
-            <Route path="/teacher/gradebook" element={<FacultyGradebook />} />
-            <Route path="/teacher/grading" element={<FacultyGradebook />} />
-            <Route path="/teacher/materials" element={<FacultyMaterials />} />
-            <Route path="/teacher/broadcast" element={<FacultyBroadcast />} />
+            <Route path="/teacher/dashboard" element={<FacultyRoute><FacultyDashboard /></FacultyRoute>} />
+            <Route path="/teacher/classes" element={<FacultyRoute><FacultyClasses /></FacultyRoute>} />
+            <Route path="/teacher/gradebook" element={<FacultyRoute><FacultyGradebook /></FacultyRoute>} />
+            <Route path="/teacher/grading" element={<FacultyRoute><FacultyGradebook /></FacultyRoute>} />
+            <Route path="/teacher/materials" element={<FacultyRoute><FacultyMaterials /></FacultyRoute>} />
+            <Route path="/teacher/broadcast" element={<FacultyRoute><FacultyBroadcast /></FacultyRoute>} />
 
             {/* Account Management */}
             <Route path="/profile" element={<Profile />} />

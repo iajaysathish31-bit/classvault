@@ -17,72 +17,62 @@ import {
 const initialStudents = [
   {
     id: 1,
+    name: 'Student User',
+    email: '24cpeb27@kristujayanti.com',
+    course: '24CSC2T351',
+    ps1: 96,
+    ps2: 94,
+    midterm: 92,
+    project: 98,
+  },
+  {
+    id: 2,
     name: 'Liam Nakamura',
-    email: 'liam.n@univ.edu',
-    course: 'CLS-401',
-    ps1: 94,
+    email: '24cpeb28@kristujayanti.com',
+    course: '24CSC2T351',
+    ps1: 92,
     ps2: 90,
     midterm: 88,
     project: 95,
   },
   {
-    id: 2,
-    name: 'Chloe Laurent',
-    email: 'chloe.l@univ.edu',
-    course: 'CLS-401',
-    ps1: 88,
-    ps2: 92,
-    midterm: 85,
-    project: 91,
-  },
-  {
     id: 3,
-    name: 'Marcus Bell',
-    email: 'marcus.b@univ.edu',
-    course: 'CLS-401',
-    ps1: 76,
-    ps2: 80,
-    midterm: 74,
-    project: 82,
-  },
-  {
-    id: 4,
-    name: 'Sophia Martinez',
-    email: 'sophia.m@univ.edu',
-    course: 'CLS-401',
+    name: 'Elena Rostov',
+    email: '23cs0115@kristujayanti.com',
+    course: '24PHY2T351',
     ps1: 98,
     ps2: 96,
-    midterm: 94,
-    project: 97,
-  },
-  {
-    id: 5,
-    name: 'Elena Rostov',
-    email: 'elena.r@univ.edu',
-    course: 'CLS-302',
-    ps1: 99,
-    ps2: 98,
     midterm: 95,
     project: 100,
   },
   {
-    id: 6,
-    name: 'Devon King',
-    email: 'devon.k@univ.edu',
-    course: 'CLS-302',
-    ps1: 82,
-    ps2: 85,
-    midterm: 80,
-    project: 88,
+    id: 4,
+    name: 'Marcus Bell',
+    email: '24cpeb30@kristujayanti.com',
+    course: '24PHY2T351',
+    ps1: 85,
+    ps2: 88,
+    midterm: 82,
+    project: 89,
   },
   {
-    id: 7,
-    name: 'Aria Montgomery',
-    email: 'aria.m@univ.edu',
-    course: 'CLS-201',
-    ps1: 92,
-    ps2: 95,
+    id: 5,
+    name: 'Chloe Laurent',
+    email: '24cpeb31@kristujayanti.com',
+    course: '24CPL2T451',
+    ps1: 94,
+    ps2: 92,
     midterm: 90,
+    project: 96,
+  },
+  {
+    id: 6,
+    name: 'Devon King',
+    email: '24cpeb32@kristujayanti.com',
+    course: '24ELE2T351',
+    ps1: 88,
+    ps2: 91,
+    midterm: 86,
     project: 94,
   },
 ]
@@ -104,7 +94,7 @@ function getLetter(score) {
 
 export default function FacultyGradebook() {
   const [students, setStudents] = useState(initialStudents)
-  const [selectedCourse, setSelectedCourse] = useState('CLS-401')
+  const [selectedCourse, setSelectedCourse] = useState('24CSC2T351')
   const [searchQuery, setSearchQuery] = useState('')
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [targetStudent, setTargetStudent] = useState(null)
@@ -121,7 +111,7 @@ export default function FacultyGradebook() {
     setTimeout(() => setToastMessage(''), 3500)
   }
 
-  const courses = ['CLS-401', 'CLS-302', 'CLS-201']
+  const courses = ['24CSC2T351', '24PHY2T351', '24CPL2T451', '24ELE2T351']
 
   const filtered = students.filter((s) => {
     const matchCourse = s.course === selectedCourse

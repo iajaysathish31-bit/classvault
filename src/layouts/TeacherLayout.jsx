@@ -1,8 +1,7 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, Navigate } from 'react-router-dom'
 import { useUser } from '../context/AuthContext.jsx'
 import {
   ShieldAlert,
-  GraduationCap,
   Layers,
   Award,
   BellRing,
@@ -17,6 +16,11 @@ import {
 export default function TeacherLayout({ children }) {
   const location = useLocation()
   const { user, initials, logout, updateUser } = useUser()
+
+  // Strict Role Security Guard
+  if (user?.role !== 'Teacher') {
+    return <Navigate to="/student/dashboard" replace />
+  }
 
   const navItems = [
     { label: 'Command Center', icon: Layers, path: '/teacher/dashboard' },
@@ -57,26 +61,6 @@ export default function TeacherLayout({ children }) {
                 Active
               </span>
             </div>
-          </div>
-
-          {/* Switch to Student Portal Button */}
-          <div className="p-4 pb-2">
-            <button
-              onClick={() => {
-                updateUser({ role: 'Student' })
-                window.location.href = '/student/dashboard'
-              }}
-              className="w-full text-xs font-medium py-2 px-3 rounded-xl bg-slate-50 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 border border-slate-200 text-slate-600 transition-all flex items-center justify-between group"
-              title="Switch to the Student portal"
-            >
-              <span className="flex items-center gap-1.5 font-semibold text-slate-700 group-hover:text-indigo-700">
-                <GraduationCap size={14} className="text-indigo-600" />
-                Switch to Student View
-              </span>
-              <span className="text-[10px] bg-white px-1.5 py-0.5 rounded border border-slate-200 font-bold group-hover:border-indigo-300">
-                Switch
-              </span>
-            </button>
           </div>
 
           {/* Faculty Navigation */}

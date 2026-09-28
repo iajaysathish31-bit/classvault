@@ -7,8 +7,6 @@ import {
   Bookmark,
   User,
   LogOut,
-  Flame,
-  Presentation,
   GraduationCap,
   Sparkles,
 } from 'lucide-react'
@@ -45,44 +43,6 @@ export default function StudentLayout({ children }) {
                 </span>
               </div>
             </Link>
-          </div>
-
-          {/* Study Streak Pill */}
-          <div className="px-5 mb-3">
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/60 rounded-2xl p-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-xs">
-                  <Flame size={18} className="fill-white" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-amber-900 leading-tight">5-Day Streak</p>
-                  <p className="text-[10px] text-amber-700">Daily study goal met!</p>
-                </div>
-              </div>
-              <span className="text-xs font-bold text-amber-600 bg-white px-2 py-0.5 rounded-lg border border-amber-200">
-                +40 XP
-              </span>
-            </div>
-          </div>
-
-          {/* Switch View to Faculty Button */}
-          <div className="px-5 mb-4">
-            <button
-              onClick={() => {
-                updateUser({ role: 'Teacher' })
-                window.location.href = '/teacher/dashboard'
-              }}
-              className="w-full text-xs font-medium py-2 px-3 rounded-xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 border border-transparent text-slate-600 transition-all flex items-center justify-between group"
-              title="Switch to the Faculty/Teacher console"
-            >
-              <span className="flex items-center gap-1.5 font-semibold">
-                <Presentation size={14} className="text-emerald-600" />
-                Switch to Faculty View
-              </span>
-              <span className="text-[10px] bg-white px-1.5 py-0.5 rounded border border-slate-200 font-bold group-hover:border-emerald-300">
-                Switch
-              </span>
-            </button>
           </div>
 
           {/* Nav Items */}

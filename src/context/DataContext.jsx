@@ -22,7 +22,14 @@ const INITIAL_TEACHERS = [
     name: 'Prof. James Erikson',
     email: 'james.erikson@kristujayanti.com',
     password: '••••••••',
-    department: 'Mathematics',
+    department: 'Electronics & Computer Systems',
+  },
+  {
+    teacher_id: 'TCH-104',
+    name: 'Dr. Priya Nair',
+    email: 'priya.nair@kristujayanti.com',
+    password: '••••••••',
+    department: 'Interdisciplinary Research',
   },
 ]
 
@@ -58,181 +65,201 @@ const INITIAL_STUDENTS = [
 
 const INITIAL_CLASSES = [
   {
-    class_id: 'CLS-401',
-    subject: 'Advanced Thermodynamics',
-    class_date: 'Mon, Wed, Fri · 10:00 AM – 11:30 AM',
-    description: 'Classical and statistical thermodynamics, Carnot engines, entropy dissipation, and Maxwell relations.',
-    teacher_id: 'TCH-101',
-  },
-  {
-    class_id: 'CLS-302',
-    subject: 'Data Structures & Algorithms',
-    class_date: 'Tue, Thu · 2:00 PM – 3:45 PM',
-    description: 'Advanced balanced search trees, asymptotic complexity, graph traversal, and shortest path algorithms.',
+    class_id: '24CSC2T351',
+    subject: 'Software Engineering',
+    class_date: 'Mon, Wed, Fri · 09:30 AM – 10:30 AM',
+    description: 'Software development lifecycles, Agile & Scrum frameworks, requirement engineering, architectural design patterns, testing suites, and CI/CD pipelines.',
     teacher_id: 'TCH-102',
   },
   {
-    class_id: 'CLS-201',
-    subject: 'Linear Algebra & Matrix Theory',
-    class_date: 'Mon, Wed · 11:30 AM – 1:00 PM',
-    description: 'Vector spaces, linear transformations, eigenvalues, eigenvectors, and spectral decomposition.',
+    class_id: '24PHY2T351',
+    subject: 'Atomic, Molecular and Nuclear Physics',
+    class_date: 'Tue, Thu · 10:30 AM – 12:00 PM',
+    description: 'Vector atom model, Zeeman and Stark effects, molecular rotational and vibrational spectra, nuclear liquid-drop model, shell structure, and radioactive decay laws.',
+    teacher_id: 'TCH-101',
+  },
+  {
+    class_id: '24CPL2T451',
+    subject: 'Research Methodology',
+    class_date: 'Wed, Fri · 01:30 PM – 03:00 PM',
+    description: 'Formulation of research problems, hypothesis testing, literature review synthesis, statistical data analysis, research ethics, and academic publication standards.',
+    teacher_id: 'TCH-104',
+  },
+  {
+    class_id: '24ELE2T351',
+    subject: 'Microcontroller and IoT',
+    class_date: 'Mon, Thu · 02:00 PM – 03:30 PM',
+    description: 'Microcontroller architecture (ARM Cortex, ESP32, 8051), peripheral interfacing (GPIO, ADC, I2C, SPI), sensor integration, MQTT networking, and IoT cloud platforms.',
     teacher_id: 'TCH-103',
   },
 ]
 
 const INITIAL_TOPICS = [
-  // Topics for CLS-401 (Advanced Thermodynamics)
+  // Topics for 24CSC2T351 (Software Engineering)
   {
-    topic_id: 'TOP-101',
-    topic_name: 'First Law & Closed System Energy Balances',
-    content: 'Internal energy, heat transfer, boundary work, and conservation of energy in piston-cylinder assemblies.',
-    class_id: 'CLS-401',
+    topic_id: 'TOP-SE01',
+    topic_name: 'Software Development Life Cycle & Agile Frameworks',
+    content: 'Waterfall vs Agile Scrum, sprint planning, user stories estimation, product backlogs, and Kanban workflow management.',
+    class_id: '24CSC2T351',
   },
   {
-    topic_id: 'TOP-102',
-    topic_name: 'Carnot Heat Engines & Thermodynamic Temperature',
-    content: 'Reversible cycles, Carnot efficiency principles, Clausius inequality, and absolute thermodynamic temperature scale.',
-    class_id: 'CLS-401',
+    topic_id: 'TOP-SE02',
+    topic_name: 'Requirement Engineering & Architectural Patterns',
+    content: 'Functional and non-functional requirements, SRS specification, MVC, microservices, and layered architecture design.',
+    class_id: '24CSC2T351',
   },
   {
-    topic_id: 'TOP-103',
-    topic_name: 'Entropy & Second Law Formulations',
-    content: 'Entropy generation, T-ds equations, isentropic efficiencies, and availability balance in open systems.',
-    class_id: 'CLS-401',
+    topic_id: 'TOP-SE03',
+    topic_name: 'Software Testing, Quality Assurance & CI/CD',
+    content: 'Unit testing with Jest/JUnit, integration testing, test-driven development (TDD), automated deployment pipelines with GitHub Actions.',
+    class_id: '24CSC2T351',
   },
   {
-    topic_id: 'TOP-104',
-    topic_name: 'Maxwell Relations & Phase Transitions',
-    content: 'Helmholtz and Gibbs free energy, mathematical Legendre transforms, and Clausius-Clapeyron equation.',
-    class_id: 'CLS-401',
-  },
-
-  // Topics for CLS-302 (Data Structures)
-  {
-    topic_id: 'TOP-201',
-    topic_name: 'Asymptotic Notation & Amortized Analysis',
-    content: 'Big-O, Omega, and Theta bounds; aggregate method and potential function analysis.',
-    class_id: 'CLS-302',
-  },
-  {
-    topic_id: 'TOP-202',
-    topic_name: 'Self-Balancing Red-Black Trees',
-    content: 'Binary search tree properties, color invariants, left and right rotations, and rebalancing upon insertion.',
-    class_id: 'CLS-302',
-  },
-  {
-    topic_id: 'TOP-203',
-    topic_name: 'Graph Traversal & Topological Sort',
-    content: 'Breadth-first search, depth-first search, edge classifications, and Kahn algorithm for DAG ordering.',
-    class_id: 'CLS-302',
-  },
-  {
-    topic_id: 'TOP-204',
-    topic_name: 'Dijkstra & Minimum Spanning Trees',
-    content: 'Greedy algorithms, priority queue implementations with Fibonacci heaps, and Prim/Kruskal algorithms.',
-    class_id: 'CLS-302',
+    topic_id: 'TOP-SE04',
+    topic_name: 'Design Patterns & Clean Architecture',
+    content: 'Creational, Structural, and Behavioral patterns: Factory, Singleton, Observer, Strategy, and SOLID design principles.',
+    class_id: '24CSC2T351',
   },
 
-  // Topics for CLS-201 (Linear Algebra)
+  // Topics for 24PHY2T351 (Atomic, Molecular and Nuclear Physics)
   {
-    topic_id: 'TOP-301',
-    topic_name: 'Vector Spaces & Subspace Verification',
-    content: 'Vector space axioms, linear independence, basis, dimension, and row/column spaces.',
-    class_id: 'CLS-201',
+    topic_id: 'TOP-PHY01',
+    topic_name: 'Vector Atom Model, LS & JJ Coupling',
+    content: 'Stern-Gerlach experiment, orbital and spin angular momentum coupling, Pauli exclusion principle, and spectroscopic term notations.',
+    class_id: '24PHY2T351',
   },
   {
-    topic_id: 'TOP-302',
-    topic_name: 'Eigenvalues & Diagonalization',
-    content: 'Characteristic polynomial, geometric vs algebraic multiplicity, and matrix diagonalization criteria.',
-    class_id: 'CLS-201',
+    topic_id: 'TOP-PHY02',
+    topic_name: 'Zeeman Effect & Atomic Transitions',
+    content: 'Normal and anomalous Zeeman effect, Lande g-factor calculation, Stark effect, selection rules for electric dipole transitions.',
+    class_id: '24PHY2T351',
+  },
+  {
+    topic_id: 'TOP-PHY03',
+    topic_name: 'Molecular Spectroscopy & Raman Scattering',
+    content: 'Diatomic molecules, rigid rotator, harmonic oscillator models, vibration-rotation spectra, Frank-Condon principle, and Raman effect.',
+    class_id: '24PHY2T351',
+  },
+  {
+    topic_id: 'TOP-PHY04',
+    topic_name: 'Nuclear Models & Radioactive Decay Kinematics',
+    content: 'Liquid drop model, Weizsacker semi-empirical mass formula, nuclear shell model magic numbers, alpha/beta decay kinematics, and nuclear fission.',
+    class_id: '24PHY2T351',
+  },
+
+  // Topics for 24CPL2T451 (Research Methodology)
+  {
+    topic_id: 'TOP-RM01',
+    topic_name: 'Research Problem Identification & Literature Review',
+    content: 'Defining research gap, systematic literature search, bibliographic citation managers, indexing databases (Scopus, Web of Science).',
+    class_id: '24CPL2T451',
+  },
+  {
+    topic_id: 'TOP-RM02',
+    topic_name: 'Hypothesis Formulation & Experimental Design',
+    content: 'Null and alternate hypotheses, Type I and Type II errors, independent and dependent variables, control groups, and randomized designs.',
+    class_id: '24CPL2T451',
+  },
+  {
+    topic_id: 'TOP-RM03',
+    topic_name: 'Quantitative & Qualitative Data Analysis',
+    content: 'Descriptive and inferential statistics, ANOVA, t-tests, regression models, SPSS/R tools, and thematic content analysis.',
+    class_id: '24CPL2T451',
+  },
+  {
+    topic_id: 'TOP-RM04',
+    topic_name: 'Research Ethics, Plagiarism & Thesis Drafting',
+    content: 'Committee approvals (IRB), publication ethics (COPE), similarity checking with Turnitin, structuring chapters, and defense prep.',
+    class_id: '24CPL2T451',
+  },
+
+  // Topics for 24ELE2T351 (Microcontroller and IoT)
+  {
+    topic_id: 'TOP-IOT01',
+    topic_name: 'Microcontroller Architecture & Memory Mapping',
+    content: 'Harvard vs Von Neumann, ARM Cortex-M / ESP32 core architecture, register sets, timer/counters, and interrupt service routines.',
+    class_id: '24ELE2T351',
+  },
+  {
+    topic_id: 'TOP-IOT02',
+    topic_name: 'Peripheral Interfacing: GPIO, ADC & Serial Protocols',
+    content: 'GPIO configuration, ADC sampling, UART, SPI, and I2C serial communications with digital sensor modules.',
+    class_id: '24ELE2T351',
+  },
+  {
+    topic_id: 'TOP-IOT03',
+    topic_name: 'Wireless Connectivity & IoT Protocols (MQTT/CoAP)',
+    content: 'Wi-Fi/Bluetooth LE stacks, lightweight publish-subscribe messaging with MQTT broker, CoAP for constrained devices, and HTTP REST APIs.',
+    class_id: '24ELE2T351',
+  },
+  {
+    topic_id: 'TOP-IOT04',
+    topic_name: 'Cloud IoT Platforms & Edge Sensor Dashboarding',
+    content: 'Connecting ESP32 nodes to AWS IoT Core / Adafruit IO / ThingsBoard, real-time telemetry streaming, and edge anomaly alerts.',
+    class_id: '24ELE2T351',
   },
 ]
 
 const INITIAL_TOPIC_PROGRESS = [
-  {
-    progress_id: 'PRG-001',
-    student_id: 'STU-8821',
-    topic_id: 'TOP-101',
-    status: 'Reviewed',
-    reviewed_date: '2026-09-10',
-  },
-  {
-    progress_id: 'PRG-002',
-    student_id: 'STU-8821',
-    topic_id: 'TOP-102',
-    status: 'Reviewed',
-    reviewed_date: '2026-09-14',
-  },
-  {
-    progress_id: 'PRG-003',
-    student_id: 'STU-8821',
-    topic_id: 'TOP-103',
-    status: 'In Progress',
-    reviewed_date: '2026-09-18',
-  },
-  {
-    progress_id: 'PRG-004',
-    student_id: 'STU-8821',
-    topic_id: 'TOP-201',
-    status: 'Reviewed',
-    reviewed_date: '2026-09-08',
-  },
-  {
-    progress_id: 'PRG-005',
-    student_id: 'STU-8821',
-    topic_id: 'TOP-202',
-    status: 'Reviewed',
-    reviewed_date: '2026-09-15',
-  },
-  {
-    progress_id: 'PRG-006',
-    student_id: 'STU-8821',
-    topic_id: 'TOP-203',
-    status: 'Reviewed',
-    reviewed_date: '2026-09-17',
-  },
+  { progress_id: 'PRG-001', student_id: '24CPEB27', topic_id: 'TOP-SE01', status: 'Reviewed', reviewed_date: '2026-09-12' },
+  { progress_id: 'PRG-002', student_id: '24CPEB27', topic_id: 'TOP-SE02', status: 'Reviewed', reviewed_date: '2026-09-15' },
+  { progress_id: 'PRG-003', student_id: '24CPEB27', topic_id: 'TOP-SE03', status: 'In Progress', reviewed_date: '2026-09-20' },
+  { progress_id: 'PRG-004', student_id: '24CPEB27', topic_id: 'TOP-PHY01', status: 'Reviewed', reviewed_date: '2026-09-14' },
+  { progress_id: 'PRG-005', student_id: '24CPEB27', topic_id: 'TOP-PHY02', status: 'Reviewed', reviewed_date: '2026-09-18' },
+  { progress_id: 'PRG-006', student_id: '24CPEB27', topic_id: 'TOP-RM01', status: 'Reviewed', reviewed_date: '2026-09-10' },
+  { progress_id: 'PRG-007', student_id: '24CPEB27', topic_id: 'TOP-RM02', status: 'In Progress', reviewed_date: '2026-09-22' },
+  { progress_id: 'PRG-008', student_id: '24CPEB27', topic_id: 'TOP-IOT01', status: 'Reviewed', reviewed_date: '2026-09-16' },
+  { progress_id: 'PRG-009', student_id: '24CPEB27', topic_id: 'TOP-IOT02', status: 'Reviewed', reviewed_date: '2026-09-21' },
 ]
 
 const INITIAL_CONTENT = [
   {
     content_id: 'CNT-501',
-    title: 'Carnot Cycle & Entropy Balance Formula Sheet',
-    description: 'Comprehensive mathematical equations for Carnot and Rankine heat engines, COP formulas, and T-s cycle plots.',
-    file_url: '/materials/carnot_cycle_entropy_cheatsheet.pdf',
+    title: 'Software Engineering Architecture & Design Patterns Manual',
+    description: 'Comprehensive guide to MVC, Microservices, SOLID design principles, and UML class diagrams for semester project submission.',
+    file_url: '/materials/software_engineering_architecture_manual.pdf',
+    file_name: 'Software_Engineering_Architecture_Manual.pdf',
+    file_size: '3.4 MB',
     type: 'PDF',
     created_at: '2026-09-12',
-    teacher_id: 'TCH-101',
-    class_id: 'CLS-401',
+    teacher_id: 'TCH-102',
+    class_id: '24CSC2T351',
   },
   {
     content_id: 'CNT-502',
-    title: 'Red-Black Tree Balance Invariants & Pseudo-Code Specification',
-    description: 'Complete rotation rules, color flipping conditions, and Java/C++ insertion algorithms.',
-    file_url: '/materials/red_black_tree_spec.pdf',
+    title: 'Atomic & Nuclear Physics Spectroscopic Formula Handbook',
+    description: 'Complete formulas for Zeeman splitting, Lande g-factor, semi-empirical mass formula, and radioactive decay chains.',
+    file_url: '/materials/atomic_nuclear_physics_handbook.pdf',
+    file_name: 'Atomic_Nuclear_Physics_Handbook.pdf',
+    file_size: '2.8 MB',
     type: 'PDF',
     created_at: '2026-09-15',
-    teacher_id: 'TCH-102',
-    class_id: 'CLS-302',
+    teacher_id: 'TCH-101',
+    class_id: '24PHY2T351',
   },
   {
     content_id: 'CNT-503',
-    title: 'Graph Algorithms Benchmark & Visualizer Code Suite',
-    description: 'Interactive Dijkstra and A* pathfinding benchmarking scripts in Python with sample edge graphs.',
-    file_url: '/materials/graph_benchmark_suite.zip',
-    type: 'Code',
-    created_at: '2026-09-16',
-    teacher_id: 'TCH-102',
-    class_id: 'CLS-302',
+    title: 'Research Methodology Thesis Writing & SPSS Analysis Template',
+    description: 'Standard academic research format, statistical hypothesis testing methods, APA 7th edition referencing, and literature review matrix.',
+    file_url: '/materials/research_methodology_thesis_template.docx',
+    file_name: 'Research_Methodology_Thesis_Template.docx',
+    file_size: '1.9 MB',
+    type: 'Notes',
+    created_at: '2026-09-18',
+    teacher_id: 'TCH-104',
+    class_id: '24CPL2T451',
   },
   {
     content_id: 'CNT-504',
-    title: 'Eigenvalues & Spectral Theorem Lecture Slides Deck',
-    description: 'High-resolution presentation slides with geometric interpretations of shears, rotations, and eigenspaces.',
-    file_url: '/materials/eigenvalues_spectral_slides.pptx',
-    type: 'Presentation',
-    created_at: '2026-09-05',
+    title: 'ESP32 & ARM Microcontroller Sensor Interfacing Firmware Suite',
+    description: 'Tested C/C++ firmware scripts for GPIO, I2C temperature sensors, MQTT telemetry publishing, and cloud dashboard connection.',
+    file_url: '/materials/microcontroller_iot_firmware_suite.zip',
+    file_name: 'Microcontroller_IoT_Firmware_Suite.zip',
+    file_size: '4.2 MB',
+    type: 'Code',
+    created_at: '2026-09-20',
     teacher_id: 'TCH-103',
-    class_id: 'CLS-201',
+    class_id: '24ELE2T351',
   },
 ]
 
@@ -279,7 +306,13 @@ export function DataProvider({ children }) {
   const [classes, setClasses] = useState(() => {
     try {
       const saved = localStorage.getItem('cv_classes')
-      return saved ? JSON.parse(saved) : INITIAL_CLASSES
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (parsed.some((c) => c.class_id === '24CSC2T351')) {
+          return parsed
+        }
+      }
+      return INITIAL_CLASSES
     } catch {
       return INITIAL_CLASSES
     }
@@ -289,7 +322,13 @@ export function DataProvider({ children }) {
   const [topics, setTopics] = useState(() => {
     try {
       const saved = localStorage.getItem('cv_topics')
-      return saved ? JSON.parse(saved) : INITIAL_TOPICS
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (parsed.some((t) => t.class_id === '24CSC2T351')) {
+          return parsed
+        }
+      }
+      return INITIAL_TOPICS
     } catch {
       return INITIAL_TOPICS
     }
@@ -309,7 +348,13 @@ export function DataProvider({ children }) {
   const [contents, setContents] = useState(() => {
     try {
       const saved = localStorage.getItem('cv_contents')
-      return saved ? JSON.parse(saved) : INITIAL_CONTENT
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (parsed.some((c) => c.class_id === '24CSC2T351')) {
+          return parsed
+        }
+      }
+      return INITIAL_CONTENT
     } catch {
       return INITIAL_CONTENT
     }
@@ -446,7 +491,7 @@ export function DataProvider({ children }) {
       type: type || 'PDF',
       created_at: today,
       teacher_id: teacherId,
-      class_id: class_id || 'CLS-401',
+      class_id: class_id || '24CSC2T351',
     }
     setContents((prev) => [newContent, ...prev])
     return newContent

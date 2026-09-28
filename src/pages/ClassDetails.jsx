@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import Sidebar from '../components/Sidebar.jsx'
+import StudentLayout from '../layouts/StudentLayout.jsx'
+import TeacherLayout from '../layouts/TeacherLayout.jsx'
+import { useUser } from '../context/AuthContext.jsx'
 import {
   ArrowLeft,
   GraduationCap,
@@ -20,6 +22,200 @@ import {
 
 // Course dataset
 const coursesData = {
+  '24CSC2T351': {
+    code: '24CSC2T351',
+    name: 'Software Engineering',
+    initial: 'SE',
+    color: 'bg-indigo-600',
+    prof: 'Prof. Sara Okafor',
+    email: 'sara.okafor@kristujayanti.com',
+    officeHours: 'Mon & Wed: 2:00 PM – 4:00 PM (Tech Block 402)',
+    schedule: 'Mon, Wed, Fri · 09:30 AM – 10:30 AM',
+    location: 'Computer Science Lab 3',
+    semester: 'Fall Term 2026',
+    studentsCount: 30,
+    done: 3,
+    total: 4,
+    description:
+      'An in-depth study of software engineering principles, Agile & Scrum methodologies, architectural design patterns, requirement specification, automated testing suites, and CI/CD pipelines.',
+    syllabus: [
+      { week: 'Weeks 1–3', title: 'Software Development Life Cycle & Agile Frameworks' },
+      { week: 'Weeks 4–6', title: 'Requirement Engineering, SRS & Architectural Patterns' },
+      { week: 'Weeks 7–9', title: 'Software Testing, Quality Assurance & CI/CD Pipelines' },
+      { week: 'Weeks 10–13', title: 'Design Patterns & Clean Code Architecture' },
+      { week: 'Weeks 14–15', title: 'Capstone Sprint Review & Project Presentations' },
+    ],
+    resources: [
+      {
+        name: 'Software Engineering Architecture Manual.pdf',
+        size: '3.4 MB',
+        date: 'Sep 12',
+        type: 'PDF',
+        downloads: 38,
+      },
+      {
+        name: 'Agile Scrum Sprint Template.docx',
+        size: '1.2 MB',
+        date: 'Sep 16',
+        type: 'Notes',
+        downloads: 29,
+      },
+    ],
+    assignments: [
+      {
+        title: 'Agile Architecture & Sprint Backlog Specification',
+        due: 'Tomorrow, 11:59 PM',
+        status: 'In Progress',
+        urgent: true,
+      },
+      {
+        title: 'UML Class Diagram & SOLID Principles Case Study',
+        due: 'Submitted Sep 14',
+        status: 'Completed',
+        urgent: false,
+      },
+    ],
+    classmates: [
+      { name: 'Liam Nakamura', role: 'Student', initial: 'LN' },
+      { name: 'Elena Rostov', role: 'Student', initial: 'ER' },
+      { name: 'Marcus Bell', role: 'Student', initial: 'MB' },
+    ],
+  },
+  '24PHY2T351': {
+    code: '24PHY2T351',
+    name: 'Atomic, Molecular and Nuclear Physics',
+    initial: 'PHY',
+    color: 'bg-emerald-700',
+    prof: 'Prof. Chen Wei',
+    email: 'chen.wei@kristujayanti.com',
+    officeHours: 'Tue & Thu: 2:00 PM – 4:00 PM (Science Block 310)',
+    schedule: 'Tue, Thu · 10:30 AM – 12:00 PM',
+    location: 'Science Hall 302',
+    semester: 'Fall Term 2026',
+    studentsCount: 35,
+    done: 2,
+    total: 4,
+    description:
+      'Comprehensive study of atomic structures, vector atom models, Zeeman effect, molecular vibrational and rotational spectra, nuclear models, magic numbers, and radioactive decay kinematics.',
+    syllabus: [
+      { week: 'Weeks 1–3', title: 'Vector Atom Model, LS & JJ Coupling' },
+      { week: 'Weeks 4–6', title: 'Zeeman Effect & Atomic Transition Selection Rules' },
+      { week: 'Weeks 7–9', title: 'Molecular Spectroscopy & Raman Scattering' },
+      { week: 'Weeks 10–13', title: 'Nuclear Shell Models & Radioactive Decay Kinematics' },
+      { week: 'Weeks 14–15', title: 'Advanced Nuclear Experiments Review & Seminar' },
+    ],
+    resources: [
+      {
+        name: 'Atomic & Nuclear Physics Spectroscopic Handbook.pdf',
+        size: '2.8 MB',
+        date: 'Sep 15',
+        type: 'PDF',
+        downloads: 44,
+      },
+    ],
+    assignments: [
+      {
+        title: 'Vector Atom Model & Zeeman Transition Proofs',
+        due: 'Due Sep 30',
+        status: 'In Progress',
+        urgent: true,
+      },
+    ],
+    classmates: [
+      { name: 'Liam Nakamura', role: 'Student', initial: 'LN' },
+      { name: 'Chloe Laurent', role: 'Student', initial: 'CL' },
+    ],
+  },
+  '24CPL2T451': {
+    code: '24CPL2T451',
+    name: 'Research Methodology',
+    initial: 'RM',
+    color: 'bg-amber-600',
+    prof: 'Dr. Priya Nair',
+    email: 'priya.nair@kristujayanti.com',
+    officeHours: 'Wed: 3:00 PM – 5:00 PM (PG Research Wing 105)',
+    schedule: 'Wed, Fri · 01:30 PM – 03:00 PM',
+    location: 'Research Seminar Room B',
+    semester: 'Fall Term 2026',
+    studentsCount: 26,
+    done: 2,
+    total: 4,
+    description:
+      'Frameworks for academic inquiry, defining research problems, systematic literature review synthesis, experimental design, SPSS/R quantitative and qualitative data analysis, and publication ethics.',
+    syllabus: [
+      { week: 'Weeks 1–3', title: 'Research Problem Identification & Systematic Literature Review' },
+      { week: 'Weeks 4–6', title: 'Hypothesis Formulation & Experimental Design' },
+      { week: 'Weeks 7–9', title: 'Quantitative & Qualitative Statistical Data Analysis' },
+      { week: 'Weeks 10–13', title: 'Research Ethics, Turnitin Plagiarism & Thesis Drafting' },
+      { week: 'Weeks 14–15', title: 'Colloquium Thesis Proposal Defense' },
+    ],
+    resources: [
+      {
+        name: 'Research Methodology Thesis Writing Template.docx',
+        size: '1.9 MB',
+        date: 'Sep 18',
+        type: 'Notes',
+        downloads: 26,
+      },
+    ],
+    assignments: [
+      {
+        title: 'Systematic Literature Review Matrix & Methodology Draft',
+        due: 'Due Oct 04',
+        status: 'Upcoming',
+        urgent: false,
+      },
+    ],
+    classmates: [
+      { name: 'Chloe Laurent', role: 'Student', initial: 'CL' },
+      { name: 'Elena Rostov', role: 'Student', initial: 'ER' },
+    ],
+  },
+  '24ELE2T351': {
+    code: '24ELE2T351',
+    name: 'Microcontroller and IoT',
+    initial: 'IoT',
+    color: 'bg-teal-700',
+    prof: 'Prof. James Erikson',
+    email: 'james.erikson@kristujayanti.com',
+    officeHours: 'Fri: 11:00 AM – 1:00 PM (Electronics Lab 2)',
+    schedule: 'Mon, Thu · 02:00 PM – 03:30 PM',
+    location: 'Embedded Systems & IoT Lab',
+    semester: 'Fall Term 2026',
+    studentsCount: 32,
+    done: 3,
+    total: 4,
+    description:
+      'Hands-on exploration of microcontroller architecture (ARM Cortex, ESP32, 8051), peripheral interfacing (GPIO, ADC, I2C, SPI), sensor integration, MQTT communication protocols, and cloud IoT dashboards.',
+    syllabus: [
+      { week: 'Weeks 1–3', title: 'Microcontroller Architecture & Memory Mapping' },
+      { week: 'Weeks 4–6', title: 'Peripheral Interfacing: GPIO, ADC & Serial Protocols' },
+      { week: 'Weeks 7–9', title: 'Wireless Connectivity & IoT Protocols (MQTT/CoAP)' },
+      { week: 'Weeks 10–13', title: 'Cloud IoT Protocols & Edge Telemetry Dashboarding' },
+      { week: 'Weeks 14–15', title: 'Smart Campus IoT Device Demonstration' },
+    ],
+    resources: [
+      {
+        name: 'ESP32 & ARM Microcontroller Firmware Suite.zip',
+        size: '4.2 MB',
+        date: 'Sep 20',
+        type: 'Code',
+        downloads: 36,
+      },
+    ],
+    assignments: [
+      {
+        title: 'ESP32 MQTT Sensor Telemetry Firmware Suite',
+        due: 'Due Oct 08',
+        status: 'Upcoming',
+        urgent: false,
+      },
+    ],
+    classmates: [
+      { name: 'Marcus Bell', role: 'Student', initial: 'MB' },
+      { name: 'Devon King', role: 'Student', initial: 'DK' },
+    ],
+  },
   'PHYS-401': {
     code: 'PHYS 401',
     name: 'Advanced Thermodynamics',
@@ -319,6 +515,9 @@ const coursesData = {
 
 export default function ClassDetails() {
   const { code } = useParams()
+  const { user } = useUser()
+  const isTeacher = user?.role === 'Teacher'
+  const LayoutComponent = isTeacher ? TeacherLayout : StudentLayout
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('resources')
 
@@ -359,10 +558,8 @@ export default function ClassDetails() {
   const progressPct = Math.min(100, Math.round((course.done / course.total) * 100))
 
   return (
-    <div className="flex min-h-screen bg-vault-bg">
-      <Sidebar />
-
-      <main className="flex-1 px-8 py-6">
+    <LayoutComponent>
+      <div className="space-y-6">
         {/* Back navigation */}
         <div className="mb-6">
           <Link
@@ -650,7 +847,7 @@ export default function ClassDetails() {
             </div>
           </div>
         )}
-      </main>
-    </div>
+      </div>
+    </LayoutComponent>
   )
 }
