@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { GraduationCap, Shield, ArrowLeft, Sparkles, Lock, Mail, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { GraduationCap, Shield, ArrowLeft, Lock, Mail, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { useUser } from '../context/AuthContext.jsx'
 import { useData } from '../context/DataContext.jsx'
 
@@ -49,45 +49,6 @@ export default function Login() {
     if (prefix) {
       setIdentifier(`${prefix}@kristujayanti.com`)
       setErrorMessage('')
-    }
-  }
-
-  const handleDemoLogin = (demoRole) => {
-    setErrorMessage('')
-    if (demoRole === 'teacher') {
-      const demoTeacher = teachers[0] || {
-        name: 'Prof. Chen Wei',
-        email: 'chen.wei@kristujayanti.com',
-        teacher_id: 'TCH-101',
-        department: 'Physics & Applied Sciences',
-      }
-      updateUser({
-        name: demoTeacher.name,
-        email: demoTeacher.email,
-        role: 'Teacher',
-        teacher_id: demoTeacher.teacher_id,
-        department: demoTeacher.department,
-      })
-      navigate('/teacher/dashboard')
-    } else {
-      const demoStudent = students[0] || {
-        name: 'Student User',
-        email: '24cpeb27@kristujayanti.com',
-        student_id: '24CPEB27',
-        department: 'Computer Science & Engineering',
-        year: 'Year 1 (Freshman)',
-        phone: '+91 98765 43210',
-      }
-      updateUser({
-        name: demoStudent.name,
-        email: demoStudent.email,
-        role: 'Student',
-        student_id: demoStudent.student_id,
-        department: demoStudent.department,
-        year: demoStudent.year,
-        phone: demoStudent.phone,
-      })
-      navigate('/student/dashboard')
     }
   }
 
@@ -308,7 +269,7 @@ export default function Login() {
                   href="#"
                   onClick={(e) => {
                     e.preventDefault()
-                    alert('Demo mode: you can enter any password (e.g. password123)')
+                    alert('Please enter your password or contact your department administrator.')
                   }}
                   className="text-[11px] text-slate-400 hover:text-slate-600 font-medium transition-colors"
                 >
@@ -355,32 +316,6 @@ export default function Login() {
               Sign In
             </button>
           </form>
-
-          {/* Quick Demo Divider */}
-          <div className="relative my-5">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-100" />
-            </div>
-            <div className="relative flex justify-center text-[10px] uppercase tracking-wider">
-              <span className="bg-white px-2.5 text-slate-400 font-semibold">Demo Access</span>
-            </div>
-          </div>
-
-          {/* 1-Click Fast Demo Login Pill */}
-          <button
-            type="button"
-            onClick={() => handleDemoLogin(role)}
-            className={`w-full py-2 px-3 rounded-xl text-xs font-medium transition-all border flex items-center justify-center gap-2 ${
-              isTeacher
-                ? 'bg-emerald-50/70 hover:bg-emerald-100/70 border-emerald-200/80 text-emerald-800'
-                : 'bg-indigo-50/70 hover:bg-indigo-100/70 border-indigo-200/80 text-indigo-700'
-            }`}
-          >
-            <Sparkles size={13} className="shrink-0" />
-            <span>
-              1-Click Demo: <strong>{isTeacher ? 'Prof. Chen Wei' : '24cpeb27@kristujayanti.com'}</strong>
-            </span>
-          </button>
 
           {/* Sign Up Redirect */}
           <p className="text-center text-xs text-slate-500 mt-5">

@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import StudentLayout from '../../layouts/StudentLayout.jsx'
 import { useData } from '../../context/DataContext.jsx'
 import { useUser } from '../../context/AuthContext.jsx'
 import {
   Bookmark,
+  Upload,
+  FolderTree,
   Search,
   Download,
   FileText,
@@ -39,6 +41,53 @@ export default function StudentVault() {
   const [newFileUrl, setNewFileUrl] = useState('')
   const [newClassId, setNewClassId] = useState(classes[0]?.class_id || 'CLS-401')
 
+  // File Explorer Upload State
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [showManualUrl, setShowManualUrl] = useState(false)
+  const fileInputRef = useRef(null)
+
+  const processFile = (file) => {
+    setSelectedFile(file)
+    if (!newTitle.trim()) {
+      const cleanName = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ')
+      const capitalized = cleanName
+        .split(' ')
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ')
+      setNewTitle(capitalized)
+    }
+
+    const ext = file.name.split('.').pop()?.toLowerCase() || ''
+    if (['pdf'].includes(ext)) {
+      setNewType('PDF')
+    } else if (['ppt', 'pptx', 'key'].includes(ext)) {
+      setNewType('Presentation')
+    } else if (['zip', 'rar', 'tar', 'gz', 'py', 'js', 'jsx', 'ts', 'tsx', 'java', 'cpp', 'c', 'cs', 'html', 'css', 'json'].includes(ext)) {
+      setNewType('Code')
+    } else {
+      setNewType('Notes')
+    }
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      setNewFileUrl(reader.result)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0]
+    if (file) processFile(file)
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    setIsDragging(false)
+    const file = e.dataTransfer.files?.[0]
+    if (file) processFile(file)
+  }
+
   const showToast = (msg) => {
     setToastMessage(msg)
     setTimeout(() => setToastMessage(''), 3500)
@@ -66,10 +115,20 @@ export default function StudentVault() {
     e.preventDefault()
     if (!newTitle.trim()) return
 
+    const fileSizeFormatted = selectedFile
+      ? selectedFile.size > 1024 * 1024
+        ? `${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB`
+        : `${Math.round(selectedFile.size / 1024)} KB`
+      : '1.2 MB'
+
+    const fileNameFormatted = selectedFile?.name || `${newTitle.toLowerCase().replace(/\s+/g, '_')}.${newType.toLowerCase()}`
+
     const created = uploadContent({
       title: newTitle,
       description: newDescription || 'Student study summary uploaded to personal vault.',
       file_url: newFileUrl || `/materials/${newTitle.toLowerCase().replace(/\s+/g, '_')}.${newType.toLowerCase()}`,
+      file_name: fileNameFormatted,
+      file_size: fileSizeFormatted,
       type: newType,
       class_id: newClassId,
     })
@@ -78,6 +137,9 @@ export default function StudentVault() {
     setNewTitle('')
     setNewDescription('')
     setNewFileUrl('')
+    setSelectedFile(null)
+    setShowManualUrl(false)
+    if (fileInputRef.current) fileInputRef.current.value = ''
     showToast(`Saved "${created.title}" to vault!`)
   }
 
@@ -336,17 +398,131 @@ export default function StudentVault() {
                   />
                 </div>
 
+                {/* Native File Explorer Upload Zone */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    File URL (file_url)
-                  </label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-bold text-slate-700">
+                      Upload Document (File Explorer)
+                    </label>
+                    <span className="text-[10px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-md">
+                      Browse Computer
+                    </span>
+                  </div>
+
                   <input
-                    type="text"
-                    placeholder="e.g. /materials/entropy_summary.pdf"
-                    value={newFileUrl}
-                    onChange={(e) => setNewFileUrl(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none font-mono"
+                    ref={fileInputRef}
+                    type="file"
+                    onChange={handleFileChange}
+                    className="hidden"
+                    accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.zip,.py,.java,.cpp,.c,.js,.html,.css"
                   />
+
+                  {!selectedFile ? (
+                    <div
+                      onClick={() => fileInputRef.current?.click()}
+                      onDragOver={(e) => {
+                        e.preventDefault()
+                        setIsDragging(true)
+                      }}
+                      onDragLeave={() => setIsDragging(false)}
+                      onDrop={handleDrop}
+                      className={`border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-2 ${
+                        isDragging
+                          ? 'border-indigo-500 bg-indigo-50/70'
+                          : 'border-slate-200 hover:border-indigo-400 bg-slate-50/60 hover:bg-indigo-50/20'
+                      }`}
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-indigo-100/80 text-indigo-700 flex items-center justify-center shadow-xs">
+                        <Upload size={20} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-slate-900">
+                          Click to browse from File Explorer
+                        </p>
+                        <p className="text-[11px] text-slate-400 mt-0.5">
+                          Drag and drop or select PDF, PPT, Word, Code, or ZIP
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          fileInputRef.current?.click()
+                        }}
+                        className="mt-1 px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-xs flex items-center gap-1.5 cursor-pointer transition-all"
+                      >
+                        <FolderTree size={13} /> Open File Explorer
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="p-3 rounded-2xl bg-indigo-50/90 border border-indigo-200 flex items-center justify-between gap-3 shadow-xs">
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                          <FileText size={20} />
+                        </div>
+                        <div className="truncate">
+                          <p className="text-xs font-bold text-slate-900 truncate">
+                            {selectedFile.name}
+                          </p>
+                          <p className="text-[11px] text-indigo-700 font-semibold mt-0.5 flex items-center gap-1.5">
+                            <span>
+                              {selectedFile.size > 1024 * 1024
+                                ? `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`
+                                : `${Math.round(selectedFile.size / 1024)} KB`}
+                            </span>
+                            <span>•</span>
+                            <span className="flex items-center gap-1 text-emerald-700 font-bold">
+                              <Check size={12} /> Ready to save
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="px-2 py-1 rounded-lg text-[11px] font-bold text-indigo-700 bg-white border border-indigo-200 hover:bg-indigo-50 transition-colors cursor-pointer"
+                        >
+                          Change
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedFile(null)
+                            setNewFileUrl('')
+                            if (fileInputRef.current) fileInputRef.current.value = ''
+                          }}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                          title="Remove file"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setShowManualUrl(!showManualUrl)}
+                    className="text-[11px] text-indigo-700 font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>{showManualUrl ? '▲ Hide manual path' : '▼ Or enter manual file path'}</span>
+                  </button>
+
+                  {showManualUrl && (
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        placeholder="e.g. /materials/entropy_summary.pdf"
+                        value={newFileUrl}
+                        onChange={(e) => setNewFileUrl(e.target.value)}
+                        className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none font-mono"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">

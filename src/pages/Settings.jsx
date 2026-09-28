@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import Sidebar from '../components/Sidebar.jsx'
+import TeacherLayout from '../layouts/TeacherLayout.jsx'
+import StudentLayout from '../layouts/StudentLayout.jsx'
 import { useUser } from '../context/AuthContext.jsx'
 import {
   User,
@@ -13,7 +14,7 @@ import {
   ExternalLink,
 } from 'lucide-react'
 
-function ToggleSwitch({ checked, onChange }) {
+function ToggleSwitch({ checked, onChange, isTeacher }) {
   return (
     <button
       type="button"
@@ -21,7 +22,7 @@ function ToggleSwitch({ checked, onChange }) {
       aria-checked={checked}
       onClick={() => onChange(!checked)}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${
-        checked ? 'bg-vault-blue' : 'bg-gray-200'
+        checked ? (isTeacher ? 'bg-emerald-700' : 'bg-indigo-600') : 'bg-gray-200'
       }`}
     >
       <span
@@ -35,6 +36,8 @@ function ToggleSwitch({ checked, onChange }) {
 
 export default function Settings() {
   const { user, updateUser } = useUser()
+  const isTeacher = user?.role === 'Teacher'
+  const LayoutComponent = isTeacher ? TeacherLayout : StudentLayout
   const [activeTab, setActiveTab] = useState('account')
 
   // Personal Info Form State
@@ -120,11 +123,31 @@ export default function Settings() {
   ]
 
   return (
-    <div className="flex min-h-screen bg-vault-bg">
-      <Sidebar />
-
-      <main className="flex-1 px-8 py-6">
-        <h1 className="text-xl font-semibold text-vault-navy mb-6">Settings</h1>
+    <LayoutComponent>
+      <div className="space-y-6">
+        {/* Header Banner */}
+        <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className={`text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-md border ${
+                isTeacher ? 'text-emerald-800 bg-emerald-50 border-emerald-200' : 'text-indigo-700 bg-indigo-50 border-indigo-200'
+              }`}>
+                {isTeacher ? 'FACULTY CONSOLE' : 'STUDENT PORTAL'}
+              </span>
+              <span className="text-xs text-slate-500 font-mono">
+                {isTeacher ? user?.teacher_id || 'TCH-101' : user?.student_id || '24CPEB27'}
+              </span>
+            </div>
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+              {isTeacher ? 'Faculty Settings' : 'Settings & Preferences'}
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              {isTeacher
+                ? 'Manage your academic credentials, teaching preferences, and notifications.'
+                : 'Manage your student profile, account security, and notifications.'}
+            </p>
+          </div>
+        </div>
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* Sub-navigation Menu */}
@@ -140,10 +163,14 @@ export default function Settings() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors w-full text-left ${
+                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors w-full text-left cursor-pointer ${
                       isActive
-                        ? 'bg-vault-blue/10 text-vault-blue'
-                        : 'text-gray-600 hover:bg-white hover:text-vault-navy'
+                        ? isTeacher
+                          ? 'bg-emerald-700 text-white shadow-xs font-bold'
+                          : 'bg-indigo-600 text-white shadow-xs font-bold'
+                        : isTeacher
+                        ? 'text-slate-600 hover:bg-emerald-50 hover:text-emerald-800'
+                        : 'text-slate-600 hover:bg-indigo-50 hover:text-indigo-700'
                     }`}
                   >
                     <Icon size={17} />
@@ -236,7 +263,7 @@ export default function Settings() {
                     <div className="pt-2">
                       <button
                         type="submit"
-                        className="bg-vault-blue text-white text-sm font-medium px-5 py-2.5 rounded-xl hover:bg-vault-blue-dark transition-colors shadow-sm"
+                        className={`text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md cursor-pointer ${isTeacher ? "bg-emerald-700 hover:bg-emerald-800 shadow-emerald-200" : "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200"}`}
                       >
                         Save changes
                       </button>
@@ -289,7 +316,7 @@ export default function Settings() {
                       </div>
                       <button
                         type="submit"
-                        className="bg-vault-blue text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-vault-blue-dark transition-colors"
+                        className={`text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs cursor-pointer ${isTeacher ? "bg-emerald-700 hover:bg-emerald-800" : "bg-indigo-600 hover:bg-indigo-700"}`}
                       >
                         Save password
                       </button>
@@ -648,12 +675,12 @@ export default function Settings() {
 
         {/* Toast Notification */}
         {toastMsg && (
-          <div className="fixed bottom-6 right-6 bg-vault-navy text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 text-sm z-50 animate-in slide-in-from-bottom duration-200">
+          <div className="fixed bottom-6 right-6 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 text-sm z-50 animate-in slide-in-from-bottom duration-200">
             <Check size={16} className="text-emerald-400" />
             <span>{toastMsg}</span>
           </div>
         )}
-      </main>
-    </div>
+      </div>
+    </LayoutComponent>
   )
 }

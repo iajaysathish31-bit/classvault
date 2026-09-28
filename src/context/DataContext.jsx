@@ -432,7 +432,7 @@ export function DataProvider({ children }) {
   }
 
   // 4. TEACHER Uploads CONTENT
-  const uploadContent = ({ title, description, file_url, type, class_id }) => {
+  const uploadContent = ({ title, description, file_url, type, class_id, file_name, file_size }) => {
     const teacherId = user?.teacher_id || 'TCH-101'
     const today = new Date().toISOString().split('T')[0]
 
@@ -441,6 +441,8 @@ export function DataProvider({ children }) {
       title: title.trim(),
       description: description?.trim() || '',
       file_url: file_url?.trim() || `/materials/${title.toLowerCase().replace(/\s+/g, '_')}.pdf`,
+      file_name: file_name || null,
+      file_size: file_size || null,
       type: type || 'PDF',
       created_at: today,
       teacher_id: teacherId,

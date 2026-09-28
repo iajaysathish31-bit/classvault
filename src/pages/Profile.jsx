@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import Sidebar from '../components/Sidebar.jsx'
+import TeacherLayout from '../layouts/TeacherLayout.jsx'
+import StudentLayout from '../layouts/StudentLayout.jsx'
 import { useUser } from '../context/AuthContext.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { Check, ShieldAlert, GraduationCap, Building2, Phone, Calendar, Hash } from 'lucide-react'
@@ -10,6 +11,7 @@ export default function Profile() {
   const { classes } = useData()
 
   const isTeacher = user?.role === 'Teacher'
+  const LayoutComponent = isTeacher ? TeacherLayout : StudentLayout
 
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -47,11 +49,31 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex min-h-screen bg-vault-bg">
-      <Sidebar />
-
-      <main className="flex-1 px-8 py-6">
-        <h1 className="text-xl font-semibold text-vault-navy mb-6">User Profile & Credentials</h1>
+    <LayoutComponent>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className={`text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-md border ${
+                isTeacher ? 'text-emerald-800 bg-emerald-50 border-emerald-200' : 'text-indigo-700 bg-indigo-50 border-indigo-200'
+              }`}>
+                {isTeacher ? 'FACULTY PROFILE' : 'STUDENT PROFILE'}
+              </span>
+              <span className="text-xs text-slate-500 font-mono">
+                {isTeacher ? user?.teacher_id || 'TCH-101' : user?.student_id || '24CPEB27'}
+              </span>
+            </div>
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+              User Profile & Credentials
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              {isTeacher
+                ? 'Manage your academic credentials, teaching affiliation, and contact details.'
+                : 'Manage your student profile, academic affiliation, and contact details.'}
+            </p>
+          </div>
+        </div>
 
         {/* Profile Card Header */}
         <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden mb-6 shadow-sm">
@@ -259,7 +281,7 @@ export default function Profile() {
             </form>
           </div>
         )}
-      </main>
-    </div>
+      </div>
+    </LayoutComponent>
   )
 }
