@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import StudentLayout from '../../layouts/StudentLayout.jsx'
 import {
   CheckCircle2,
@@ -14,6 +14,7 @@ import {
   X,
   FileCheck2,
   Sparkles,
+  FolderOpen,
 } from 'lucide-react'
 
 const initialAssignments = [
@@ -105,13 +106,14 @@ export default function StudentAssignments() {
   const [uploadFileName, setUploadFileName] = useState('')
   const [submissionNotes, setSubmissionNotes] = useState('')
   const [toastMessage, setToastMessage] = useState('')
+  const fileInputRef = useRef(null)
 
   const showToast = (msg) => {
     setToastMessage(msg)
     setTimeout(() => setToastMessage(''), 3500)
   }
 
-  const subjects = ['ALL', 'PHYS 401', 'CS 302', 'MATH 201', 'HIST 210']
+  const subjects = ['ALL', '24CSC2T351', '24PHY2T351', '24CPL2T451', '24ELE2T351']
 
   const filtered = assignments.filter((a) => {
     const matchTab = a.status === activeTab
@@ -155,41 +157,41 @@ export default function StudentAssignments() {
 
   return (
     <StudentLayout>
-      <div className="space-y-6">
+      <div className="px-4 sm:px-6 md:px-8 py-5 sm:py-8 max-w-7xl mx-auto space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500 text-sm font-medium animate-bounce">
+          <div className="fixed top-6 right-4 sm:right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500 text-xs sm:text-sm font-medium animate-bounce max-w-[90vw]">
             <Check size={18} />
             {toastMessage}
           </div>
         )}
 
         {/* Header Banner */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-indigo-100 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-indigo-100 shadow-sm">
           <div>
-            <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+            <span className="text-[10px] sm:text-xs font-bold text-indigo-600 uppercase tracking-wider bg-indigo-50 px-2.5 sm:px-3 py-1 rounded-full border border-indigo-100">
               Deliverables & Tasks
             </span>
-            <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 tracking-tight">
               My Assignments
             </h1>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
               Track course problem sets, term papers, submission status, and instructor feedback.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="text-right hidden sm:block">
+            <div className="text-left md:text-right">
               <span className="text-xs font-medium text-slate-500">Upcoming Due</span>
-              <p className="text-base font-bold text-rose-600">{pendingCount} deliverables pending</p>
+              <p className="text-sm sm:text-base font-bold text-rose-600">{pendingCount} deliverables pending</p>
             </div>
           </div>
         </div>
 
         {/* Tabs & Filter Bar */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Status Tabs */}
-          <div className="flex items-center gap-1 bg-white p-1.5 rounded-2xl border border-indigo-100 shadow-xs">
+          <div className="flex items-center gap-1 bg-white p-1 sm:p-1.5 rounded-2xl border border-indigo-100 shadow-xs overflow-x-auto">
             <button
               onClick={() => setActiveTab('pending')}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
@@ -421,16 +423,16 @@ export default function StudentAssignments() {
 
         {/* Submit Assignment Modal */}
         {submitModalOpen && targetAssignment && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-indigo-100 animate-in fade-in zoom-in-95 duration-200">
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-3 sm:p-4">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 max-w-lg w-full shadow-2xl border border-indigo-100 animate-in fade-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
+              <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                     <Upload size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base">Submit Deliverable</h3>
-                    <p className="text-xs text-slate-500">{targetAssignment.subject} · {targetAssignment.title}</p>
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base">Submit Deliverable</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500">{targetAssignment.subject} · {targetAssignment.title}</p>
                   </div>
                 </div>
                 <button
@@ -441,20 +443,37 @@ export default function StudentAssignments() {
                 </button>
               </div>
 
-              <form onSubmit={handleConfirmSubmit} className="mt-5 space-y-4">
+              <form onSubmit={handleConfirmSubmit} className="mt-4 sm:mt-5 space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1.5">
                     Upload Solution File (.pdf, .zip, .py)
                   </label>
-                  <div className="border-2 border-dashed border-indigo-200 hover:border-indigo-400 rounded-2xl p-6 text-center bg-indigo-50/20 cursor-pointer transition-colors">
-                    <FileText size={28} className="mx-auto text-indigo-500 mb-2" />
-                    <p className="text-xs font-medium text-slate-700">
-                      Drag and drop your file, or specify filename below
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setUploadFileName(e.target.files[0].name)
+                      }
+                    }}
+                  />
+                  <div
+                    onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                    className="border-2 border-dashed border-indigo-200 hover:border-indigo-400 rounded-2xl p-4 sm:p-6 text-center bg-indigo-50/20 cursor-pointer transition-colors"
+                  >
+                    <FolderOpen size={28} className="mx-auto text-indigo-500 mb-2" />
+                    <p className="text-xs font-semibold text-indigo-700">
+                      Click to choose file from File Explorer
+                    </p>
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      Supports PDF, DOCX, ZIP, Code files up to 25MB
                     </p>
                     <input
                       type="text"
-                      placeholder="e.g. thermodynamics_pset5_final.pdf"
+                      placeholder="e.g. assignment_submission.pdf"
                       value={uploadFileName}
+                      onClick={(e) => e.stopPropagation()}
                       onChange={(e) => setUploadFileName(e.target.value)}
                       className="mt-3 w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 bg-white"
                       required
@@ -475,17 +494,17 @@ export default function StudentAssignments() {
                   />
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                <div className="flex items-center justify-end gap-3 pt-3.5 sm:pt-4 border-t border-slate-100">
                   <button
                     type="button"
                     onClick={() => setSubmitModalOpen(false)}
-                    className="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100"
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-200"
+                    className="px-4 sm:px-5 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-200"
                   >
                     Confirm Submission
                   </button>
@@ -497,16 +516,16 @@ export default function StudentAssignments() {
 
         {/* View Graded Feedback Modal */}
         {selectedTask && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200">
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-3 sm:p-4">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 max-w-md w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
                     <Award size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base">Grading Feedback</h3>
-                    <p className="text-xs text-slate-500">{selectedTask.subject}</p>
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base">Grading Feedback</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500">{selectedTask.subject}</p>
                   </div>
                 </div>
                 <button
@@ -517,22 +536,22 @@ export default function StudentAssignments() {
                 </button>
               </div>
 
-              <div className="mt-5 space-y-4">
+              <div className="mt-4 sm:mt-5 space-y-4">
                 <div className="bg-emerald-50/60 border border-emerald-200 rounded-2xl p-4 flex items-center justify-between">
                   <div>
                     <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">
                       Final Score Awarded
                     </span>
-                    <p className="text-2xl font-black text-emerald-800">{selectedTask.grade}</p>
+                    <p className="text-xl sm:text-2xl font-black text-emerald-800">{selectedTask.grade}</p>
                   </div>
-                  <span className="text-lg font-black text-emerald-700 bg-emerald-200/60 px-3 py-1.5 rounded-xl">
+                  <span className="text-base sm:text-lg font-black text-emerald-700 bg-emerald-200/60 px-3 py-1.5 rounded-xl">
                     Grade {selectedTask.letterGrade}
                   </span>
                 </div>
 
                 <div>
                   <h4 className="text-xs font-bold text-slate-800 mb-1">Instructor Review:</h4>
-                  <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-700 leading-relaxed italic">
+                  <div className="p-3 sm:p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-700 leading-relaxed italic">
                     "{selectedTask.feedback}"
                   </div>
                   <p className="text-[11px] text-slate-400 mt-1.5 text-right font-medium">

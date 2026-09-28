@@ -146,17 +146,17 @@ export default function FacultyMaterials() {
         )}
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 md:p-8 rounded-3xl border border-emerald-100 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
                 TEACHER UPLOADS CONTENT
               </span>
               <span className="text-xs text-slate-500 font-mono">
                 Teacher: {user?.teacher_id || 'TCH-101'}
               </span>
             </div>
-            <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 tracking-tight">
               Course Content & Vault Publisher
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -166,21 +166,21 @@ export default function FacultyMaterials() {
 
           <button
             onClick={() => setUploadModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md shadow-emerald-200 transition-all self-start md:self-auto cursor-pointer"
+            className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md shadow-emerald-200 transition-all self-start md:self-auto cursor-pointer"
           >
             <Plus size={16} /> + Upload Content
           </button>
         </div>
 
         {/* Filters */}
-        <div className="flex items-center gap-2 bg-white p-4 rounded-3xl border border-emerald-100 shadow-xs flex-wrap">
+        <div className="flex items-center gap-2 bg-white p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs flex-wrap">
           <Filter size={14} className="text-slate-400 mr-1" />
           <span className="text-xs font-bold text-slate-500 mr-2">Filter By Type:</span>
           {types.map((tp) => (
             <button
               key={tp}
               onClick={() => setSelectedType(tp)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 selectedType === tp
                   ? 'bg-emerald-700 text-white shadow-sm shadow-emerald-200'
                   : 'bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-800 border border-slate-200/60'
@@ -192,9 +192,9 @@ export default function FacultyMaterials() {
         </div>
 
         {/* Materials Table */}
-        <div className="bg-white rounded-3xl border border-emerald-100 overflow-hidden shadow-xs">
+        <div className="bg-white rounded-2xl sm:rounded-3xl border border-emerald-100 overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
+            <table className="w-full text-left border-collapse text-xs min-w-[650px]">
               <thead>
                 <tr className="border-b border-emerald-100 bg-emerald-50/70 text-emerald-950 font-bold">
                   <th className="py-3.5 px-5">Content ID & Title</th>
@@ -270,16 +270,16 @@ export default function FacultyMaterials() {
 
         {/* Upload Modal with Native File Explorer Integration */}
         {uploadModalOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-emerald-100 p-6 sm:p-7 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
+          <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+            <div className="bg-white w-full max-w-lg rounded-2xl sm:rounded-3xl shadow-2xl border border-emerald-100 p-4 sm:p-6 sm:p-7 max-h-[92vh] overflow-y-auto">
+              <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200 shrink-0">
                     <Upload size={20} />
                   </div>
                   <div>
-                    <h2 className="text-base font-bold text-slate-900">Upload Course Content</h2>
-                    <p className="text-[11px] font-semibold text-emerald-700 uppercase tracking-wider">
+                    <h2 className="text-sm sm:text-base font-bold text-slate-900">Upload Course Content</h2>
+                    <p className="text-[10px] sm:text-[11px] font-semibold text-emerald-700 uppercase tracking-wider">
                       ER Entity: CONTENT
                     </p>
                   </div>

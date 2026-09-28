@@ -89,17 +89,17 @@ export default function FacultyClasses() {
         )}
 
         {/* Header Banner */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 md:p-8 rounded-3xl border border-emerald-100 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-sm">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
                 CLASS & TOPIC ARCHITECTURE
               </span>
               <span className="text-xs text-slate-400 font-mono">
                 Teacher: {user?.teacher_id || 'TCH-101'}
               </span>
             </div>
-            <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 tracking-tight">
               Class & Topic Management
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -109,14 +109,14 @@ export default function FacultyClasses() {
 
           <button
             onClick={() => setCreateModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md shadow-emerald-100 transition-all self-start md:self-auto"
+            className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md shadow-emerald-100 transition-all self-start md:self-auto"
           >
             <Plus size={16} /> + Create New Class
           </button>
         </div>
 
         {/* Classes Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {classes.map((cls) => {
             const classTopics = topics.filter((t) => t.class_id === cls.class_id)
             const totalReviews = classTopics.reduce(
@@ -127,7 +127,7 @@ export default function FacultyClasses() {
             return (
               <div
                 key={cls.class_id}
-                className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs hover:border-emerald-300 transition-all flex flex-col justify-between border-t-4 border-t-emerald-700"
+                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/80 shadow-xs hover:border-emerald-300 transition-all flex flex-col justify-between border-t-4 border-t-emerald-700"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-3">
@@ -186,19 +186,19 @@ export default function FacultyClasses() {
 
         {/* Manage Topics Modal */}
         {selectedClassForTopics && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 text-slate-800 max-h-[90vh] flex flex-col justify-between">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-3 sm:p-4">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 sm:p-8 max-w-2xl w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 text-slate-800 max-h-[92vh] flex flex-col justify-between overflow-y-auto">
               {/* Modal Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
+              <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0">
                     <ListOrdered size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base">
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base">
                       {selectedClassForTopics.subject} — Syllabus Topics
                     </h3>
-                    <p className="text-xs text-slate-500 font-mono">
+                    <p className="text-[11px] sm:text-xs text-slate-500 font-mono">
                       Class ID: {selectedClassForTopics.class_id}
                     </p>
                   </div>
@@ -310,16 +310,16 @@ export default function FacultyClasses() {
 
         {/* Create Class Modal */}
         {createModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 text-slate-850">
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-3 sm:p-4">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 sm:p-8 max-w-md w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 text-slate-850 max-h-[92vh] overflow-y-auto">
+              <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0">
                     <Plus size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base">Create University Class</h3>
-                    <p className="text-xs text-slate-500">ER Entity: CLASS</p>
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base">Create University Class</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500">ER Entity: CLASS</p>
                   </div>
                 </div>
                 <button

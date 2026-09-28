@@ -116,13 +116,13 @@ export default function FacultyDashboard() {
         )}
 
         {/* Executive Header Banner */}
-        <div className="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 p-6 md:p-8 rounded-3xl text-white shadow-lg shadow-emerald-900/10 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl text-white shadow-lg shadow-emerald-900/10 relative overflow-hidden">
           <div className="absolute right-0 top-0 bottom-0 w-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
             <div>
-              <div className="flex items-center gap-2.5 mb-2">
-                <span className="text-[11px] font-extrabold uppercase tracking-widest text-emerald-100 bg-white/15 backdrop-blur-xs border border-white/20 px-2.5 py-1 rounded-lg">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-widest text-emerald-100 bg-white/15 backdrop-blur-xs border border-white/20 px-2.5 py-1 rounded-lg">
                   {user?.department || 'Faculty Console'} · {user?.teacher_id || 'TCH-101'}
                 </span>
                 <span className="text-xs text-emerald-100 flex items-center gap-1.5">
@@ -130,7 +130,7 @@ export default function FacultyDashboard() {
                   Live Sync Active
                 </span>
               </div>
-              <h1 className="text-2xl md:text-3xl font-black tracking-tight">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight">
                 Academic Command Center
               </h1>
               <p className="text-emerald-100 text-xs sm:text-sm mt-1 max-w-2xl">
@@ -138,16 +138,16 @@ export default function FacultyDashboard() {
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
               <Link
                 to="/teacher/classes"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold border border-white/25 transition-all"
+                className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold border border-white/25 transition-all"
               >
                 <ListOrdered size={15} /> Manage Classes
               </Link>
               <Link
                 to="/teacher/materials"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 text-xs font-bold shadow-md transition-all"
+                className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 text-xs font-bold shadow-md transition-all"
               >
                 <Plus size={15} /> Upload Content
               </Link>
@@ -156,54 +156,54 @@ export default function FacultyDashboard() {
         </div>
 
         {/* Metrics Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-3xl border border-emerald-100 shadow-xs">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-500">Created Classes</span>
               <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center">
                 <BookOpen size={16} />
               </div>
             </div>
-            <p className="text-2xl font-black text-slate-900 mt-3">{classes.length}</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-2 sm:mt-3">{classes.length}</p>
             <span className="text-[11px] text-emerald-700 flex items-center gap-1 mt-1 font-semibold">
               <TrendingUp size={12} /> University Classes
             </span>
           </div>
 
-          <div className="bg-white p-5 rounded-3xl border border-emerald-100 shadow-xs">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-500">Authored Topics</span>
               <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 border border-teal-100 flex items-center justify-center">
                 <ListOrdered size={16} />
               </div>
             </div>
-            <p className="text-2xl font-black text-slate-900 mt-3">{topics.length}</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-2 sm:mt-3">{topics.length}</p>
             <span className="text-[11px] text-teal-700 flex items-center gap-1 mt-1 font-semibold">
               Syllabus Units
             </span>
           </div>
 
-          <div className="bg-white p-5 rounded-3xl border border-emerald-100 shadow-xs">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-500">Topic Reviews</span>
               <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 flex items-center justify-center">
                 <CheckCircle2 size={16} />
               </div>
             </div>
-            <p className="text-2xl font-black text-slate-900 mt-3">{totalReviews}</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-2 sm:mt-3">{totalReviews}</p>
             <span className="text-[11px] text-blue-700 flex items-center gap-1 mt-1 font-semibold">
               Student Completions
             </span>
           </div>
 
-          <div className="bg-white p-5 rounded-3xl border border-emerald-100 shadow-xs">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-500">Vault Content</span>
               <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center">
                 <Layers size={16} />
               </div>
             </div>
-            <p className="text-2xl font-black text-slate-900 mt-3">{contents.length}</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-2 sm:mt-3">{contents.length}</p>
             <span className="text-[11px] text-emerald-700 flex items-center gap-1 mt-1 font-semibold">
               Resources Uploaded
             </span>
@@ -213,7 +213,7 @@ export default function FacultyDashboard() {
         {/* Two-Column Working Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Submissions Queue (2 cols) */}
-          <div className="lg:col-span-2 bg-white p-6 rounded-3xl border border-emerald-100 shadow-xs flex flex-col justify-between">
+          <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
                 <div>
@@ -247,11 +247,11 @@ export default function FacultyDashboard() {
                       className="bg-slate-50/70 border border-slate-200/80 hover:border-emerald-300 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 font-black text-xs flex items-center justify-center border border-emerald-200">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 font-black text-xs flex items-center justify-center border border-emerald-200 shrink-0">
                           {sub.avatar}
                         </div>
                         <div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <h4 className="text-sm font-bold text-slate-900">{sub.student}</h4>
                             <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">
                               {sub.cohort}
@@ -283,7 +283,7 @@ export default function FacultyDashboard() {
           </div>
 
           {/* Today's Teaching Schedule (1 col) */}
-          <div className="bg-white p-6 rounded-3xl border border-emerald-100 shadow-xs">
+          <div className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
               <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                 <Calendar size={18} className="text-emerald-700" />
@@ -343,16 +343,16 @@ export default function FacultyDashboard() {
 
         {/* Grading Evaluation Modal */}
         {gradingModalOpen && activeItem && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 text-slate-800">
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-3 sm:p-4">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 text-slate-800 max-h-[92vh] overflow-y-auto">
+              <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0">
                     <Award size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base">Grading Assessment</h3>
-                    <p className="text-xs text-slate-500">
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base">Grading Assessment</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500">
                       {activeItem.student} · {activeItem.cohort}
                     </p>
                   </div>

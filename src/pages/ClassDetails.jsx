@@ -559,7 +559,7 @@ export default function ClassDetails() {
 
   return (
     <LayoutComponent>
-      <div className="space-y-6">
+      <div className="px-4 sm:px-6 md:px-8 py-5 sm:py-8 max-w-7xl mx-auto space-y-6">
         {/* Back navigation */}
         <div className="mb-6">
           <Link
@@ -570,25 +570,25 @@ export default function ClassDetails() {
           </Link>
 
           {/* Header Card */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-6 shadow-sm">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-100">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <div
-                  className={`w-14 h-14 rounded-2xl ${course.color || 'bg-vault-blue'} text-white flex items-center justify-center font-bold text-xl shrink-0 shadow-sm`}
+                  className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl ${course.color || 'bg-vault-blue'} text-white flex items-center justify-center font-bold text-lg sm:text-xl shrink-0 shadow-sm`}
                 >
                   {course.initial}
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-gray-100 text-gray-600">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-gray-100 text-gray-600 font-mono">
                       {course.code}
                     </span>
                     <span className="text-xs text-gray-400 font-medium">{course.semester}</span>
                   </div>
-                  <h1 className="text-2xl font-serif font-semibold text-vault-navy mt-1">
+                  <h1 className="text-xl sm:text-2xl font-serif font-semibold text-vault-navy mt-1">
                     {course.name}
                   </h1>
-                  <p className="text-sm text-gray-500 mt-0.5">
+                  <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
                     {course.prof} · <a href={`mailto:${course.email}`} className="text-vault-blue hover:underline">{course.email}</a>
                   </p>
                 </div>
@@ -597,7 +597,7 @@ export default function ClassDetails() {
               <div className="flex items-center gap-3 shrink-0">
                 <Link
                   to="/upload"
-                  className="flex items-center gap-2 bg-vault-blue text-white text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-vault-blue-dark transition-colors shadow-sm"
+                  className="flex items-center gap-2 bg-vault-blue text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-vault-blue-dark transition-colors shadow-sm"
                 >
                   <Upload size={16} /> Upload resource
                 </Link>
@@ -605,7 +605,7 @@ export default function ClassDetails() {
             </div>
 
             {/* Quick Metadata Bar */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-5 text-xs text-gray-500">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-5 text-xs text-gray-500">
               <div className="flex items-center gap-2">
                 <Clock size={16} className="text-vault-blue shrink-0" />
                 <div>
@@ -657,7 +657,7 @@ export default function ClassDetails() {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 border-b border-gray-200 mb-6">
+        <div className="flex items-center gap-1 sm:gap-2 border-b border-gray-200 mb-6 overflow-x-auto whitespace-nowrap pb-1">
           {[
             { id: 'resources', label: `Resources (${course.resources.length})`, icon: FileText },
             { id: 'assignments', label: `Assignments (${course.assignments.length})`, icon: CheckCircle2 },
@@ -670,7 +670,7 @@ export default function ClassDetails() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors cursor-pointer shrink-0 ${
                   isActive
                     ? 'border-vault-blue text-vault-blue font-semibold'
                     : 'border-transparent text-gray-500 hover:text-vault-navy'

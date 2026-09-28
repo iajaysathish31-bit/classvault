@@ -110,12 +110,12 @@ export default function FacultyBroadcast() {
         )}
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 md:p-8 rounded-3xl border border-emerald-100 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
               Direct Communication
             </span>
-            <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 tracking-tight">
               Class Announcements & Broadcasts
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -125,7 +125,7 @@ export default function FacultyBroadcast() {
 
           <button
             onClick={() => setModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md shadow-emerald-200 transition-all self-start md:self-auto"
+            className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md shadow-emerald-200 transition-all self-start md:self-auto"
           >
             <Plus size={16} /> New Broadcast
           </button>
@@ -136,7 +136,7 @@ export default function FacultyBroadcast() {
           {broadcasts.map((b) => (
             <div
               key={b.id}
-              className={`bg-white rounded-3xl p-6 border transition-all shadow-xs ${
+              className={`bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border transition-all shadow-xs ${
                 b.urgent
                   ? 'border-amber-300 bg-gradient-to-br from-white to-amber-50/40 shadow-amber-100/50'
                   : 'border-emerald-100/80 hover:border-emerald-300'

@@ -52,48 +52,48 @@ export default function StudentClasses() {
 
   return (
     <StudentLayout>
-      <div className="space-y-6">
+      <div className="px-4 sm:px-6 md:px-8 py-5 sm:py-8 max-w-7xl mx-auto space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500 text-sm font-medium animate-bounce">
+          <div className="fixed top-6 right-4 sm:right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500 text-xs sm:text-sm font-medium animate-bounce max-w-[90vw]">
             <Check size={18} />
             {toastMessage}
           </div>
         )}
 
         {/* Top Header Card */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-indigo-100 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-indigo-100 shadow-sm">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <span className="text-[10px] sm:text-xs font-bold text-indigo-600 uppercase tracking-wider bg-indigo-50 px-2.5 sm:px-3 py-1 rounded-full border border-indigo-100">
                 CLASS & TOPIC PROGRESSION
               </span>
               <span className="text-xs text-slate-400 font-mono">
                 Student ID: {user?.student_id || 'STU-8821'}
               </span>
             </div>
-            <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 tracking-tight">
               My Classes & Topic Reviews
             </h1>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
               Review syllabus topics, record completion dates, and track your topic understanding per class.
             </p>
           </div>
 
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               placeholder="Search enrolled subjects..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-4 py-2.5 rounded-2xl border border-slate-200 text-xs text-slate-700 bg-slate-50/60 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 w-64"
+              className="pl-9 pr-4 py-2.5 rounded-2xl border border-slate-200 text-xs text-slate-700 bg-slate-50/60 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 w-full sm:w-64"
             />
           </div>
         </div>
 
         {/* Classes Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {filteredClasses.map((cls) => {
             const classTopics = getTopicsForClass(cls.class_id)
             const progress = getClassProgress(cls.class_id, user?.student_id)
@@ -102,7 +102,7 @@ export default function StudentClasses() {
             return (
               <div
                 key={cls.class_id}
-                className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs hover:border-indigo-300 transition-all hover:shadow-md flex flex-col justify-between"
+                className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/80 shadow-xs hover:border-indigo-300 transition-all hover:shadow-md flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-3">
@@ -162,19 +162,19 @@ export default function StudentClasses() {
 
         {/* Topic Progression Drawer / Modal */}
         {selectedClassForTopics && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl border border-indigo-100 animate-in fade-in zoom-in-95 duration-200 text-slate-900 max-h-[90vh] flex flex-col justify-between">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-3 sm:p-4">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 sm:p-8 max-w-2xl w-full shadow-2xl border border-indigo-100 animate-in fade-in zoom-in-95 duration-200 text-slate-900 max-h-[90vh] flex flex-col justify-between">
               {/* Modal Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+              <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                     <ListOrdered size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base">
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base">
                       {selectedClassForTopics.subject}
                     </h3>
-                    <p className="text-xs text-slate-500 font-mono">
+                    <p className="text-[11px] sm:text-xs text-slate-500 font-mono">
                       Class ID: {selectedClassForTopics.class_id} · Topic Reviews
                     </p>
                   </div>
@@ -188,7 +188,7 @@ export default function StudentClasses() {
               </div>
 
               {/* Topics List with TOPIC_PROGRESS Tracker */}
-              <div className="my-5 overflow-y-auto max-h-96 space-y-3 pr-1">
+              <div className="my-4 sm:my-5 overflow-y-auto max-h-96 space-y-3 pr-1">
                 {getTopicsForClass(selectedClassForTopics.class_id).length === 0 ? (
                   <p className="text-center py-8 text-xs text-slate-400">
                     No topics have been uploaded by the instructor for this class yet.
@@ -201,14 +201,14 @@ export default function StudentClasses() {
                     return (
                       <div
                         key={topic.topic_id}
-                        className={`p-4 rounded-2xl border transition-all ${
+                        className={`p-3.5 sm:p-4 rounded-2xl border transition-all ${
                           isReviewed
                             ? 'bg-emerald-50/50 border-emerald-200'
                             : 'bg-white border-slate-200 hover:border-indigo-200'
                         }`}
                       >
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                          <div className="flex items-start gap-3">
+                          <div className="flex items-start gap-2.5 sm:gap-3">
                             <span
                               className={`w-6 h-6 rounded-lg text-xs font-mono font-bold flex items-center justify-center shrink-0 mt-0.5 ${
                                 isReviewed
@@ -219,15 +219,15 @@ export default function StudentClasses() {
                               {idx + 1}
                             </span>
                             <div>
-                              <div className="flex items-center gap-2">
-                                <h4 className="text-sm font-bold text-slate-900">
+                              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                <h4 className="text-xs sm:text-sm font-bold text-slate-900">
                                   {topic.topic_name}
                                 </h4>
                                 <span className="text-[10px] font-mono text-slate-400">
                                   {topic.topic_id}
                                 </span>
                               </div>
-                              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                              <p className="text-[11px] sm:text-xs text-slate-500 mt-1 leading-relaxed">
                                 {topic.content}
                               </p>
                               {isReviewed && progress?.reviewed_date && (
@@ -263,13 +263,13 @@ export default function StudentClasses() {
               </div>
 
               {/* Modal Footer */}
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs text-slate-500">
+              <div className="pt-3.5 sm:pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <span className="text-[11px] sm:text-xs text-slate-500 text-center sm:text-left">
                   Topic review progress syncs automatically with faculty gradebook.
                 </span>
                 <button
                   onClick={() => setSelectedClassForTopics(null)}
-                  className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors"
+                  className="w-full sm:w-auto px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors"
                 >
                   Done
                 </button>

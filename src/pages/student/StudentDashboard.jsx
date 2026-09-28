@@ -50,34 +50,34 @@ export default function StudentDashboard() {
 
   return (
     <StudentLayout>
-      <div className="px-8 py-8 max-w-7xl mx-auto space-y-8">
+      <div className="px-4 sm:px-6 md:px-8 py-5 sm:py-8 max-w-7xl mx-auto space-y-6 sm:space-y-8">
         {/* Welcome Hero Banner */}
-        <div className="bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 rounded-3xl p-8 text-white shadow-xl shadow-indigo-100 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white shadow-xl shadow-indigo-100 relative overflow-hidden">
           <div className="absolute right-0 top-0 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
             <div>
               <div className="flex items-center gap-2 text-indigo-200 text-xs font-semibold mb-2 tracking-wide uppercase">
                 <Sparkles size={14} className="text-amber-300" />
                 <span>Personal Study Workspace · {user?.department || 'Computer Science'}</span>
               </div>
-              <h1 className="text-3xl font-serif font-bold">
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold">
                 Hello, {user?.name || firstName || 'Student'}
               </h1>
-              <p className="text-sm text-indigo-100/90 mt-1.5 max-w-xl leading-relaxed">
+              <p className="text-xs sm:text-sm text-indigo-100/90 mt-1.5 max-w-xl leading-relaxed">
                 You have reviewed <strong>{totalReviewed} of {totalTopics} syllabus topics</strong> ({overallRate}%) across your university classes. Keep your study streak alive!
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5 sm:gap-3">
               <Link
                 to="/student/classes"
-                className="bg-white text-indigo-700 hover:bg-indigo-50 font-semibold px-5 py-3 rounded-2xl text-sm transition-all shadow-md shrink-0 flex items-center gap-2"
+                className="bg-white text-indigo-700 hover:bg-indigo-50 font-semibold px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm transition-all shadow-md shrink-0 flex items-center gap-2"
               >
                 <ListOrdered size={16} /> Review Topics
               </Link>
               <Link
                 to="/student/vault"
-                className="bg-white/15 hover:bg-white/25 border border-white/20 text-white font-medium px-4 py-3 rounded-2xl text-sm transition-all shrink-0 flex items-center gap-2"
+                className="bg-white/15 hover:bg-white/25 border border-white/20 text-white font-medium px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm transition-all shrink-0 flex items-center gap-2"
               >
                 <BookOpen size={16} /> Open Vault
               </Link>
@@ -86,24 +86,24 @@ export default function StudentDashboard() {
         </div>
 
         {/* Quick KPI Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-2xl p-5 border border-indigo-100/80 shadow-xs">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-slate-400">Enrolled Classes</span>
               <BookOpen size={18} className="text-indigo-600" />
             </div>
-            <p className="text-2xl font-bold text-slate-900 mt-2">{classes.length}</p>
+            <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-2">{classes.length}</p>
             <span className="text-[11px] text-indigo-600 font-medium mt-0.5 block">
               Active Cohorts
             </span>
           </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-indigo-100/80 shadow-xs">
+          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-slate-400">Topics Reviewed</span>
               <CheckCircle2 size={18} className="text-emerald-500" />
             </div>
-            <p className="text-2xl font-bold text-slate-900 mt-2">
+            <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-2">
               {totalReviewed} / {totalTopics}
             </p>
             <span className="text-[11px] text-emerald-600 font-medium mt-0.5 block">
@@ -111,23 +111,23 @@ export default function StudentDashboard() {
             </span>
           </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-indigo-100/80 shadow-xs">
+          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-slate-400">Vault Resources</span>
               <FileText size={18} className="text-violet-600" />
             </div>
-            <p className="text-2xl font-bold text-slate-900 mt-2">{contents.length}</p>
+            <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-2">{contents.length}</p>
             <span className="text-[11px] text-violet-600 font-medium mt-0.5 block">
               Materials Published
             </span>
           </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-indigo-100/80 shadow-xs">
+          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-slate-400">Daily Study Streak</span>
               <Flame size={18} className="text-amber-500 fill-amber-500" />
             </div>
-            <p className="text-2xl font-bold text-slate-900 mt-2">5 Days</p>
+            <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-2">5 Days</p>
             <span className="text-[11px] text-amber-600 font-medium mt-0.5 block">
               Top 10% on Campus
             </span>
@@ -135,11 +135,11 @@ export default function StudentDashboard() {
         </div>
 
         {/* 2-Column Core Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Main Column (2 cols) */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6 sm:space-y-8">
             {/* Today's Classes */}
-            <div className="bg-white rounded-3xl border border-indigo-100/80 p-6 shadow-xs">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-indigo-100/80 p-4 sm:p-6 shadow-xs">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="text-base font-bold text-slate-900">Lecture Timetable</h2>
@@ -175,7 +175,7 @@ export default function StudentDashboard() {
             </div>
 
             {/* Enrolled Subjects with TOPIC_PROGRESS */}
-            <div className="bg-white rounded-3xl border border-indigo-100/80 p-6 shadow-xs">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-indigo-100/80 p-4 sm:p-6 shadow-xs">
               <div className="flex items-center justify-between mb-5">
                 <div>
                   <h2 className="text-base font-bold text-slate-900">Enrolled Classes</h2>
@@ -200,9 +200,9 @@ export default function StudentDashboard() {
                       to="/student/classes"
                       className="block p-4 rounded-2xl border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/30 transition-all group"
                     >
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                         <div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded font-mono">
                               {cls.class_id}
                             </span>
@@ -212,7 +212,7 @@ export default function StudentDashboard() {
                           </div>
                           <p className="text-xs text-slate-400 mt-0.5">{teacher.name} · {teacher.department}</p>
                         </div>
-                        <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">
+                        <span className="self-start sm:self-auto text-xs font-semibold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">
                           {progress.reviewed}/{progress.total} topics reviewed
                         </span>
                       </div>
@@ -239,7 +239,7 @@ export default function StudentDashboard() {
           {/* Right Sidebar (1 col) */}
           <div className="space-y-6">
             {/* Quick Study Scratchpad */}
-            <div className="bg-white rounded-3xl border border-indigo-100/80 p-6 shadow-xs">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-indigo-100/80 p-4 sm:p-6 shadow-xs">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
                   <FileText size={16} className="text-indigo-600" />
@@ -272,7 +272,7 @@ export default function StudentDashboard() {
             </div>
 
             {/* Recent Vault Additions */}
-            <div className="bg-white rounded-3xl border border-indigo-100/80 p-6 shadow-xs">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-indigo-100/80 p-4 sm:p-6 shadow-xs">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
                   <Bookmark size={16} className="text-amber-500" />

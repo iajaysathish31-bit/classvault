@@ -172,12 +172,12 @@ export default function FacultyGradebook() {
         )}
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 md:p-8 rounded-3xl border border-emerald-100 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-sm">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
               Evaluation Matrix
             </span>
-            <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 tracking-tight">
               Gradebook & Term Evaluations
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -188,7 +188,7 @@ export default function FacultyGradebook() {
           <div className="flex items-center gap-3">
             <button
               onClick={handleExportCSV}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 transition-all"
+              className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 transition-all"
             >
               <Download size={14} /> Export CSV
             </button>
@@ -196,43 +196,43 @@ export default function FacultyGradebook() {
         </div>
 
         {/* Grade Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white p-5 rounded-3xl border border-emerald-100 shadow-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
             <span className="text-xs font-bold text-slate-500">Class Average</span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-black text-slate-900">{avgCohort}%</span>
+              <span className="text-2xl sm:text-3xl font-black text-slate-900">{avgCohort}%</span>
               <span className="text-xs text-emerald-700 font-bold">
                 {getLetter(Number(avgCohort))} Average
               </span>
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-3xl border border-emerald-100 shadow-xs">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
             <span className="text-xs font-bold text-slate-500">Top Benchmark</span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-black text-emerald-700">{maxCohort}%</span>
+              <span className="text-2xl sm:text-3xl font-black text-emerald-700">{maxCohort}%</span>
               <span className="text-xs text-slate-500 font-bold">Highest Standing</span>
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-3xl border border-emerald-100 shadow-xs">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
             <span className="text-xs font-bold text-slate-500">Passing Standing</span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-black text-slate-900">100%</span>
+              <span className="text-2xl sm:text-3xl font-black text-slate-900">100%</span>
               <span className="text-xs text-emerald-700 font-bold">All Above 70%</span>
             </div>
           </div>
         </div>
 
         {/* Filter Controls */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-4 rounded-3xl border border-emerald-100 shadow-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-500 mr-2">Cohort:</span>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <span className="text-xs font-bold text-slate-500 mr-1 sm:mr-2">Cohort:</span>
             {courses.map((crs) => (
               <button
                 key={crs}
                 onClick={() => setSelectedCourse(crs)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   selectedCourse === crs
                     ? 'bg-emerald-700 text-white shadow-xs'
                     : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
@@ -250,15 +250,15 @@ export default function FacultyGradebook() {
               placeholder="Search student name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-4 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 w-full sm:w-60"
+              className="pl-9 pr-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 w-full sm:w-60"
             />
           </div>
         </div>
 
         {/* Interactive Spreadsheet Table */}
-        <div className="bg-white rounded-3xl border border-emerald-100 overflow-hidden shadow-xs">
+        <div className="bg-white rounded-2xl sm:rounded-3xl border border-emerald-100 overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
+            <table className="w-full text-left border-collapse text-xs min-w-[650px]">
               <thead>
                 <tr className="border-b border-emerald-100 bg-emerald-50/60 text-slate-700 font-bold">
                   <th className="py-3.5 px-5">Student</th>
@@ -321,16 +321,16 @@ export default function FacultyGradebook() {
 
         {/* Edit Scores Modal */}
         {editModalOpen && targetStudent && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 text-slate-800">
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-3 sm:p-4">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 sm:p-8 max-w-md w-full shadow-2xl border border-emerald-100 animate-in fade-in zoom-in-95 duration-200 text-slate-800 max-h-[92vh] overflow-y-auto">
+              <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0">
                     <Award size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base">Adjust Evaluation Scores</h3>
-                    <p className="text-xs text-slate-500">{targetStudent.name}</p>
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base">Adjust Evaluation Scores</h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500">{targetStudent.name}</p>
                   </div>
                 </div>
                 <button
