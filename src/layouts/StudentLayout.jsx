@@ -134,24 +134,24 @@ export default function StudentLayout({ children }) {
                       })
                     )
                   }}
-                  className="w-full p-3 rounded-2xl bg-slate-900 border border-slate-700 text-left transition-all group flex items-center justify-between shadow-sm cursor-pointer"
+                  className="w-full p-3 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-400/25 text-left transition-all group flex items-center justify-between shadow-md cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 flex items-center justify-center">
                       <Sparkles size={16} />
                     </div>
                     <div>
-                      <span className="block text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">
+                      <span className="block text-xs font-bold text-white group-hover:text-indigo-200 transition-colors">
                         Talk to ur Homie
                       </span>
-                      <span className="block text-[10px] text-slate-400">
-                        GPT-4o Vision & Camera Solver
+                      <span className="block text-[10px] text-indigo-200/70">
+                        GPT-4o Vision & Academic Solver
                       </span>
                     </div>
                   </div>
                   <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-400"></span>
                   </span>
                 </button>
               </div>
@@ -245,23 +245,23 @@ export default function StudentLayout({ children }) {
                   })
                 )
               }}
-              className="w-full p-3 rounded-2xl bg-slate-900 border border-slate-700 hover:border-emerald-500/50 text-left transition-all group cursor-pointer shadow-md"
+              className="w-full p-3 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-400/25 hover:border-indigo-400/40 text-left transition-all group cursor-pointer shadow-md"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-                    <Sparkles size={14} />
+                  <div className="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 flex items-center justify-center">
+                    <Sparkles size={13} />
                   </div>
-                  <span className="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">
+                  <span className="text-xs font-bold text-white group-hover:text-indigo-200 transition-colors">
                     Talk to ur Homie
                   </span>
                 </div>
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-400"></span>
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 leading-tight">
+              <p className="text-[11px] text-indigo-200/70 leading-tight">
                 GPT-4o Vision & Academic Solver. Snap a photo or solve assignments.
               </p>
             </button>

@@ -78,9 +78,9 @@ export default function StudentDashboard() {
                     })
                   )
                 }}
-                className="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white font-semibold px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm transition-all shadow-md shrink-0 flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95"
+                className="bg-slate-950/70 hover:bg-slate-950 border border-indigo-400/30 text-white font-semibold px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm transition-all shadow-md shadow-indigo-950/30 shrink-0 flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95 backdrop-blur-xs"
               >
-                <Sparkles size={16} className="text-emerald-400" />
+                <Sparkles size={16} className="text-amber-300" />
                 <span>Talk to ur Homie</span>
               </button>
               <Link

@@ -416,53 +416,53 @@ export default function AICompanionWidget() {
         className="hidden"
       />
 
-      {/* 1. Sleek ChatGPT-Style Floating Action Button: "Talk to ur Homie" */}
+      {/* 1. Executive Professional Floating Action Button: "Talk to ur Homie" */}
       <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center gap-3">
         <button
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Talk to ur Homie"
-          className="flex items-center gap-2.5 px-4 py-3 rounded-full bg-slate-900 hover:bg-slate-800 text-white border border-slate-700/80 shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 group cursor-pointer"
+          className="flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 hover:from-slate-800 hover:to-indigo-900 text-white border border-indigo-400/25 shadow-xl shadow-indigo-950/20 transition-all duration-300 hover:scale-105 active:scale-95 group cursor-pointer"
         >
-          {/* Online green indicator */}
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          {/* Calm online indicator */}
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-400"></span>
           </span>
 
-          <Sparkles size={16} className="text-emerald-400 group-hover:rotate-12 transition-transform" />
+          <Sparkles size={16} className="text-indigo-300 group-hover:rotate-12 transition-transform" />
 
           <div className="flex flex-col text-left">
             <span className="text-xs sm:text-sm font-bold tracking-tight leading-none text-white">
               Talk to ur Homie
             </span>
-            <span className="text-[10px] text-slate-400 font-medium leading-tight">
-              GPT-4o Vision Active
+            <span className="text-[10px] text-indigo-200/70 font-medium leading-tight mt-0.5">
+              Academic Vision AI
             </span>
           </div>
 
           {urgentCount > 0 && !isOpen && (
-            <span className="bg-rose-600 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full ml-0.5 animate-pulse shadow-xs">
+            <span className="bg-amber-500 text-slate-950 font-extrabold text-[10px] px-2 py-0.5 rounded-full ml-0.5 shadow-xs">
               {urgentCount}
             </span>
           )}
         </button>
       </div>
 
-      {/* 2. Main Responsive ChatGPT-Style Chat Window */}
+      {/* 2. Main Responsive Professional Chat Window */}
       {isOpen && (
         <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-20 sm:right-6 sm:w-[460px] max-h-[94vh] sm:max-h-[680px] h-[88vh] sm:h-[640px] bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border border-slate-200/90 z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200">
-          {/* Header Bar */}
-          <div className="p-3.5 sm:p-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800 shrink-0">
+          {/* Executive Header Bar */}
+          <div className="p-3.5 sm:p-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-center justify-between border-b border-indigo-900/40 shrink-0">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-md">
-                <Sparkles size={18} />
+              <div className="w-9 h-9 rounded-xl bg-indigo-600/30 text-indigo-300 border border-indigo-400/30 flex items-center justify-center shadow-xs">
+                <Sparkles size={17} />
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="font-bold text-sm sm:text-base leading-tight text-white">
                     Talk to ur Homie
                   </h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-200 border border-indigo-400/30">
                     GPT-4o Vision
                   </span>
                 </div>
@@ -472,32 +472,32 @@ export default function AICompanionWidget() {
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1">
               <button
                 onClick={handleResetConversation}
                 title="Clear Conversation"
-                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <RotateCcw size={15} />
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <X size={17} />
               </button>
             </div>
           </div>
 
-          {/* Urgent Deadline Notification Strip */}
+          {/* Professional Academic Deadline Notification Strip */}
           {urgentCount > 0 && (
-            <div className="bg-gradient-to-r from-rose-50 to-amber-50 border-b border-rose-200/80 px-3.5 py-2 flex items-center justify-between shrink-0">
+            <div className="bg-amber-50/90 border-b border-amber-200/80 px-3.5 py-2 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2 overflow-hidden">
                 <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-600"></span>
                 </span>
-                <span className="text-[11px] font-bold text-rose-900 truncate">
+                <span className="text-[11px] font-semibold text-amber-900 truncate">
                   Homie Radar: {urgentCount} assignment(s) due within 48 hours!
                 </span>
               </div>
@@ -505,7 +505,7 @@ export default function AICompanionWidget() {
                 onClick={() =>
                   handleSendMessage('Yo Homie! What assignments are due soon and how do I solve them?')
                 }
-                className="text-[11px] font-bold text-rose-700 hover:text-rose-900 bg-white border border-rose-200 px-2 py-0.5 rounded-lg shadow-2xs shrink-0 cursor-pointer"
+                className="text-[11px] font-bold text-amber-900 bg-white hover:bg-amber-100/80 border border-amber-300/80 px-2.5 py-0.5 rounded-lg shadow-2xs shrink-0 cursor-pointer transition-colors"
               >
                 Solve Now
               </button>
@@ -523,7 +523,7 @@ export default function AICompanionWidget() {
                   className={`flex gap-2.5 ${isAssistant ? 'justify-start' : 'justify-end'}`}
                 >
                   {isAssistant && (
-                    <div className="w-7 h-7 rounded-xl bg-slate-900 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                    <div className="w-7 h-7 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
                       <Sparkles size={14} />
                     </div>
                   )}
@@ -532,12 +532,12 @@ export default function AICompanionWidget() {
                     className={`max-w-[85%] sm:max-w-[82%] rounded-2xl p-3 sm:p-3.5 text-xs sm:text-sm shadow-xs ${
                       isAssistant
                         ? 'bg-white border border-slate-200/90 text-slate-800 rounded-tl-sm'
-                        : 'bg-slate-900 text-white rounded-tr-sm'
+                        : 'bg-indigo-600 text-white rounded-tr-sm shadow-indigo-100'
                     }`}
                   >
                     {/* Render Image Thumbnail if attached in user message */}
                     {msg.image && (
-                      <div className="mb-2 rounded-xl overflow-hidden border border-slate-700/60 max-w-xs">
+                      <div className="mb-2 rounded-xl overflow-hidden border border-indigo-400/40 max-w-xs">
                         <img
                           src={msg.image}
                           alt="Uploaded query snapshot"
@@ -552,7 +552,7 @@ export default function AICompanionWidget() {
                     {/* Interactive Quiz Renderer */}
                     {msg.quiz && (
                       <div className="mt-3 pt-3 border-t border-slate-200/60 space-y-2">
-                        <p className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider flex items-center gap-1">
+                        <p className="text-[11px] font-bold text-indigo-700 uppercase tracking-wider flex items-center gap-1">
                           <Award size={13} /> Select your answer:
                         </p>
                         <div className="space-y-1.5">
@@ -594,7 +594,7 @@ export default function AICompanionWidget() {
 
                     <div
                       className={`text-[9px] mt-1 text-right ${
-                        isAssistant ? 'text-slate-400' : 'text-slate-400'
+                        isAssistant ? 'text-slate-400' : 'text-indigo-200'
                       }`}
                     >
                       {msg.timestamp}
@@ -607,18 +607,18 @@ export default function AICompanionWidget() {
             {/* Typing Indicator */}
             {isTyping && (
               <div className="flex gap-2.5 justify-start">
-                <div className="w-7 h-7 rounded-xl bg-slate-900 text-emerald-400 flex items-center justify-center shrink-0 shadow-xs">
+                <div className="w-7 h-7 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center shrink-0 shadow-xs">
                   <Sparkles size={14} />
                 </div>
                 <div className="bg-white border border-slate-200/90 rounded-2xl rounded-tl-sm p-3 shadow-xs flex items-center gap-2">
                   <div className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" />
+                    <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" />
                     <span
-                      className="w-2 h-2 rounded-full bg-teal-500 animate-bounce"
+                      className="w-2 h-2 rounded-full bg-indigo-400 animate-bounce"
                       style={{ animationDelay: '0.15s' }}
                     />
                     <span
-                      className="w-2 h-2 rounded-full bg-slate-600 animate-bounce"
+                      className="w-2 h-2 rounded-full bg-indigo-300 animate-bounce"
                       style={{ animationDelay: '0.3s' }}
                     />
                   </div>
@@ -631,12 +631,12 @@ export default function AICompanionWidget() {
           </div>
 
           {/* Quick Prompt Chips Carousel (ChatGPT Style) */}
-          <div className="bg-white border-t border-slate-100 px-3 py-2 overflow-x-auto no-scrollbar flex items-center gap-1.5 shrink-0">
+          <div className="bg-slate-50/80 border-t border-slate-200/60 px-3 py-2 overflow-x-auto no-scrollbar flex items-center gap-1.5 shrink-0">
             {HOMIE_PROFILE.quickPrompts.map((chip, idx) => (
               <button
                 key={idx}
                 onClick={() => handleSendMessage(chip.query)}
-                className="whitespace-nowrap px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-[11px] font-medium transition-all shadow-2xs cursor-pointer"
+                className="whitespace-nowrap px-3 py-1.5 rounded-xl bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 border border-slate-200/90 text-slate-700 text-[11px] font-medium transition-all shadow-2xs cursor-pointer"
               >
                 {chip.label}
               </button>
@@ -656,7 +656,7 @@ export default function AICompanionWidget() {
                   <span className="text-xs font-bold text-slate-800 truncate block">
                     {attachedImage.name}
                   </span>
-                  <span className="text-[10px] text-emerald-600 font-semibold block">
+                  <span className="text-[10px] text-indigo-600 font-semibold block">
                     Ready for Vision Analysis
                   </span>
                 </div>
@@ -684,7 +684,7 @@ export default function AICompanionWidget() {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               title="Attach photo/image from device"
-              className="p-2 sm:p-2.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
+              className="p-2 sm:p-2.5 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors cursor-pointer shrink-0"
             >
               <Paperclip size={18} />
             </button>
@@ -694,7 +694,7 @@ export default function AICompanionWidget() {
               type="button"
               onClick={startWebCamera}
               title="Take photo with camera"
-              className="p-2 sm:p-2.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
+              className="p-2 sm:p-2.5 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors cursor-pointer shrink-0"
             >
               <Camera size={18} />
             </button>
@@ -709,7 +709,7 @@ export default function AICompanionWidget() {
                   ? 'Ask anything about this image...'
                   : 'Message Homie or attach an assignment photo...'
               }
-              className="flex-1 bg-slate-100 border border-slate-200/80 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all placeholder:text-slate-400"
+              className="flex-1 bg-slate-50 border border-slate-200/90 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all placeholder:text-slate-400"
             />
 
             {/* 3. Microphone Voice Button */}
@@ -720,7 +720,7 @@ export default function AICompanionWidget() {
               className={`p-2 sm:p-2.5 rounded-xl transition-colors cursor-pointer shrink-0 ${
                 isListening
                   ? 'bg-rose-100 text-rose-600 animate-pulse'
-                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+                  : 'text-slate-500 hover:text-indigo-600 hover:bg-indigo-50'
               }`}
             >
               {isListening ? <MicOff size={18} /> : <Mic size={18} />}
@@ -730,7 +730,7 @@ export default function AICompanionWidget() {
             <button
               type="submit"
               disabled={!inputMessage.trim() && !attachedImage}
-              className="p-2 sm:p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:opacity-30 text-white transition-all shadow-sm flex items-center justify-center shrink-0 cursor-pointer"
+              className="p-2 sm:p-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-30 text-white transition-all shadow-sm shadow-indigo-200/50 flex items-center justify-center shrink-0 cursor-pointer"
             >
               <Send size={16} />
             </button>
@@ -744,7 +744,7 @@ export default function AICompanionWidget() {
           <div className="bg-slate-900 rounded-3xl max-w-lg w-full p-4 sm:p-5 shadow-2xl border border-slate-800 text-white flex flex-col items-center">
             <div className="w-full flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
               <div className="flex items-center gap-2">
-                <Camera size={18} className="text-emerald-400" />
+                <Camera size={18} className="text-indigo-400" />
                 <h4 className="font-bold text-sm">Snap Assignment Photo</h4>
               </div>
               <button
@@ -775,7 +775,7 @@ export default function AICompanionWidget() {
             <div className="mt-4 flex items-center gap-3">
               <button
                 onClick={capturePhoto}
-                className="px-6 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-sm shadow-lg flex items-center gap-2 cursor-pointer transition-transform active:scale-95"
+                className="px-6 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-lg shadow-indigo-950/40 flex items-center gap-2 cursor-pointer transition-transform active:scale-95"
               >
                 <Camera size={16} />
                 <span>Capture Snapshot</span>

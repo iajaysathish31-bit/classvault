@@ -250,10 +250,10 @@ export default function StudentClasses() {
                                   })
                                 )
                               }}
-                              className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
+                              className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
                               title="Ask Homie AI to explain this topic"
                             >
-                              <Sparkles size={13} className="text-emerald-600" />
+                              <Sparkles size={13} className="text-indigo-600" />
                               <span>Ask Homie</span>
                             </button>
 
