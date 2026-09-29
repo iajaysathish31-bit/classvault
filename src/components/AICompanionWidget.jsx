@@ -4,6 +4,7 @@ import {
   PENDING_ASSIGNMENTS,
   generateAIResponse,
   QUIZ_QUESTIONS,
+  getOrCreateHeroCharacter,
 } from '../utils/aiCharacterEngine.js'
 import {
   MessageSquare,
@@ -28,7 +29,13 @@ import {
 
 // Bespoke Hero Vector Avatars
 function CharacterAvatar({ characterId, size = 40, className = '' }) {
-  if (characterId === 'spiderman') {
+  const isSpider = characterId.includes('spider') || characterId.includes('peter')
+  const isIronMan = characterId.includes('iron') || characterId.includes('stark') || characterId.includes('tony')
+  const isBatman = characterId.includes('bat') || characterId.includes('bruce') || characterId.includes('wayne')
+  const isHermione = characterId.includes('hermione') || characterId.includes('granger')
+  const isEinstein = characterId.includes('einstein') || characterId.includes('albert')
+
+  if (isSpider) {
     return (
       <div
         className={`relative rounded-2xl bg-gradient-to-br from-red-600 via-rose-600 to-indigo-800 flex items-center justify-center overflow-hidden shadow-md ${className}`}
@@ -67,7 +74,7 @@ function CharacterAvatar({ characterId, size = 40, className = '' }) {
     )
   }
 
-  if (characterId === 'ironman') {
+  if (isIronMan) {
     return (
       <div
         className={`relative rounded-2xl bg-gradient-to-br from-amber-500 via-red-600 to-slate-900 flex items-center justify-center overflow-hidden shadow-md ${className}`}
@@ -96,7 +103,7 @@ function CharacterAvatar({ characterId, size = 40, className = '' }) {
     )
   }
 
-  if (characterId === 'batman') {
+  if (isBatman) {
     return (
       <div
         className={`relative rounded-2xl bg-gradient-to-br from-slate-800 via-zinc-900 to-black flex items-center justify-center overflow-hidden shadow-md ${className}`}
@@ -118,7 +125,7 @@ function CharacterAvatar({ characterId, size = 40, className = '' }) {
     )
   }
 
-  if (characterId === 'hermione') {
+  if (isHermione) {
     return (
       <div
         className={`relative rounded-2xl bg-gradient-to-br from-purple-800 via-rose-800 to-amber-600 flex items-center justify-center overflow-hidden shadow-md ${className}`}
@@ -147,34 +154,329 @@ function CharacterAvatar({ characterId, size = 40, className = '' }) {
     )
   }
 
-  // Einstein default
+  if (isEinstein) {
+    return (
+      <div
+        className={`relative rounded-2xl bg-gradient-to-br from-cyan-700 via-blue-900 to-indigo-950 flex items-center justify-center overflow-hidden shadow-md ${className}`}
+        style={{ width: size, height: size }}
+      >
+        <svg viewBox="0 0 100 100" className="w-[85%] h-[85%] drop-shadow">
+          {/* Wild Hair */}
+          <circle cx="30" cy="35" r="14" fill="#e2e8f0" />
+          <circle cx="70" cy="35" r="14" fill="#e2e8f0" />
+          <circle cx="50" cy="22" r="15" fill="#e2e8f0" />
+          <circle cx="22" cy="52" r="12" fill="#cbd5e1" />
+          <circle cx="78" cy="52" r="12" fill="#cbd5e1" />
+          {/* Face */}
+          <ellipse cx="50" cy="56" rx="20" ry="22" fill="#fed7aa" />
+          {/* Eyes */}
+          <circle cx="43" cy="50" r="3" fill="#334155" />
+          <circle cx="57" cy="50" r="3" fill="#334155" />
+          {/* Mustache */}
+          <path
+            d="M 38,65 Q 45,60 50,65 Q 55,60 62,65 Q 50,73 38,65 Z"
+            fill="#f1f5f9"
+            stroke="#cbd5e1"
+            strokeWidth="1.5"
+          />
+          {/* Smile */}
+          <path d="M 46,71 Q 50,74 54,71" fill="none" stroke="#94a3b8" strokeWidth="1.5" />
+        </svg>
+      </div>
+    )
+  }
+
+  // Dynamic Avatar for Any Custom Character Selected by the User!
+  const charFirstLetter = (characterId || 'H').charAt(0).toUpperCase()
   return (
     <div
-      className={`relative rounded-2xl bg-gradient-to-br from-cyan-700 via-blue-900 to-indigo-950 flex items-center justify-center overflow-hidden shadow-md ${className}`}
+      className={`relative rounded-2xl bg-gradient-to-br from-violet-600 via-indigo-600 to-sky-600 flex items-center justify-center overflow-hidden shadow-md text-white font-black ${className}`}
       style={{ width: size, height: size }}
     >
-      <svg viewBox="0 0 100 100" className="w-[85%] h-[85%] drop-shadow">
-        {/* Wild Hair */}
-        <circle cx="30" cy="35" r="14" fill="#e2e8f0" />
-        <circle cx="70" cy="35" r="14" fill="#e2e8f0" />
-        <circle cx="50" cy="22" r="15" fill="#e2e8f0" />
-        <circle cx="22" cy="52" r="12" fill="#cbd5e1" />
-        <circle cx="78" cy="52" r="12" fill="#cbd5e1" />
-        {/* Face */}
-        <ellipse cx="50" cy="56" rx="20" ry="22" fill="#fed7aa" />
-        {/* Eyes */}
-        <circle cx="43" cy="50" r="3" fill="#334155" />
-        <circle cx="57" cy="50" r="3" fill="#334155" />
-        {/* Mustache */}
-        <path
-          d="M 38,65 Q 45,60 50,65 Q 55,60 62,65 Q 50,73 38,65 Z"
-          fill="#f1f5f9"
-          stroke="#cbd5e1"
-          strokeWidth="1.5"
-        />
-        {/* Smile */}
-        <path d="M 46,71 Q 50,74 54,71" fill="none" stroke="#94a3b8" strokeWidth="1.5" />
-      </svg>
+      <div className="absolute inset-0 bg-white/10 rounded-full blur-xs" />
+      <span className="relative z-10 text-base sm:text-lg tracking-wider drop-shadow">
+        {charFirstLetter}
+      </span>
+      <div className="absolute bottom-1 right-1 w-2 h-2 rounded-full bg-amber-400 ring-1 ring-white" />
+    </div>
+  )
+}
+
+// Interactive Animated Hero Mascot playing live on the website!
+function AnimatedHeroMascot({
+  character,
+  hasAlert,
+  urgentCount,
+  onOpenChat,
+  isMinimized,
+  setIsMinimized,
+}) {
+  const isSpider = character.id.includes('spider') || character.name.toLowerCase().includes('spider')
+  const isIronMan = character.id.includes('iron') || character.name.toLowerCase().includes('iron')
+  const isBatman = character.id.includes('bat') || character.name.toLowerCase().includes('bat')
+
+  // Dynamic speech line
+  const speechText = hasAlert
+    ? isSpider
+      ? `🕷️ Spider-Sense tingling! ${urgentCount} assignments due soon! Tap me to solve!`
+      : `⚠️ Priority Alert! ${urgentCount} assignments due soon! Tap to view solutions.`
+    : isSpider
+    ? `Hey! Need a hand with your classes? Click me to start!`
+    : isIronMan
+    ? `Stark AI online. Ready to optimize your coursework.`
+    : `Knowledge is power. Tap me anytime for study guidance.`
+
+  if (isMinimized) {
+    return (
+      <button
+        onClick={() => setIsMinimized(false)}
+        className="fixed bottom-20 right-4 sm:right-6 z-40 bg-white/95 hover:bg-white border border-rose-200/80 px-2.5 py-1.5 rounded-2xl shadow-lg flex items-center gap-1.5 text-[11px] font-bold text-rose-700 transition-all hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs"
+        title="Show Animated Hero Mascot"
+      >
+        <span>{character.avatarEmoji || '🕷️'}</span>
+        <span>Play Mascot</span>
+      </button>
+    )
+  }
+
+  return (
+    <div className="fixed bottom-20 sm:bottom-24 right-3 sm:right-6 z-40 pointer-events-auto flex flex-col items-end select-none">
+      {/* 1. Comic Speech Bubble */}
+      <div className="animate-speech-float relative mb-1.5 max-w-[210px] sm:max-w-[240px] bg-white rounded-2xl p-2.5 shadow-xl border-2 border-slate-800 text-slate-800 text-[11px] font-bold leading-tight">
+        {/* Minimize Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            setIsMinimized(true)
+          }}
+          className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 border border-slate-300 flex items-center justify-center text-[10px] shadow-xs cursor-pointer"
+          title="Minimize mascot animation"
+        >
+          ✕
+        </button>
+
+        <div
+          onClick={onOpenChat}
+          className="cursor-pointer hover:text-rose-600 transition-colors"
+        >
+          <p>{speechText}</p>
+          <span className="text-[9px] text-indigo-600 font-semibold block mt-1">
+            Tap to open {character.name} →
+          </span>
+        </div>
+
+        {/* Speech Bubble Arrow Tail */}
+        <div className="absolute -bottom-2 right-6 w-3 h-3 bg-white border-b-2 border-r-2 border-slate-800 transform rotate-45" />
+      </div>
+
+      {/* 2. Character Sprite Stage */}
+      <div
+        onClick={onOpenChat}
+        className="relative cursor-pointer group transition-transform hover:scale-105 active:scale-95"
+        title={`Click to study with ${character.name}!`}
+      >
+        {/* Spider-Sense Electric Radiating Waves (When Alert Active) */}
+        {hasAlert && isSpider && (
+          <div className="absolute -top-6 -left-6 -right-6 -bottom-6 pointer-events-none flex items-center justify-center">
+            <span className="animate-spider-sense absolute w-28 h-28 rounded-full border-2 border-amber-400 bg-amber-400/15" />
+            <span
+              className="animate-spider-sense absolute w-36 h-36 rounded-full border-2 border-rose-500 bg-rose-500/10"
+              style={{ animationDelay: '0.4s' }}
+            />
+          </div>
+        )}
+
+        {/* SPIDER-MAN ANIMATED SPRITE (Flagship Hero) */}
+        {isSpider && (
+          <div className="animate-spider-swing w-28 h-36 sm:w-32 sm:h-40 relative flex items-center justify-center filter drop-shadow-xl">
+            <svg viewBox="0 0 120 160" className="w-full h-full overflow-visible">
+              {/* Web line descending from top */}
+              <line
+                x1="60"
+                y1="-20"
+                x2="60"
+                y2="52"
+                stroke="#e2e8f0"
+                strokeWidth="2.5"
+                strokeDasharray="4 2"
+                className="opacity-90"
+              />
+              <circle cx="60" cy="50" r="3" fill="#cbd5e1" />
+
+              {/* Spider-Man Body (Dynamic Web-Hanging / Crouching Pose) */}
+              <g transform="translate(10, 20)">
+                {/* Left Arm reaching up holding web */}
+                <path
+                  d="M 50,32 Q 52,20 50,10"
+                  fill="none"
+                  stroke="#dc2626"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                />
+                <circle cx="50" cy="10" r="3.5" fill="#dc2626" />
+
+                {/* Right Arm in web-shooter gesture */}
+                <path
+                  d="M 50,38 Q 68,44 76,32"
+                  fill="none"
+                  stroke="#dc2626"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                />
+                {/* Hand firing web spark */}
+                <circle cx="76" cy="32" r="3.5" fill="#dc2626" />
+                <path d="M 76,32 L 88,26 M 76,32 L 89,34 M 76,32 L 85,40" stroke="#f8fafc" strokeWidth="1.5" />
+
+                {/* Torso & Suit */}
+                <path
+                  d="M 38,32 C 36,48 40,62 50,68 C 60,62 64,48 62,32 Z"
+                  fill="#e11d48"
+                  stroke="#1e293b"
+                  strokeWidth="2"
+                />
+                {/* Blue Torso Flanks */}
+                <path d="M 38,36 C 36,46 39,56 44,62 L 40,46 Z" fill="#2563eb" />
+                <path d="M 62,36 C 64,46 61,56 56,62 L 60,46 Z" fill="#2563eb" />
+
+                {/* Spider Emblem on Chest */}
+                <ellipse cx="50" cy="46" rx="3.5" ry="5.5" fill="#0f172a" />
+                <path
+                  d="M 50,44 L 42,38 M 50,44 L 58,38 M 50,48 L 41,54 M 50,48 L 59,54"
+                  stroke="#0f172a"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+
+                {/* Legs in acrobatic crouch */}
+                <path
+                  d="M 44,65 Q 32,74 38,88 Q 44,88 46,78"
+                  fill="#2563eb"
+                  stroke="#1e293b"
+                  strokeWidth="2"
+                />
+                {/* Red Boots */}
+                <path d="M 36,84 Q 42,88 44,92 L 34,92 Z" fill="#e11d48" />
+
+                <path
+                  d="M 56,65 Q 68,74 62,88 Q 56,88 54,78"
+                  fill="#2563eb"
+                  stroke="#1e293b"
+                  strokeWidth="2"
+                />
+                <path d="M 64,84 Q 58,88 56,92 L 66,92 Z" fill="#e11d48" />
+
+                {/* Mask Head */}
+                <g transform="translate(0, -6)">
+                  <path
+                    d="M 50,14 C 36,14 30,28 30,42 C 30,56 40,66 50,66 C 60,66 70,56 70,42 C 70,28 64,14 50,14 Z"
+                    fill="#e11d48"
+                    stroke="#0f172a"
+                    strokeWidth="2.5"
+                  />
+                  {/* Subtle Webbing Lines */}
+                  <line x1="50" y1="14" x2="50" y2="66" stroke="#9f1239" strokeWidth="1.2" opacity="0.6" />
+                  <line x1="30" y1="42" x2="70" y2="42" stroke="#9f1239" strokeWidth="1.2" opacity="0.6" />
+                  <ellipse cx="50" cy="40" rx="14" ry="12" fill="none" stroke="#9f1239" strokeWidth="1" opacity="0.5" />
+
+                  {/* Iconic Big Expressive White Eyes */}
+                  <path
+                    d="M 36,36 C 38,30 46,28 48,37 C 47,45 42,48 36,36 Z"
+                    fill="#ffffff"
+                    stroke="#0f172a"
+                    strokeWidth="3"
+                  />
+                  <path
+                    d="M 64,36 C 62,30 54,28 52,37 C 53,45 58,48 64,36 Z"
+                    fill="#ffffff"
+                    stroke="#0f172a"
+                    strokeWidth="3"
+                  />
+                </g>
+              </g>
+            </svg>
+          </div>
+        )}
+
+        {/* IRON MAN ANIMATED SPRITE */}
+        {!isSpider && isIronMan && (
+          <div className="animate-spider-bob w-28 h-36 sm:w-32 sm:h-40 relative flex items-center justify-center filter drop-shadow-xl">
+            <svg viewBox="0 0 120 160" className="w-full h-full overflow-visible">
+              {/* Repulsor Boot Thrust Flames */}
+              <g className="animate-repulsor-flame" transform="translate(0, 115)">
+                <ellipse cx="45" cy="10" rx="6" ry="12" fill="#f59e0b" opacity="0.9" />
+                <ellipse cx="45" cy="8" rx="3" ry="8" fill="#fef08a" />
+                <ellipse cx="75" cy="10" rx="6" ry="12" fill="#f59e0b" opacity="0.9" />
+                <ellipse cx="75" cy="8" rx="3" ry="8" fill="#fef08a" />
+              </g>
+
+              {/* Iron Man Armor Body */}
+              <g transform="translate(10, 10)">
+                <path
+                  d="M 35,40 C 35,65 42,88 50,96 C 58,88 65,65 65,40 Z"
+                  fill="#b91c1c"
+                  stroke="#7f1d1d"
+                  strokeWidth="2"
+                />
+                <path d="M 40,45 L 45,70 L 50,72 L 55,70 L 60,45 Z" fill="#f59e0b" />
+
+                {/* Glowing Arc Reactor */}
+                <circle cx="50" cy="56" r="8" fill="#38bdf8" className="animate-arc-reactor" />
+                <circle cx="50" cy="56" r="4.5" fill="#f0f9ff" />
+
+                <path d="M 35,42 Q 22,54 26,70" fill="none" stroke="#b91c1c" strokeWidth="8" strokeLinecap="round" />
+                <path d="M 65,42 Q 78,54 74,70" fill="none" stroke="#b91c1c" strokeWidth="8" strokeLinecap="round" />
+
+                {/* Helmet */}
+                <g transform="translate(0, -6)">
+                  <path
+                    d="M 50,12 C 34,12 28,26 28,45 C 28,62 38,70 50,70 C 62,70 72,62 72,45 C 72,26 66,12 50,12 Z"
+                    fill="#b91c1c"
+                    stroke="#7f1d1d"
+                    strokeWidth="2"
+                  />
+                  <path
+                    d="M 50,20 C 38,20 34,32 34,48 C 34,62 42,66 50,66 C 58,66 66,62 66,48 C 66,32 62,20 50,20 Z"
+                    fill="#f59e0b"
+                  />
+                  <rect x="38" y="44" width="8" height="3" rx="1.5" fill="#38bdf8" className="animate-pulse" />
+                  <rect x="54" y="44" width="8" height="3" rx="1.5" fill="#38bdf8" className="animate-pulse" />
+                </g>
+              </g>
+            </svg>
+          </div>
+        )}
+
+        {/* BATMAN / OTHER / CUSTOM ANIMATED SPRITE */}
+        {!isSpider && !isIronMan && (
+          <div className="animate-spider-bob w-28 h-36 sm:w-32 sm:h-40 relative flex items-center justify-center filter drop-shadow-xl">
+            <svg viewBox="0 0 120 160" className="w-full h-full overflow-visible">
+              <path
+                d="M 35,45 Q 15,90 20,130 Q 50,118 60,130 Q 70,118 100,130 Q 105,90 85,45 Z"
+                fill="#0f172a"
+                className="animate-cape-flutter"
+              />
+
+              <g transform="translate(10, 15)">
+                <path
+                  d="M 38,40 C 38,65 42,88 50,96 C 58,88 62,65 62,40 Z"
+                  fill="#1e293b"
+                  stroke="#0f172a"
+                  strokeWidth="2"
+                />
+                <rect x="42" y="80" width="16" height="5" rx="2" fill="#eab308" />
+
+                <path
+                  d="M 34,14 L 40,30 C 44,28 56,28 60,30 L 66,14 L 64,42 C 66,54 62,64 50,66 C 38,64 34,54 36,42 Z"
+                  fill="#0f172a"
+                />
+                <path d="M 44,52 Q 50,60 56,52 Z" fill="#fed7aa" />
+                <polygon points="40,38 48,41 42,43" fill="#ffffff" />
+                <polygon points="60,38 52,41 58,43" fill="#ffffff" />
+              </g>
+            </svg>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -308,15 +610,17 @@ function renderInlineMarkdown(str) {
 export default function AICompanionWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [characterId, setCharacterId] = useState(() => {
-    return localStorage.getItem('cv_ai_character') || 'spiderman'
+    return localStorage.getItem('cv_ai_favourite_character') || 'spiderman'
   })
+  const [customHeroInput, setCustomHeroInput] = useState('')
   const [showHeroModal, setShowHeroModal] = useState(false)
+  const [isMascotMinimized, setIsMascotMinimized] = useState(false)
   const [inputMessage, setInputMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [activeQuizState, setActiveQuizState] = useState(null)
   const [hasNewAlert, setHasNewAlert] = useState(true)
 
-  const activeChar = HERO_CHARACTERS[characterId] || HERO_CHARACTERS.spiderman
+  const activeChar = getOrCreateHeroCharacter(characterId)
 
   // Chat message history stored in localStorage
   const [messages, setMessages] = useState(() => {
@@ -328,12 +632,13 @@ export default function AICompanionWidget() {
     } catch {
       // fallback
     }
+    const initialChar = getOrCreateHeroCharacter(characterId)
     return [
       {
         id: 'msg-init-1',
         sender: 'hero',
-        characterId: 'spiderman',
-        text: HERO_CHARACTERS.spiderman.greeting,
+        characterId: initialChar.id,
+        text: initialChar.greeting,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
     ]
@@ -342,7 +647,7 @@ export default function AICompanionWidget() {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
-    localStorage.setItem('cv_ai_character', characterId)
+    localStorage.setItem('cv_ai_favourite_character', characterId)
   }, [characterId])
 
   useEffect(() => {
@@ -362,17 +667,19 @@ export default function AICompanionWidget() {
     return () => window.removeEventListener('open-ai-mentor', handleOpenEvent)
   }, [characterId])
 
-  // Change character with a welcoming initial note
-  const handleSelectCharacter = (newId) => {
-    setCharacterId(newId)
+  // Handle setting favourite character chosen by the user
+  const handleSetCustomCharacter = (charName) => {
+    if (!charName || !charName.trim()) return
+    const resolvedChar = getOrCreateHeroCharacter(charName.trim())
+    setCharacterId(resolvedChar.id)
     setShowHeroModal(false)
-    const newChar = HERO_CHARACTERS[newId]
+    setCustomHeroInput('')
 
     const introMsg = {
       id: `msg-${Date.now()}`,
       sender: 'hero',
-      characterId: newId,
-      text: newChar.greeting,
+      characterId: resolvedChar.id,
+      text: resolvedChar.greeting,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     }
     setMessages((prev) => [...prev, introMsg])
@@ -468,27 +775,25 @@ export default function AICompanionWidget() {
 
   return (
     <>
-      {/* 1. Floating Action Launcher Button */}
-      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center gap-3">
-        {/* Pulsing Spider-Sense / Deadline Alert Tooltip */}
-        {!isOpen && hasNewAlert && urgentCount > 0 && (
-          <button
-            onClick={() => {
-              setIsOpen(true)
+      {/* 1. Interactive Animated Hero Mascot Playing on Screen */}
+      {!isOpen && (
+        <AnimatedHeroMascot
+          character={activeChar}
+          hasAlert={hasNewAlert && urgentCount > 0}
+          urgentCount={urgentCount}
+          onOpenChat={() => {
+            setIsOpen(true)
+            if (urgentCount > 0) {
               handleSendMessage('What assignments are due soon and how do I solve them?')
-            }}
-            className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-2xl bg-white border border-rose-200 shadow-xl shadow-rose-500/10 text-xs font-semibold text-rose-700 animate-bounce cursor-pointer hover:bg-rose-50 transition-all"
-          >
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-600"></span>
-            </span>
-            <span>
-              <strong>{activeChar.name}:</strong> {urgentCount} Assignments Due!
-            </span>
-          </button>
-        )}
+            }
+          }}
+          isMinimized={isMascotMinimized}
+          setIsMinimized={setIsMascotMinimized}
+        />
+      )}
 
+      {/* 2. Floating Action Launcher Button */}
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center gap-3">
         <button
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Open AI Character Mentor"
@@ -524,7 +829,7 @@ export default function AICompanionWidget() {
         </button>
       </div>
 
-      {/* 2. Main Responsive AI Chat Window */}
+      {/* 3. Main Responsive AI Chat Window */}
       {isOpen && (
         <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-20 sm:right-6 sm:w-[450px] max-h-[92vh] sm:max-h-[660px] h-[85vh] sm:h-[620px] bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border border-slate-200/80 z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200">
           {/* A. Header Bar with Dynamic Hero Gradient */}
@@ -551,19 +856,22 @@ export default function AICompanionWidget() {
             <div className="flex items-center gap-1.5">
               {/* Change Character Button */}
               <button
-                onClick={() => setShowHeroModal(true)}
-                title="Switch Superhero Mentor"
-                className="p-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-all text-xs font-semibold flex items-center gap-1 border border-white/20"
+                onClick={() => {
+                  setCustomHeroInput(activeChar.name)
+                  setShowHeroModal(true)
+                }}
+                title="Choose Favourite Character"
+                className="p-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-all text-xs font-semibold flex items-center gap-1 border border-white/20 cursor-pointer"
               >
-                <Users size={14} />
-                <span className="hidden sm:inline text-[11px]">Heroes</span>
+                <Sparkles size={14} className="text-amber-300" />
+                <span className="hidden sm:inline text-[11px]">My Character</span>
               </button>
 
               {/* Reset History */}
               <button
                 onClick={handleResetConversation}
                 title="Clear Chat History"
-                className="p-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-all"
+                className="p-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-all cursor-pointer"
               >
                 <RotateCcw size={14} />
               </button>
@@ -571,7 +879,7 @@ export default function AICompanionWidget() {
               {/* Close Button */}
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-all"
+                className="p-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-all cursor-pointer"
               >
                 <X size={16} />
               </button>
@@ -587,7 +895,7 @@ export default function AICompanionWidget() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
                 </span>
                 <span className="text-[11px] font-bold text-rose-900 truncate">
-                  {characterId === 'spiderman' ? '🕷️ Spider-Sense:' : '🚨 Deadline Radar:'}{' '}
+                  {characterId.includes('spider') ? '🕷️ Spider-Sense:' : '🚨 Deadline Radar:'}{' '}
                   {urgentCount} assignment(s) due within 48h!
                 </span>
               </div>
@@ -595,7 +903,7 @@ export default function AICompanionWidget() {
                 onClick={() =>
                   handleSendMessage('What assignments are due soon and how do I solve them?')
                 }
-                className="text-[11px] font-bold text-rose-700 hover:text-rose-900 bg-white/80 border border-rose-200 px-2 py-0.5 rounded-lg shadow-xs shrink-0 transition-colors"
+                className="text-[11px] font-bold text-rose-700 hover:text-rose-900 bg-white/80 border border-rose-200 px-2 py-0.5 rounded-lg shadow-xs shrink-0 transition-colors cursor-pointer"
               >
                 Solve Now
               </button>
@@ -606,7 +914,7 @@ export default function AICompanionWidget() {
           <div className="flex-1 overflow-y-auto p-3.5 sm:p-4 space-y-4 bg-slate-50/60">
             {messages.map((msg) => {
               const isHero = msg.sender === 'hero'
-              const senderChar = HERO_CHARACTERS[msg.characterId || characterId] || activeChar
+              const senderChar = getOrCreateHeroCharacter(msg.characterId || characterId)
 
               return (
                 <div
@@ -629,7 +937,7 @@ export default function AICompanionWidget() {
                     {isHero && (
                       <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-slate-100 text-[10px] text-slate-400">
                         <span className="font-bold text-slate-700 flex items-center gap-1">
-                          <span>{senderChar.avatarEmoji}</span>
+                          <span>{senderChar.avatarEmoji || '✨'}</span>
                           {senderChar.name}
                         </span>
                         <span>{msg.timestamp}</span>
@@ -711,15 +1019,7 @@ export default function AICompanionWidget() {
                     />
                   </div>
                   <span className="text-xs text-slate-500 italic">
-                    {characterId === 'spiderman'
-                      ? 'Spider-Man is consulting his notes...'
-                      : characterId === 'ironman'
-                      ? 'J.A.R.V.I.S. is calculating solution...'
-                      : characterId === 'batman'
-                      ? 'Batman is analyzing target problem...'
-                      : characterId === 'hermione'
-                      ? 'Hermione is researching textbooks...'
-                      : 'Einstein is contemplating thought experiment...'}
+                    {activeChar.name} is calculating solution...
                   </span>
                 </div>
               </div>
@@ -734,7 +1034,7 @@ export default function AICompanionWidget() {
               <button
                 key={idx}
                 onClick={() => handleSendMessage(chip.query)}
-                className="whitespace-nowrap px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 border border-slate-200/60 text-slate-700 text-[11px] font-medium transition-all shadow-2xs"
+                className="whitespace-nowrap px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 border border-slate-200/60 text-slate-700 text-[11px] font-medium transition-all shadow-2xs cursor-pointer"
               >
                 {chip.label}
               </button>
@@ -767,72 +1067,105 @@ export default function AICompanionWidget() {
         </div>
       )}
 
-      {/* 3. Hero Selector Modal */}
+      {/* 4. Favourite Character Customizer Modal (No Static List - Student Picks Any Favourite Character!) */}
       {showHeroModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
               <div>
                 <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2">
                   <Sparkles size={18} className="text-amber-500" />
-                  Select Your AI Superhero Mentor
+                  Choose Your Favourite Character
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Choose your favourite character to guide your studies & notify deadlines.
+                  Select or type any character you love to be your live animated companion.
                 </p>
               </div>
               <button
                 onClick={() => setShowHeroModal(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer"
               >
                 <X size={20} />
               </button>
             </div>
 
-            <div className="space-y-3">
-              {Object.values(HERO_CHARACTERS).map((hero) => {
-                const isSelected = hero.id === characterId
-                return (
-                  <div
-                    key={hero.id}
-                    onClick={() => handleSelectCharacter(hero.id)}
-                    className={`p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex items-center justify-between gap-3.5 ${
-                      isSelected
-                        ? 'border-indigo-600 bg-indigo-50/60 shadow-md ring-1 ring-indigo-600'
-                        : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50/80'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <CharacterAvatar characterId={hero.id} size={46} />
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-bold text-sm text-slate-900">{hero.name}</h4>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-slate-100 text-slate-600">
-                            {hero.realName}
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-500 mt-0.5">{hero.title}</p>
-                        <p className="text-[11px] text-indigo-700 italic mt-1 font-serif">
-                          "{hero.tagline}"
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="shrink-0">
-                      {isSelected ? (
-                        <span className="px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs shadow-xs flex items-center gap-1">
-                          <Check size={14} /> Active
-                        </span>
-                      ) : (
-                        <span className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors">
-                          Switch
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )
-              })}
+            {/* Current Active Character Preview */}
+            <div className="p-3.5 rounded-2xl bg-gradient-to-r from-rose-500/10 via-indigo-500/10 to-amber-500/10 border border-indigo-200/60 flex items-center gap-3.5 mb-4">
+              <CharacterAvatar characterId={characterId} size={46} />
+              <div className="overflow-hidden">
+                <span className="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">
+                  Current Companion
+                </span>
+                <h4 className="font-bold text-slate-900 text-sm">{activeChar.name}</h4>
+                <p className="text-xs text-slate-500 truncate">{activeChar.tagline}</p>
+              </div>
             </div>
+
+            {/* Interactive Character Input Form */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                if (customHeroInput.trim()) {
+                  handleSetCustomCharacter(customHeroInput.trim())
+                }
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Enter Your Favourite Character Name:
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={customHeroInput}
+                    onChange={(e) => setCustomHeroInput(e.target.value)}
+                    placeholder="e.g. Spider-Man, Iron Man, Batman, Naruto..."
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 text-sm text-slate-900 font-medium placeholder:text-slate-400"
+                    autoFocus
+                  />
+                </div>
+              </div>
+
+              {/* Quick Inspiration Pills */}
+              <div>
+                <span className="text-[11px] font-semibold text-slate-400 block mb-1.5">
+                  Quick Suggestions (click to auto-fill):
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    'Spider-Man 🕷️',
+                    'Iron Man 🦾',
+                    'Batman 🦇',
+                    'Hermione Granger ⚡',
+                    'Albert Einstein 🔬',
+                    'Naruto Uzumaki 🍥',
+                    'Goku ⚡',
+                  ].map((name) => {
+                    const cleanName = name.replace(/[^\w\s-]/g, '').trim()
+                    return (
+                      <button
+                        type="button"
+                        key={name}
+                        onClick={() => setCustomHeroInput(cleanName)}
+                        className="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-200/60 text-slate-700 text-xs font-medium transition-all cursor-pointer"
+                      >
+                        {name}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <button
+                type="submit"
+                disabled={!customHeroInput.trim()}
+                className="w-full py-3 rounded-2xl bg-gradient-to-r from-rose-600 via-indigo-600 to-indigo-700 hover:from-rose-700 hover:to-indigo-800 disabled:opacity-40 text-white font-bold text-sm shadow-md shadow-indigo-200 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Sparkles size={16} /> Bring Character to Life
+              </button>
+            </form>
           </div>
         </div>
       )}

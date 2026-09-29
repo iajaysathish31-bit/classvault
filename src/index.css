@@ -9,3 +9,125 @@ html, body {
 body {
   background-color: #F4F6FC;
 }
+
+/* --- Superhero Mascot Animations --- */
+@keyframes spiderSwing {
+  0% {
+    transform: rotate(-6deg) translateY(0px);
+  }
+  50% {
+    transform: rotate(6deg) translateY(-8px);
+  }
+  100% {
+    transform: rotate(-6deg) translateY(0px);
+  }
+}
+
+@keyframes spiderBob {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.02);
+  }
+}
+
+@keyframes spiderSenseFlash {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes comicSpeechFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes arcReactorPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px #38bdf8) drop-shadow(0 0 8px #0284c7);
+    opacity: 0.9;
+  }
+  50% {
+    filter: drop-shadow(0 0 10px #38bdf8) drop-shadow(0 0 16px #38bdf8);
+    opacity: 1;
+  }
+}
+
+@keyframes repulsorFlicker {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scaleY(1.35) scaleX(0.9);
+    opacity: 1;
+  }
+}
+
+@keyframes capeFlutter {
+  0%, 100% {
+    transform: skewX(-2deg) scaleX(1);
+  }
+  50% {
+    transform: skewX(3deg) scaleX(1.04);
+  }
+}
+
+@keyframes webShootLine {
+  0% {
+    stroke-dashoffset: 200;
+    opacity: 1;
+  }
+  80% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+.animate-spider-swing {
+  transform-origin: top center;
+  animation: spiderSwing 4.5s ease-in-out infinite;
+}
+
+.animate-spider-bob {
+  animation: spiderBob 3s ease-in-out infinite;
+}
+
+.animate-spider-sense {
+  animation: spiderSenseFlash 1.8s ease-out infinite;
+}
+
+.animate-speech-float {
+  animation: comicSpeechFloat 3.5s ease-in-out infinite;
+}
+
+.animate-arc-reactor {
+  animation: arcReactorPulse 2s ease-in-out infinite;
+}
+
+.animate-repulsor-flame {
+  animation: repulsorFlicker 0.4s ease-in-out infinite alternate;
+}
+
+.animate-cape-flutter {
+  transform-origin: top left;
+  animation: capeFlutter 3s ease-in-out infinite;
+}

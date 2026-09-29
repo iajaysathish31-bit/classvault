@@ -145,6 +145,72 @@ export const HERO_CHARACTERS = {
   },
 }
 
+// Dynamic Character Resolver: Accepts ANY character name entered by the user
+export function getOrCreateHeroCharacter(characterNameOrId) {
+  if (!characterNameOrId) return HERO_CHARACTERS.spiderman
+
+  const clean = characterNameOrId.trim().toLowerCase()
+
+  // 1. Direct key match or alias match
+  for (const [key, hero] of Object.entries(HERO_CHARACTERS)) {
+    if (
+      key === clean ||
+      hero.id.toLowerCase() === clean ||
+      hero.name.toLowerCase() === clean ||
+      hero.realName.toLowerCase() === clean ||
+      clean.includes(hero.name.toLowerCase()) ||
+      hero.name.toLowerCase().includes(clean)
+    ) {
+      return hero
+    }
+  }
+
+  // 2. Special aliases for popular heroes
+  if (clean.includes('spider') || clean.includes('peter')) return HERO_CHARACTERS.spiderman
+  if (clean.includes('iron') || clean.includes('stark') || clean.includes('tony')) return HERO_CHARACTERS.ironman
+  if (clean.includes('bat') || clean.includes('bruce') || clean.includes('wayne')) return HERO_CHARACTERS.batman
+  if (clean.includes('hermione') || clean.includes('granger') || clean.includes('potter')) return HERO_CHARACTERS.hermione
+  if (clean.includes('einstein') || clean.includes('albert')) return HERO_CHARACTERS.einstein
+
+  // 3. Dynamic Custom Character Profile for ANY character entered by the user!
+  const capitalized = characterNameOrId
+    .trim()
+    .split(/\s+/)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(' ')
+
+  const safeId = clean.replace(/[^a-z0-9]/g, '_')
+
+  return {
+    id: safeId,
+    name: capitalized,
+    realName: capitalized,
+    title: `${capitalized} · Your Personal Academic Companion`,
+    badge: 'Custom Hero Tutor',
+    themeColor: 'from-violet-600 via-indigo-600 to-sky-600',
+    primaryColor: '#7c3aed',
+    secondaryColor: '#0284c7',
+    accentBorder: 'border-violet-500/30',
+    headerBg: 'bg-gradient-to-r from-violet-700 via-indigo-700 to-sky-700',
+    tagline: `Learning is your superpower with ${capitalized}!`,
+    alertTitle: `⚡ ${capitalized.toUpperCase()} PRIORITY ALERT`,
+    alertSubtitle: `Critical academic milestone flagged by ${capitalized}!`,
+    avatarEmoji: '⚡',
+    avatarSvg: 'custom',
+    greeting: `Hey! ${capitalized} here—your personal AI mentor! Ready to conquer Software Engineering, derive Physics formulas, review Research Methodology, or program IoT microcontrollers together. What are we solving today?`,
+    voiceTone: 'enthusiastic, supportive, focused on mastering your university classes',
+    quickPrompts: [
+      { label: `🚨 ${capitalized}'s Deadlines`, query: 'What assignments are due soon and how do I solve them?' },
+      { label: '💻 Software Eng MVC & SOLID', query: 'Can you explain the MVC pattern and SOLID principles in Software Engineering?' },
+      { label: '⚛️ Physics Landé g-Factor', query: 'How do I calculate the Lande g-factor for 2P3/2 and 2S1/2 states in Physics?' },
+      { label: '📡 ESP32 MQTT Firmware', query: 'Show me C/C++ firmware code to connect ESP32 to MQTT for IoT.' },
+      { label: '📝 Research SLR Matrix', query: 'How do I build a Systematic Literature Review matrix for Research Methodology?' },
+      { label: '🎯 Knowledge Quiz', query: 'Give me a quick multiple-choice quiz on my classes!' },
+    ],
+  }
+}
+
+
 // Student's 4 Official Enrolled Subjects Data
 export const STUDENT_COURSES = {
   '24CSC2T351': {
@@ -329,7 +395,7 @@ export const QUIZ_QUESTIONS = [
 
 // Natural Query Keyword Matchers & Solution Generators
 export function generateAIResponse(userText, characterId = 'spiderman', contextData = {}) {
-  const char = HERO_CHARACTERS[characterId] || HERO_CHARACTERS.spiderman
+  const char = getOrCreateHeroCharacter(characterId)
   const text = (userText || '').toLowerCase().trim()
 
   // 1. DEADLINE / SPIDER-SENSE NOTIFICATION QUERY
@@ -499,6 +565,18 @@ function formatCharacterVoice(char, content, context = 'normal') {
     } else {
       prefix = `🔬 **Albert Einstein:** `
       suffix = `\n\n*Never stop questioning the underlying mechanics!*`
+    }
+  } else {
+    // Dynamic Custom Character Voice
+    if (context === 'urgent') {
+      prefix = `⚡ **[${char.name.toUpperCase()} CRITICAL ALERT]** *Heads up! Urgent university deadlines detected within 48 hours!*\n\n`
+      suffix = `\n\n*${char.name} says: Don't wait until the last minute. Swing into action now!*`
+    } else if (context === 'challenge') {
+      prefix = `⚡ **${char.name}'s Academic Challenge:**\n\n`
+      suffix = `\n\n*${char.tagline}*`
+    } else {
+      prefix = `✨ **${char.name}:** `
+      suffix = `\n\n*${char.tagline}*`
     }
   }
 
