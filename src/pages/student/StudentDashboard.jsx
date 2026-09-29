@@ -74,14 +74,14 @@ export default function StudentDashboard() {
                 onClick={() => {
                   window.dispatchEvent(
                     new CustomEvent('open-ai-mentor', {
-                      detail: { query: 'What assignments are due soon and how do I solve them?' },
+                      detail: { query: 'Yo Homie! What assignments do I have due soon?' },
                     })
                   )
                 }}
-                className="bg-rose-500 hover:bg-rose-600 text-white font-semibold px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm transition-all shadow-md shrink-0 flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95"
+                className="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white font-semibold px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm transition-all shadow-md shrink-0 flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95"
               >
-                <span>🕷️</span>
-                <span>Spider-Man AI</span>
+                <Sparkles size={16} className="text-emerald-400" />
+                <span>Talk to ur Homie</span>
               </button>
               <Link
                 to="/student/classes"

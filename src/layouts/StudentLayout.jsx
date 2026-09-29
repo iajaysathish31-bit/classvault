@@ -123,33 +123,35 @@ export default function StudentLayout({ children }) {
                 })}
               </nav>
 
-              {/* Mobile Hero Mentor Launcher Button */}
+              {/* Mobile Homie AI Launcher Button */}
               <div className="mt-4 px-1">
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false)
                     window.dispatchEvent(
                       new CustomEvent('open-ai-mentor', {
-                        detail: { query: 'What assignments are due soon and how do I solve them?' },
+                        detail: { query: 'Yo Homie! What assignments do I have due soon?' },
                       })
                     )
                   }}
-                  className="w-full p-3 rounded-2xl bg-gradient-to-r from-rose-500/10 via-indigo-500/10 to-amber-500/10 border border-rose-200/80 hover:border-rose-400 text-left transition-all group flex items-center justify-between"
+                  className="w-full p-3 rounded-2xl bg-slate-900 border border-slate-700 text-left transition-all group flex items-center justify-between shadow-sm cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <span className="text-xl">🕷️</span>
+                    <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                      <Sparkles size={16} />
+                    </div>
                     <div>
-                      <span className="block text-xs font-bold text-slate-800 group-hover:text-rose-600 transition-colors">
-                        Spider-Man AI Tutor
+                      <span className="block text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">
+                        Talk to ur Homie
                       </span>
-                      <span className="block text-[10px] text-slate-500">
-                        Tap for instant hints & deadlines
+                      <span className="block text-[10px] text-slate-400">
+                        GPT-4o Vision & Camera Solver
                       </span>
                     </div>
                   </div>
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-600"></span>
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                   </span>
                 </button>
               </div>
@@ -233,32 +235,34 @@ export default function StudentLayout({ children }) {
             })}
           </nav>
 
-          {/* Desktop AI Hero Tutor Callout Card */}
+          {/* Desktop Homie AI Callout Card */}
           <div className="mx-3 mt-4">
             <button
               onClick={() => {
                 window.dispatchEvent(
                   new CustomEvent('open-ai-mentor', {
-                    detail: { query: 'What assignments are due soon and how do I solve them?' },
+                    detail: { query: 'Yo Homie! What assignments do I have due soon?' },
                   })
                 )
               }}
-              className="w-full p-3 rounded-2xl bg-gradient-to-br from-rose-500/10 via-indigo-500/10 to-amber-500/10 border border-rose-200/80 hover:border-rose-400 text-left transition-all group cursor-pointer shadow-xs"
+              className="w-full p-3 rounded-2xl bg-slate-900 border border-slate-700 hover:border-emerald-500/50 text-left transition-all group cursor-pointer shadow-md"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-base">🕷️</span>
-                  <span className="text-xs font-bold text-slate-800 group-hover:text-rose-600 transition-colors">
-                    Spider-Man AI Tutor
+                  <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                    <Sparkles size={14} />
+                  </div>
+                  <span className="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">
+                    Talk to ur Homie
                   </span>
                 </div>
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 leading-tight">
-                Spider-Sense active! Tap to solve pending assignments & study topics.
+              <p className="text-[11px] text-slate-400 leading-tight">
+                GPT-4o Vision & Academic Solver. Snap a photo or solve assignments.
               </p>
             </button>
           </div>

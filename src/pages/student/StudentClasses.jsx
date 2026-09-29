@@ -250,11 +250,11 @@ export default function StudentClasses() {
                                   })
                                 )
                               }}
-                              className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
-                              title="Ask AI Hero Mentor to explain this topic"
+                              className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
+                              title="Ask Homie AI to explain this topic"
                             >
-                              <span>🕷️</span>
-                              <span>Ask AI</span>
+                              <Sparkles size={13} className="text-emerald-600" />
+                              <span>Ask Homie</span>
                             </button>
 
                             <button

@@ -188,22 +188,22 @@ export default function StudentAssignments() {
           </div>
         </div>
 
-        {/* Spider-Sense AI Mentor Alert Banner */}
-        <div className="bg-gradient-to-r from-rose-500/10 via-indigo-500/10 to-amber-500/10 border border-rose-200 p-4 rounded-2xl sm:rounded-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+        {/* Talk to ur Homie AI Banner */}
+        <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl sm:rounded-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md text-white">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-600 to-indigo-600 text-white flex items-center justify-center text-lg shadow-md shrink-0">
-              🕷️
+            <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg shadow-sm shrink-0">
+              <Sparkles size={20} />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-1.5">
-                Spider-Sense Assignment Radar Active
+              <h3 className="font-bold text-white text-sm sm:text-base flex items-center gap-2">
+                Talk to ur Homie · GPT-4o Vision Solver
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
               </h3>
-              <p className="text-xs text-slate-600 mt-0.5">
-                Need help solving <strong>Agile Architecture</strong> or <strong>Zeeman Landé g-factor</strong>? Your AI Hero Mentor is ready with full solutions!
+              <p className="text-xs text-slate-300 mt-0.5">
+                Stuck on <strong>Agile Architecture</strong> or <strong>Zeeman splitting</strong>? Snap a photo or upload your notes to get instant solutions!
               </p>
             </div>
           </div>
@@ -211,13 +211,13 @@ export default function StudentAssignments() {
             onClick={() => {
               window.dispatchEvent(
                 new CustomEvent('open-ai-mentor', {
-                  detail: { query: 'What assignments are due soon and how do I solve them?' },
+                  detail: { query: 'Yo Homie! What assignments do I have due soon?' },
                 })
               )
             }}
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-700 hover:to-indigo-700 text-white text-xs font-bold shadow-md shadow-rose-200 transition-all hover:scale-105 active:scale-95 shrink-0 flex items-center justify-center gap-2 cursor-pointer"
+            className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-bold shadow-md shadow-emerald-500/20 transition-all hover:scale-105 active:scale-95 shrink-0 flex items-center justify-center gap-2 cursor-pointer"
           >
-            <Sparkles size={14} /> Consult AI Mentor
+            <Sparkles size={15} /> Talk to ur Homie
           </button>
         </div>
 
@@ -398,16 +398,16 @@ export default function StudentAssignments() {
                             window.dispatchEvent(
                               new CustomEvent('open-ai-mentor', {
                                 detail: {
-                                  query: `How do I solve the assignment "${task.title}" for ${task.subjectName} (${task.subject})? Please give me step-by-step guidance, formulas, or code.`,
+                                  query: `Yo Homie! How do I solve the assignment "${task.title}" for ${task.subjectName} (${task.subject})? Please give me step-by-step guidance, formulas, or code.`,
                                 },
                               })
                             )
                           }}
-                          className="flex items-center gap-1.5 px-3 py-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-bold text-xs transition-all shadow-xs hover:scale-105 active:scale-95 cursor-pointer"
-                          title="Ask Spider-Man or AI Mentor for assignment hints"
+                          className="flex items-center gap-1.5 px-3 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-bold text-xs transition-all shadow-2xs hover:scale-105 active:scale-95 cursor-pointer"
+                          title="Ask Homie AI for assignment hints"
                         >
-                          <Sparkles size={13} className="text-rose-500" />
-                          <span>AI Hint</span>
+                          <Sparkles size={13} className="text-emerald-600" />
+                          <span>Ask Homie</span>
                         </button>
                         <button
                           onClick={() => handleOpenSubmit(task)}
