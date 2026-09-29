@@ -12,7 +12,9 @@ import {
   Sparkles,
   Menu,
   X,
+  Zap,
 } from 'lucide-react'
+import AICompanionWidget from '../components/AICompanionWidget.jsx'
 
 export default function StudentLayout({ children }) {
   const location = useLocation()
@@ -120,6 +122,37 @@ export default function StudentLayout({ children }) {
                   )
                 })}
               </nav>
+
+              {/* Mobile Hero Mentor Launcher Button */}
+              <div className="mt-4 px-1">
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    window.dispatchEvent(
+                      new CustomEvent('open-ai-mentor', {
+                        detail: { query: 'What assignments are due soon and how do I solve them?' },
+                      })
+                    )
+                  }}
+                  className="w-full p-3 rounded-2xl bg-gradient-to-r from-rose-500/10 via-indigo-500/10 to-amber-500/10 border border-rose-200/80 hover:border-rose-400 text-left transition-all group flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-xl">🕷️</span>
+                    <div>
+                      <span className="block text-xs font-bold text-slate-800 group-hover:text-rose-600 transition-colors">
+                        Spider-Man AI Tutor
+                      </span>
+                      <span className="block text-[10px] text-slate-500">
+                        Tap for instant hints & deadlines
+                      </span>
+                    </div>
+                  </div>
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-600"></span>
+                  </span>
+                </button>
+              </div>
             </div>
 
             {/* Drawer User Card */}
@@ -199,6 +232,36 @@ export default function StudentLayout({ children }) {
               )
             })}
           </nav>
+
+          {/* Desktop AI Hero Tutor Callout Card */}
+          <div className="mx-3 mt-4">
+            <button
+              onClick={() => {
+                window.dispatchEvent(
+                  new CustomEvent('open-ai-mentor', {
+                    detail: { query: 'What assignments are due soon and how do I solve them?' },
+                  })
+                )
+              }}
+              className="w-full p-3 rounded-2xl bg-gradient-to-br from-rose-500/10 via-indigo-500/10 to-amber-500/10 border border-rose-200/80 hover:border-rose-400 text-left transition-all group cursor-pointer shadow-xs"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-base">🕷️</span>
+                  <span className="text-xs font-bold text-slate-800 group-hover:text-rose-600 transition-colors">
+                    Spider-Man AI Tutor
+                  </span>
+                </div>
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 leading-tight">
+                Spider-Sense active! Tap to solve pending assignments & study topics.
+              </p>
+            </button>
+          </div>
         </div>
 
         {/* User Card & Logout */}
@@ -228,6 +291,9 @@ export default function StudentLayout({ children }) {
 
       {/* Main Content Area */}
       <main className="flex-1 min-w-0 overflow-x-hidden">{children}</main>
+
+      {/* AI Hero Companion Widget (Available across all student views) */}
+      <AICompanionWidget />
     </div>
   )
 }

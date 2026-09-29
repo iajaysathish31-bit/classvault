@@ -188,6 +188,39 @@ export default function StudentAssignments() {
           </div>
         </div>
 
+        {/* Spider-Sense AI Mentor Alert Banner */}
+        <div className="bg-gradient-to-r from-rose-500/10 via-indigo-500/10 to-amber-500/10 border border-rose-200 p-4 rounded-2xl sm:rounded-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-600 to-indigo-600 text-white flex items-center justify-center text-lg shadow-md shrink-0">
+              🕷️
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-1.5">
+                Spider-Sense Assignment Radar Active
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
+                </span>
+              </h3>
+              <p className="text-xs text-slate-600 mt-0.5">
+                Need help solving <strong>Agile Architecture</strong> or <strong>Zeeman Landé g-factor</strong>? Your AI Hero Mentor is ready with full solutions!
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              window.dispatchEvent(
+                new CustomEvent('open-ai-mentor', {
+                  detail: { query: 'What assignments are due soon and how do I solve them?' },
+                })
+              )
+            }}
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-700 hover:to-indigo-700 text-white text-xs font-bold shadow-md shadow-rose-200 transition-all hover:scale-105 active:scale-95 shrink-0 flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <Sparkles size={14} /> Consult AI Mentor
+          </button>
+        </div>
+
         {/* Tabs & Filter Bar */}
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Status Tabs */}
@@ -354,14 +387,31 @@ export default function StudentAssignments() {
                   {/* Right Actions & Meta */}
                   <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
                     {task.status === 'pending' && (
-                      <div className="flex items-center gap-3">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                         <div className="text-right">
                           <span className="text-[11px] text-slate-400 block font-medium">Deadline</span>
                           <span className="text-xs font-bold text-slate-800">{task.dueDate}</span>
                         </div>
                         <button
+                          type="button"
+                          onClick={() => {
+                            window.dispatchEvent(
+                              new CustomEvent('open-ai-mentor', {
+                                detail: {
+                                  query: `How do I solve the assignment "${task.title}" for ${task.subjectName} (${task.subject})? Please give me step-by-step guidance, formulas, or code.`,
+                                },
+                              })
+                            )
+                          }}
+                          className="flex items-center gap-1.5 px-3 py-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-bold text-xs transition-all shadow-xs hover:scale-105 active:scale-95 cursor-pointer"
+                          title="Ask Spider-Man or AI Mentor for assignment hints"
+                        >
+                          <Sparkles size={13} className="text-rose-500" />
+                          <span>AI Hint</span>
+                        </button>
+                        <button
                           onClick={() => handleOpenSubmit(task)}
-                          className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-100 transition-all hover:scale-105 active:scale-95"
+                          className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-100 transition-all hover:scale-105 active:scale-95 cursor-pointer"
                         >
                           <Upload size={14} /> Submit Work
                         </button>

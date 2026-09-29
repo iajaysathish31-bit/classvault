@@ -238,23 +238,43 @@ export default function StudentClasses() {
                             </div>
                           </div>
 
-                          <button
-                            onClick={() =>
-                              handleStatusChange(
-                                topic.topic_id,
-                                topic.topic_name,
-                                progress?.status || 'Pending'
-                              )
-                            }
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 self-end sm:self-center ${
-                              isReviewed
-                                ? 'bg-emerald-600 text-white shadow-xs'
-                                : 'bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200'
-                            }`}
-                          >
-                            <CheckCircle2 size={13} />
-                            {isReviewed ? 'Reviewed' : 'Mark as Reviewed'}
-                          </button>
+                          <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                window.dispatchEvent(
+                                  new CustomEvent('open-ai-mentor', {
+                                    detail: {
+                                      query: `Can you explain the syllabus topic "${topic.topic_name}" for ${selectedClassForTopics.subject} (${selectedClassForTopics.class_id})? Here is the course outline: ${topic.content}`,
+                                    },
+                                  })
+                                )
+                              }}
+                              className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
+                              title="Ask AI Hero Mentor to explain this topic"
+                            >
+                              <span>🕷️</span>
+                              <span>Ask AI</span>
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                handleStatusChange(
+                                  topic.topic_id,
+                                  topic.topic_name,
+                                  progress?.status || 'Pending'
+                                )
+                              }
+                              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                                isReviewed
+                                  ? 'bg-emerald-600 text-white shadow-xs'
+                                  : 'bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200'
+                              }`}
+                            >
+                              <CheckCircle2 size={13} />
+                              {isReviewed ? 'Reviewed' : 'Mark as Reviewed'}
+                            </button>
+                          </div>
                         </div>
                       </div>
                     )

@@ -69,6 +69,20 @@ export default function StudentDashboard() {
             </div>
 
             <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5 sm:gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  window.dispatchEvent(
+                    new CustomEvent('open-ai-mentor', {
+                      detail: { query: 'What assignments are due soon and how do I solve them?' },
+                    })
+                  )
+                }}
+                className="bg-rose-500 hover:bg-rose-600 text-white font-semibold px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm transition-all shadow-md shrink-0 flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95"
+              >
+                <span>🕷️</span>
+                <span>Spider-Man AI</span>
+              </button>
               <Link
                 to="/student/classes"
                 className="bg-white text-indigo-700 hover:bg-indigo-50 font-semibold px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm transition-all shadow-md shrink-0 flex items-center gap-2"
