@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import vijayMascotImg from '../assets/vijay_anime_mascot.png'
 import {
   HOMIE_PROFILE,
   PENDING_ASSIGNMENTS,
@@ -416,12 +417,38 @@ export default function AICompanionWidget() {
         className="hidden"
       />
 
-      {/* 1. Executive Professional Floating Action Button: "Talk to ur Homie" */}
-      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center gap-3">
+      {/* 1. Executive Professional Floating Action Button: "Talk to ur Homie" with Anime Mascot above */}
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end gap-1 pointer-events-none">
+        {/* Animated Anime Mascot doing signature chin swipe pose above button */}
+        {!isOpen && (
+          <div
+            onClick={() => setIsOpen(true)}
+            className="pointer-events-auto flex items-end gap-2 cursor-pointer group transition-all duration-300 hover:scale-105 mr-1 sm:mr-3"
+            title="Talk to ur Homie"
+          >
+            {/* Interactive speech tooltip bubble */}
+            <div className="hidden sm:flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/95 backdrop-blur-xs text-white text-[11px] font-semibold px-3 py-1.5 rounded-2xl shadow-xl border border-indigo-400/30 whitespace-nowrap mb-6">
+              <Sparkles size={12} className="text-amber-300" />
+              <span>Yo Homie! Ready to solve?</span>
+            </div>
+
+            <div
+              className="relative w-24 h-24 sm:w-28 sm:h-28 filter drop-shadow-2xl animate-bounce"
+              style={{ animationDuration: '3.5s' }}
+            >
+              <img
+                src={vijayMascotImg}
+                alt="Homie Anime Character doing signature swipe pose"
+                className="w-full h-full object-contain pointer-events-auto select-none"
+              />
+            </div>
+          </div>
+        )}
+
         <button
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Talk to ur Homie"
-          className="flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 hover:from-slate-800 hover:to-indigo-900 text-white border border-indigo-400/25 shadow-xl shadow-indigo-950/20 transition-all duration-300 hover:scale-105 active:scale-95 group cursor-pointer"
+          className="pointer-events-auto flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 hover:from-slate-800 hover:to-indigo-900 text-white border border-indigo-400/25 shadow-xl shadow-indigo-950/20 transition-all duration-300 hover:scale-105 active:scale-95 group cursor-pointer"
         >
           {/* Calm online indicator */}
           <span className="relative flex h-2 w-2">
