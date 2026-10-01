@@ -99,53 +99,73 @@ export default function StudentDashboard() {
           </div>
         </div>
 
-        {/* Quick KPI Cards */}
+        {/* Quick KPI Cards - Clickable Navigation */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 shadow-xs">
+          <Link
+            to="/student/classes"
+            title="View all enrolled university classes"
+            className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 hover:border-indigo-300 hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.99] group block cursor-pointer"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Enrolled Classes</span>
-              <BookOpen size={18} className="text-indigo-600" />
+              <span className="text-xs font-medium text-slate-400 group-hover:text-indigo-600 transition-colors">Enrolled Classes</span>
+              <BookOpen size={18} className="text-indigo-600 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-2">{classes.length}</p>
-            <span className="text-[11px] text-indigo-600 font-medium mt-0.5 block">
-              Active Cohorts
+            <span className="text-[11px] text-indigo-600 font-medium mt-0.5 flex items-center justify-between">
+              <span>Active Cohorts</span>
+              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
             </span>
-          </div>
+          </Link>
 
-          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 shadow-xs">
+          <Link
+            to="/student/classes"
+            title="Track course syllabus topics and progress"
+            className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 hover:border-emerald-300 hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.99] group block cursor-pointer"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Topics Reviewed</span>
-              <CheckCircle2 size={18} className="text-emerald-500" />
+              <span className="text-xs font-medium text-slate-400 group-hover:text-emerald-600 transition-colors">Topics Reviewed</span>
+              <CheckCircle2 size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-2">
               {totalReviewed} / {totalTopics}
             </p>
-            <span className="text-[11px] text-emerald-600 font-medium mt-0.5 block">
-              {overallRate}% Course Progress
+            <span className="text-[11px] text-emerald-600 font-medium mt-0.5 flex items-center justify-between">
+              <span>{overallRate}% Course Progress</span>
+              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
             </span>
-          </div>
+          </Link>
 
-          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 shadow-xs">
+          <Link
+            to="/student/vault"
+            title="Open study vault materials library"
+            className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 hover:border-violet-300 hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.99] group block cursor-pointer"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Vault Resources</span>
-              <FileText size={18} className="text-violet-600" />
+              <span className="text-xs font-medium text-slate-400 group-hover:text-violet-600 transition-colors">Vault Resources</span>
+              <FileText size={18} className="text-violet-600 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-2">{contents.length}</p>
-            <span className="text-[11px] text-violet-600 font-medium mt-0.5 block">
-              Materials Published
+            <span className="text-[11px] text-violet-600 font-medium mt-0.5 flex items-center justify-between">
+              <span>Materials Published</span>
+              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
             </span>
-          </div>
+          </Link>
 
-          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 shadow-xs">
+          <Link
+            to="/student/assignments"
+            title="View assignment deadlines and study tasks"
+            className="bg-white rounded-2xl p-4 sm:p-5 border border-indigo-100/80 hover:border-amber-300 hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.99] group block cursor-pointer"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-400">Daily Study Streak</span>
-              <Flame size={18} className="text-amber-500 fill-amber-500" />
+              <span className="text-xs font-medium text-slate-400 group-hover:text-amber-600 transition-colors">Daily Study Streak</span>
+              <Flame size={18} className="text-amber-500 fill-amber-500 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-2">5 Days</p>
-            <span className="text-[11px] text-amber-600 font-medium mt-0.5 block">
-              Top 10% on Campus
+            <span className="text-[11px] text-amber-600 font-medium mt-0.5 flex items-center justify-between">
+              <span>Top 10% on Campus</span>
+              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
             </span>
-          </div>
+          </Link>
         </div>
 
         {/* 2-Column Core Layout */}

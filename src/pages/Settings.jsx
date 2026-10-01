@@ -380,45 +380,6 @@ export default function Settings() {
                     </div>
                   </div>
                 </div>
-
-                {/* Danger Zone */}
-                <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-                  <h2 className="text-base font-semibold text-vault-navy mb-4">Danger Zone</h2>
-
-                  <div className="space-y-4 divide-y divide-gray-100">
-                    <div className="flex items-center justify-between pt-1">
-                      <div>
-                        <p className="text-sm font-medium text-vault-navy">Export my data</p>
-                        <p className="text-xs text-gray-400">
-                          Download a ZIP of all your notes, uploads, and activity.
-                        </p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => showSuccessToast('Data archive initiated. Check your downloads shortly.')}
-                        className="text-sm font-medium text-gray-600 border border-gray-200 rounded-xl px-4 py-1.5 hover:bg-gray-50 transition-colors"
-                      >
-                        Export
-                      </button>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-4">
-                      <div>
-                        <p className="text-sm font-medium text-red-600">Delete account</p>
-                        <p className="text-xs text-gray-400">
-                          Permanently removes your account. This cannot be undone.
-                        </p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => alert('Account deletion requires secondary confirmation.')}
-                        className="text-sm font-medium text-red-600 border border-red-200 rounded-xl px-4 py-1.5 hover:bg-red-50 transition-colors"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
               </>
             )}
 

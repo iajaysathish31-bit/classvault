@@ -155,59 +155,89 @@ export default function FacultyDashboard() {
           </div>
         </div>
 
-        {/* Metrics Grid */}
+        {/* Metrics Grid - Clickable KPI Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
+          <Link
+            to="/teacher/classes"
+            title="View all created classes"
+            className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 hover:border-emerald-300 hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.99] group block cursor-pointer"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500">Created Classes</span>
-              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center">
+              <span className="text-xs font-bold text-slate-500 group-hover:text-emerald-700 transition-colors">
+                Created Classes
+              </span>
+              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 group-hover:bg-emerald-100 group-hover:scale-105 flex items-center justify-center transition-all">
                 <BookOpen size={16} />
               </div>
             </div>
             <p className="text-xl sm:text-2xl font-black text-slate-900 mt-2 sm:mt-3">{classes.length}</p>
-            <span className="text-[11px] text-emerald-700 flex items-center gap-1 mt-1 font-semibold">
-              <TrendingUp size={12} /> University Classes
+            <span className="text-[11px] text-emerald-700 flex items-center justify-between mt-1 font-semibold">
+              <span className="flex items-center gap-1">
+                <TrendingUp size={12} /> University Classes
+              </span>
+              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
             </span>
-          </div>
+          </Link>
 
-          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
+          <Link
+            to="/teacher/classes"
+            title="View and author syllabus topics"
+            className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 hover:border-teal-300 hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.99] group block cursor-pointer"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500">Authored Topics</span>
-              <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 border border-teal-100 flex items-center justify-center">
+              <span className="text-xs font-bold text-slate-500 group-hover:text-teal-700 transition-colors">
+                Authored Topics
+              </span>
+              <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 border border-teal-100 group-hover:bg-teal-100 group-hover:scale-105 flex items-center justify-center transition-all">
                 <ListOrdered size={16} />
               </div>
             </div>
             <p className="text-xl sm:text-2xl font-black text-slate-900 mt-2 sm:mt-3">{topics.length}</p>
-            <span className="text-[11px] text-teal-700 flex items-center gap-1 mt-1 font-semibold">
-              Syllabus Units
+            <span className="text-[11px] text-teal-700 flex items-center justify-between mt-1 font-semibold">
+              <span>Syllabus Units</span>
+              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
             </span>
-          </div>
+          </Link>
 
-          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
+          <Link
+            to="/teacher/classes"
+            title="View student topic review completions"
+            className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 hover:border-blue-300 hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.99] group block cursor-pointer"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500">Topic Reviews</span>
-              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 flex items-center justify-center">
+              <span className="text-xs font-bold text-slate-500 group-hover:text-blue-700 transition-colors">
+                Topic Reviews
+              </span>
+              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 group-hover:bg-blue-100 group-hover:scale-105 flex items-center justify-center transition-all">
                 <CheckCircle2 size={16} />
               </div>
             </div>
             <p className="text-xl sm:text-2xl font-black text-slate-900 mt-2 sm:mt-3">{totalReviews}</p>
-            <span className="text-[11px] text-blue-700 flex items-center gap-1 mt-1 font-semibold">
-              Student Completions
+            <span className="text-[11px] text-blue-700 flex items-center justify-between mt-1 font-semibold">
+              <span>Student Completions</span>
+              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
             </span>
-          </div>
+          </Link>
 
-          <div className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 shadow-xs">
+          <Link
+            to="/teacher/materials"
+            title="View and upload vault study materials"
+            className="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-emerald-100 hover:border-emerald-300 hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.99] group block cursor-pointer"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500">Vault Content</span>
-              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center">
+              <span className="text-xs font-bold text-slate-500 group-hover:text-emerald-700 transition-colors">
+                Vault Content
+              </span>
+              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 group-hover:bg-emerald-100 group-hover:scale-105 flex items-center justify-center transition-all">
                 <Layers size={16} />
               </div>
             </div>
             <p className="text-xl sm:text-2xl font-black text-slate-900 mt-2 sm:mt-3">{contents.length}</p>
-            <span className="text-[11px] text-emerald-700 flex items-center gap-1 mt-1 font-semibold">
-              Resources Uploaded
+            <span className="text-[11px] text-emerald-700 flex items-center justify-between mt-1 font-semibold">
+              <span>Resources Uploaded</span>
+              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
             </span>
-          </div>
+          </Link>
         </div>
 
         {/* Two-Column Working Grid */}
