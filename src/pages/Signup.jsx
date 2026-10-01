@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   Check,
   Sparkles,
+  Calendar,
 } from 'lucide-react'
 import { useUser } from '../context/AuthContext.jsx'
 import { useData } from '../context/DataContext.jsx'
@@ -25,6 +26,7 @@ export default function Signup() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [department, setDepartment] = useState('Computer Science & Engineering')
+  const [year, setYear] = useState('Year 1 (Freshman)')
   const [errorMessage, setErrorMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
 
@@ -98,13 +100,16 @@ export default function Signup() {
     const formattedRole = isTeacher ? 'Teacher' : 'Student'
     const studentId = !isTeacher ? cleanPrefix.toUpperCase() : ''
     const teacherId = isTeacher ? `TCH-${Math.floor(100 + Math.random() * 900)}` : ''
+    const selectedDept = department.trim() || (isTeacher ? 'Physics & Applied Sciences' : 'Computer Science & Engineering')
+    const selectedYear = isTeacher ? 'Faculty Member' : (year.trim() || 'Year 1 (Freshman)')
 
     // Register user in AuthContext
     signup({
       name: name.trim() || (!isTeacher ? `Student (${studentId})` : 'Faculty Instructor'),
       email: cleanEmail,
       role: formattedRole,
-      department: department.trim() || (isTeacher ? 'Physics & Applied Sciences' : 'Computer Science & Engineering'),
+      department: selectedDept,
+      year: selectedYear,
       student_id: studentId,
       teacher_id: teacherId,
     })
@@ -115,7 +120,8 @@ export default function Signup() {
         name: name.trim() || (!isTeacher ? `Student (${studentId})` : 'Faculty Instructor'),
         email: cleanEmail,
         role: formattedRole,
-        department: department.trim() || (isTeacher ? 'Physics & Applied Sciences' : 'Computer Science & Engineering'),
+        department: selectedDept,
+        year: selectedYear,
         student_id: studentId,
         teacher_id: teacherId,
       })
@@ -210,7 +216,9 @@ export default function Signup() {
               type="button"
               onClick={() => {
                 setRole('student')
-                setDepartment('Computer Science & Engineering')
+                if (!department || department === 'Physics & Applied Sciences') {
+                  setDepartment('Computer Science & Engineering')
+                }
                 setErrorMessage('')
               }}
               className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all ${
@@ -225,7 +233,9 @@ export default function Signup() {
               type="button"
               onClick={() => {
                 setRole('teacher')
-                setDepartment('Physics & Applied Sciences')
+                if (!department || department === 'Computer Science & Engineering') {
+                  setDepartment('Physics & Applied Sciences')
+                }
                 setErrorMessage('')
               }}
               className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all ${
@@ -400,28 +410,104 @@ export default function Signup() {
               </div>
             </div>
 
-            {/* Department */}
+            {/* Department (Free text input with autocomplete suggestions) */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                Department / Program
-              </label>
-              <select
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-                className={`w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 transition-all ${
-                  isTeacher
-                    ? 'focus:ring-emerald-500/20 focus:border-emerald-600'
-                    : 'focus:ring-indigo-500/20 focus:border-indigo-600'
-                }`}
-              >
-                <option value="Computer Science & Engineering">Computer Science & Engineering</option>
-                <option value="Computer Applications (MCA/BCA)">Computer Applications (MCA/BCA)</option>
-                <option value="Data Science & Artificial Intelligence">Data Science & Artificial Intelligence</option>
-                <option value="Physics & Applied Sciences">Physics & Applied Sciences</option>
-                <option value="Mathematics & Statistics">Mathematics & Statistics</option>
-                <option value="Management Studies">Management Studies</option>
-              </select>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-bold text-slate-700">
+                  Department / Program
+                </label>
+                <span className="text-[10px] text-slate-400 font-medium">
+                  Type your department
+                </span>
+              </div>
+              <div className="relative">
+                <Building2 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  list="department-suggestions"
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                  placeholder="e.g. Computer Science, Mechanical Engineering, Commerce..."
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-all ${
+                    isTeacher
+                      ? 'focus:ring-emerald-500/20 focus:border-emerald-600'
+                      : 'focus:ring-indigo-500/20 focus:border-indigo-600'
+                  }`}
+                  required
+                />
+                <datalist id="department-suggestions">
+                  <option value="Computer Science & Engineering" />
+                  <option value="Computer Applications (MCA/BCA)" />
+                  <option value="Data Science & Artificial Intelligence" />
+                  <option value="Physics & Applied Sciences" />
+                  <option value="Electronics & Communication" />
+                  <option value="Mechanical & Mechatronics Engineering" />
+                  <option value="Mathematics & Statistics" />
+                  <option value="Management Studies (MBA/BBA)" />
+                  <option value="Commerce & Accounting" />
+                  <option value="Psychology & Humanities" />
+                  <option value="Biotechnology & Life Sciences" />
+                  <option value="Media Studies & Journalism" />
+                </datalist>
+              </div>
             </div>
+
+            {/* Academic Year (For Students) */}
+            {!isTeacher && (
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700">
+                    Academic Year / Year of Study
+                  </label>
+                  <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100">
+                    Student Year
+                  </span>
+                </div>
+                <div className="relative">
+                  <Calendar size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    list="year-suggestions"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    placeholder="e.g. Year 1 (Freshman), Year 2, Year 3..."
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all"
+                    required
+                  />
+                  <datalist id="year-suggestions">
+                    <option value="Year 1 (Freshman)" />
+                    <option value="Year 2 (Sophomore)" />
+                    <option value="Year 3 (Junior)" />
+                    <option value="Year 4 (Senior)" />
+                    <option value="Postgraduate Year 1" />
+                    <option value="Postgraduate Year 2" />
+                  </datalist>
+                </div>
+
+                {/* Quick Year Selection Chips */}
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {[
+                    { label: 'Year 1 (Freshman)', short: '1st Year' },
+                    { label: 'Year 2 (Sophomore)', short: '2nd Year' },
+                    { label: 'Year 3 (Junior)', short: '3rd Year' },
+                    { label: 'Year 4 (Senior)', short: '4th Year' },
+                  ].map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() => setYear(item.label)}
+                      className={`text-[10px] px-2.5 py-1 rounded-lg border font-medium transition-all ${
+                        year === item.label
+                          ? 'bg-indigo-600 border-indigo-600 text-white font-bold shadow-xs'
+                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300'
+                      }`}
+                    >
+                      {item.short} · {item.label.split(' ')[0]}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Password */}
             <div>

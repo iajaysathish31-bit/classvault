@@ -108,6 +108,7 @@ export default function Login() {
         role: 'Student',
         student_id: matchedStudent?.student_id || rollNumber,
         department: matchedStudent?.department || 'Computer Science & Engineering',
+        year: matchedStudent?.year || 'Year 1 (Freshman)',
       })
       navigate('/student/dashboard')
     }

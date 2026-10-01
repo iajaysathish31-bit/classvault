@@ -60,10 +60,18 @@ export function UserProvider({ children }) {
     : 'U'
 
   const updateUser = (updates) => {
-    setUser((prev) => ({ ...prev, ...updates }))
+    setUser((prev) => {
+      const updated = { ...prev, ...updates }
+      try {
+        localStorage.setItem('classvault_user', JSON.stringify(updated))
+      } catch (e) {
+        console.error(e)
+      }
+      return updated
+    })
   }
 
-  const signup = ({ name, email, role, department, year, phone, bio }) => {
+  const signup = ({ name, email, role, department, year, phone, bio, student_id, teacher_id }) => {
     const formattedRole = role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Student'
     const cleanEmail = email?.trim() || `${formattedRole.toLowerCase()}@kristujayanti.com`
 
@@ -72,11 +80,11 @@ export function UserProvider({ children }) {
       name: name?.trim() || (formattedRole === 'Teacher' ? 'Faculty Member' : 'Student User'),
       email: cleanEmail,
       role: formattedRole,
-      department: department || (formattedRole === 'Teacher' ? 'Physics & Applied Sciences' : 'Computer Science & Engineering'),
-      year: year || 'Year 3 (Junior)',
+      department: department?.trim() || (formattedRole === 'Teacher' ? 'Physics & Applied Sciences' : 'Computer Science & Engineering'),
+      year: formattedRole === 'Teacher' ? 'Faculty Member' : (year?.trim() || 'Year 1 (Freshman)'),
       phone: phone || '+1 (555) 349-8821',
-      student_id: formattedRole === 'Student' ? `STU-${Math.floor(1000 + Math.random() * 9000)}` : '',
-      teacher_id: formattedRole === 'Teacher' ? `TCH-${Math.floor(100 + Math.random() * 900)}` : '',
+      student_id: student_id || (formattedRole === 'Student' ? `STU-${Math.floor(1000 + Math.random() * 9000)}` : ''),
+      teacher_id: teacher_id || (formattedRole === 'Teacher' ? `TCH-${Math.floor(100 + Math.random() * 900)}` : ''),
       bio: bio || `Academic account on ClassVault.`,
       joinedDate: 'September 2026',
     }

@@ -58,7 +58,7 @@ export default function StudentDashboard() {
             <div>
               <div className="flex items-center gap-2 text-indigo-200 text-xs font-semibold mb-2 tracking-wide uppercase">
                 <Sparkles size={14} className="text-amber-300" />
-                <span>Personal Study Workspace · {user?.department || 'Computer Science'}</span>
+                <span>Personal Study Workspace · {user?.department || 'Computer Science'} {user?.year ? `· ${user.year}` : ''}</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-serif font-bold">
                 Hello, {user?.name || firstName || 'Student'}

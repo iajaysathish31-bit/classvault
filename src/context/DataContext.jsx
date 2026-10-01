@@ -388,7 +388,7 @@ export function DataProvider({ children }) {
   // --- ACTIONS ---
 
   // Register a new student or faculty member into the university dataset
-  const registerMember = ({ name, email, role, department, student_id, teacher_id }) => {
+  const registerMember = ({ name, email, role, department, year, student_id, teacher_id }) => {
     const isTeacher = role === 'Teacher'
     if (isTeacher) {
       const newTeacher = {
@@ -396,7 +396,7 @@ export function DataProvider({ children }) {
         name: name.trim(),
         email: email.trim().toLowerCase(),
         password: '••••••••',
-        department: department || 'Physics & Applied Sciences',
+        department: department?.trim() || 'Physics & Applied Sciences',
       }
       setTeachers((prev) => [...prev.filter((t) => t.email !== newTeacher.email), newTeacher])
       return newTeacher
@@ -406,8 +406,8 @@ export function DataProvider({ children }) {
         name: name.trim(),
         email: email.trim().toLowerCase(),
         password: '••••••••',
-        department: department || 'Computer Science & Engineering',
-        year: 'Year 1 (Freshman)',
+        department: department?.trim() || 'Computer Science & Engineering',
+        year: year?.trim() || 'Year 1 (Freshman)',
         phone: '+91 98765 43210',
       }
       setStudents((prev) => [...prev.filter((s) => s.email !== newStudent.email), newStudent])

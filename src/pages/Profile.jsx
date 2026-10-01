@@ -29,7 +29,7 @@ export default function Profile() {
       email: user?.email || '',
       bio: user?.bio || '',
       department: user?.department || (isTeacher ? 'Physics & Applied Sciences' : 'Computer Science & Engineering'),
-      year: user?.year || 'Year 3 (Junior)',
+      year: user?.year || (isTeacher ? 'Faculty Member' : 'Year 1 (Freshman)'),
       phone: user?.phone || '+1 (555) 349-8821',
     })
   }, [user, isTeacher])
@@ -104,22 +104,29 @@ export default function Profile() {
                   <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${isTeacher ? 'bg-emerald-50 text-emerald-700' : 'bg-indigo-50 text-indigo-700'}`}>
                     {isTeacher ? '🏛️ Faculty / Teacher' : '🎓 Enrolled Student'}
                   </span>
-                  <span className="text-xs text-gray-500 font-medium">
-                    {user?.department || 'University Academic Department'}
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 border border-slate-200 flex items-center gap-1.5">
+                    <Building2 size={13} className="text-slate-500" />
+                    <span>{user?.department || 'University Academic Department'}</span>
                   </span>
+                  {!isTeacher && (
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center gap-1.5">
+                      <Calendar size={13} className="text-indigo-500" />
+                      <span>{user?.year || 'Year 1 (Freshman)'}</span>
+                    </span>
+                  )}
                 </div>
               </div>
 
               {/* Stats badges */}
-              <div className="flex items-center gap-6">
-                <div className="text-center">
+              <div className="flex items-center gap-4">
+                <div className="text-center px-3 py-1.5 bg-slate-50 rounded-xl border border-slate-100">
                   <p className="text-xl font-bold text-vault-navy">{classes.length}</p>
                   <p className="text-xs text-gray-400">{isTeacher ? 'Classes Taught' : 'Enrolled Classes'}</p>
                 </div>
                 {!isTeacher && (
-                  <div className="text-center">
-                    <p className="text-xl font-bold text-vault-navy">{user?.year || 'Year 3'}</p>
-                    <p className="text-xs text-gray-400">Academic Year</p>
+                  <div className="text-center px-4 py-1.5 bg-indigo-50/80 rounded-xl border border-indigo-100">
+                    <p className="text-base sm:text-lg font-black text-indigo-700">{user?.year || 'Year 1 (Freshman)'}</p>
+                    <p className="text-[11px] font-semibold text-indigo-500">Academic Year</p>
                   </div>
                 )}
               </div>
@@ -151,7 +158,7 @@ export default function Profile() {
                     <Building2 size={14} className="text-gray-400" />
                     department:
                   </span>
-                  <span className="font-semibold text-slate-800">
+                  <span className="font-bold text-slate-800 bg-white px-2.5 py-1 rounded-lg border border-slate-200 text-right">
                     {user?.department || (isTeacher ? 'Physics & Applied Sciences' : 'Computer Science & Engineering')}
                   </span>
                 </div>
@@ -163,7 +170,9 @@ export default function Profile() {
                         <Calendar size={14} className="text-gray-400" />
                         year:
                       </span>
-                      <span className="font-semibold text-slate-800">{user?.year || 'Year 3 (Junior)'}</span>
+                      <span className="font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200">
+                        {user?.year || 'Year 1 (Freshman)'}
+                      </span>
                     </div>
 
                     <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between">
@@ -220,25 +229,75 @@ export default function Profile() {
                 <label className="block text-xs font-bold text-slate-700 mb-1">Academic Department (department)</label>
                 <input
                   type="text"
+                  list="profile-dept-suggestions"
                   value={formData.department}
                   onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                   placeholder="e.g. Computer Science & Engineering"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
                   required
                 />
+                <datalist id="profile-dept-suggestions">
+                  <option value="Computer Science & Engineering" />
+                  <option value="Computer Applications (MCA/BCA)" />
+                  <option value="Data Science & Artificial Intelligence" />
+                  <option value="Physics & Applied Sciences" />
+                  <option value="Electronics & Communication" />
+                  <option value="Mechanical & Mechatronics Engineering" />
+                  <option value="Mathematics & Statistics" />
+                  <option value="Management Studies (MBA/BBA)" />
+                  <option value="Commerce & Accounting" />
+                  <option value="Psychology & Humanities" />
+                  <option value="Biotechnology & Life Sciences" />
+                  <option value="Media Studies & Journalism" />
+                </datalist>
               </div>
 
               {!isTeacher && (
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">Year of Study (year)</label>
                     <input
                       type="text"
+                      list="profile-year-suggestions"
                       value={formData.year}
                       onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-                      placeholder="e.g. Year 3 (Junior)"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none"
+                      placeholder="e.g. Year 1 (Freshman)"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
                     />
+                    <datalist id="profile-year-suggestions">
+                      <option value="Year 1 (Freshman)" />
+                      <option value="Year 2 (Sophomore)" />
+                      <option value="Year 3 (Junior)" />
+                      <option value="Year 4 (Senior)" />
+                      <option value="Postgraduate Year 1" />
+                      <option value="Postgraduate Year 2" />
+                    </datalist>
+                    <div className="flex flex-wrap gap-1 mt-1.5">
+                      {['Year 1', 'Year 2', 'Year 3', 'Year 4'].map((yr) => {
+                        const fullYr =
+                          yr === 'Year 1'
+                            ? 'Year 1 (Freshman)'
+                            : yr === 'Year 2'
+                            ? 'Year 2 (Sophomore)'
+                            : yr === 'Year 3'
+                            ? 'Year 3 (Junior)'
+                            : 'Year 4 (Senior)'
+                        return (
+                          <button
+                            key={yr}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, year: fullYr })}
+                            className={`text-[10px] px-2 py-0.5 rounded border font-medium ${
+                              formData.year === fullYr
+                                ? 'bg-indigo-600 border-indigo-600 text-white font-bold'
+                                : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                            }`}
+                          >
+                            {yr}
+                          </button>
+                        )
+                      })}
+                    </div>
                   </div>
 
                   <div>
@@ -248,7 +307,7 @@ export default function Profile() {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="e.g. +1 (555) 349-8821"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-vault-blue/30 focus:border-vault-blue"
                     />
                   </div>
                 </div>
