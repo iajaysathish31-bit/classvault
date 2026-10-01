@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import StudentLayout from '../../layouts/StudentLayout.jsx'
 import { useData } from '../../context/DataContext.jsx'
 import { useUser } from '../../context/AuthContext.jsx'
+import VideoPlayerModal from '../../components/VideoPlayerModal.jsx'
 import {
   Bookmark,
   Upload,
@@ -21,6 +22,11 @@ import {
   Code,
   Presentation,
   CheckCircle2,
+  Video,
+  Play,
+  Clock,
+  Calendar,
+  Sparkles,
 } from 'lucide-react'
 
 export default function StudentVault() {
@@ -32,6 +38,7 @@ export default function StudentVault() {
   const [bookmarkedIds, setBookmarkedIds] = useState(new Set(['CNT-501', 'CNT-502']))
   const [onlyBookmarked, setOnlyBookmarked] = useState(false)
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
+  const [activeVideoModal, setActiveVideoModal] = useState(null)
   const [toastMessage, setToastMessage] = useState('')
 
   // Upload Modal State
@@ -39,7 +46,7 @@ export default function StudentVault() {
   const [newDescription, setNewDescription] = useState('')
   const [newType, setNewType] = useState('PDF')
   const [newFileUrl, setNewFileUrl] = useState('')
-  const [newClassId, setNewClassId] = useState(classes[0]?.class_id || 'CLS-401')
+  const [newClassId, setNewClassId] = useState(classes[0]?.class_id || '24CSC2T351')
 
   // File Explorer Upload State
   const [selectedFile, setSelectedFile] = useState(null)
@@ -143,7 +150,9 @@ export default function StudentVault() {
     showToast(`Saved "${created.title}" to vault!`)
   }
 
-  const types = ['All', 'PDF', 'Code', 'Presentation', 'Notes']
+  const types = ['All', 'Video', 'PDF', 'Code', 'Presentation', 'Notes']
+
+  const videoLectures = contents.filter((c) => c.type === 'Video')
 
   const filteredContents = contents.filter((item) => {
     const matchSearch =
@@ -210,6 +219,68 @@ export default function StudentVault() {
           </div>
         </div>
 
+        {/* Missed Class / Absentee Catch-Up Hub Banner */}
+        <div className="bg-gradient-to-br from-indigo-950 via-slate-900 to-rose-950 p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-indigo-900/60 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute right-0 top-0 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+            <div>
+              <div className="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider mb-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse" />
+                <Sparkles size={14} className="text-amber-300" />
+                <span>Missed Class? Absentee Catch-Up Hub</span>
+              </div>
+              <h2 className="text-lg sm:text-2xl font-bold tracking-tight text-white">
+                Catch Up On Recorded Lectures Anytime
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl leading-relaxed">
+                If you were absent or missed a session, your professors record each live classroom lecture.
+                Watch board derivations, live code walkthroughs, and peer Q&A without missing semester credits.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => setSelectedType('Video')}
+                className="px-4 py-2.5 rounded-xl sm:rounded-2xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold shadow-lg shadow-rose-900/40 flex items-center gap-2 transition-all cursor-pointer hover:scale-105 active:scale-95"
+              >
+                <Video size={16} /> Filter Video Recordings ({videoLectures.length})
+              </button>
+            </div>
+          </div>
+
+          {/* Quick Carousel of Latest Video Lectures */}
+          {videoLectures.length > 0 && (
+            <div className="mt-5 pt-4 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {videoLectures.slice(0, 3).map((vid) => (
+                <div
+                  key={vid.content_id}
+                  onClick={() => setActiveVideoModal(vid)}
+                  className="bg-white/10 hover:bg-white/15 border border-white/15 p-3 rounded-2xl transition-all cursor-pointer group flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between text-[10px] text-rose-300 font-bold mb-1">
+                      <span className="flex items-center gap-1 font-mono">
+                        <Clock size={10} /> {vid.duration || 'Session'}
+                      </span>
+                      <span>{vid.class_id}</span>
+                    </div>
+                    <p className="text-xs font-bold text-white line-clamp-1 group-hover:text-rose-200 transition-colors">
+                      {vid.title}
+                    </p>
+                  </div>
+                  <div className="mt-2.5 flex items-center justify-between text-[11px] text-slate-300">
+                    <span className="text-[10px] text-slate-400">{vid.lecture_date || vid.created_at}</span>
+                    <span className="text-[11px] font-bold text-rose-400 group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+                      <Play size={10} className="fill-rose-400" /> Watch
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Search & Filter Bar */}
         <div className="bg-white p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl border border-indigo-100 shadow-xs space-y-3">
           <div className="relative">
@@ -233,11 +304,13 @@ export default function StudentVault() {
                 onClick={() => setSelectedType(tp)}
                 className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
                   selectedType === tp
-                    ? 'bg-indigo-600 text-white shadow-xs'
+                    ? tp === 'Video'
+                      ? 'bg-rose-600 text-white shadow-xs'
+                      : 'bg-indigo-600 text-white shadow-xs'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80'
                 }`}
               >
-                {tp}
+                {tp === 'Video' ? '🎥 Video Lectures' : tp}
               </button>
             ))}
           </div>
@@ -258,21 +331,35 @@ export default function StudentVault() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {filteredContents.map((item) => {
               const isStarred = bookmarkedIds.has(item.content_id)
+              const isVideo = item.type === 'Video'
 
               return (
                 <div
                   key={item.content_id}
-                  className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/80 shadow-xs hover:border-indigo-200 transition-all hover:shadow-md flex flex-col justify-between"
+                  className={`bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border transition-all hover:shadow-md flex flex-col justify-between ${
+                    isVideo
+                      ? 'border-rose-100 hover:border-rose-300 shadow-xs'
+                      : 'border-slate-200/80 hover:border-indigo-200 shadow-xs'
+                  }`}
                 >
                   <div>
                     <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-100">
                           {item.content_id}
                         </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
-                          {item.type}
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                          isVideo
+                            ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                            : 'bg-slate-100 text-slate-700'
+                        }`}>
+                          {isVideo ? '🎥 Class Video Lecture' : item.type}
                         </span>
+                        {isVideo && item.duration && (
+                          <span className="text-[10px] font-bold text-rose-600 bg-rose-50/70 px-2 py-0.5 rounded border border-rose-100 flex items-center gap-1">
+                            <Clock size={10} /> {item.duration}
+                          </span>
+                        )}
                       </div>
 
                       <button
@@ -287,8 +374,9 @@ export default function StudentVault() {
                       </button>
                     </div>
 
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900 mt-2.5 line-clamp-2 leading-snug">
-                      {item.title}
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 mt-2.5 line-clamp-2 leading-snug flex items-center gap-2">
+                      {isVideo && <Video size={16} className="text-rose-600 shrink-0" />}
+                      <span>{item.title}</span>
                     </h3>
 
                     <p className="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-3">
@@ -298,18 +386,40 @@ export default function StudentVault() {
 
                   <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                     <div className="text-[11px] text-slate-400 font-mono flex items-center gap-2 truncate max-w-full sm:max-w-[200px]">
-                      <span>{item.created_at}</span>
+                      <span>{item.lecture_date || item.created_at}</span>
                       <span>·</span>
-                      <span className="truncate">{item.file_url}</span>
+                      <span className="truncate">{item.class_id}</span>
                     </div>
 
-                    <button
-                      onClick={() => handleDownload(item)}
-                      className="self-end sm:self-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold transition-all border border-indigo-200"
-                    >
-                      <Download size={13} />
-                      Access File
-                    </button>
+                    {isVideo ? (
+                      <div className="flex items-center gap-2 self-end sm:self-auto">
+                        <button
+                          onClick={() => setActiveVideoModal(item)}
+                          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-md shadow-rose-200 hover:scale-105 active:scale-95 cursor-pointer"
+                        >
+                          <Play size={13} className="fill-white" />
+                          Watch Recording
+                        </button>
+                        {item.file_url && (
+                          <a
+                            href={item.file_url}
+                            download={item.file_name || `${item.title}.mp4`}
+                            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                            title="Download recording"
+                          >
+                            <Download size={14} />
+                          </a>
+                        )}
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => handleDownload(item)}
+                        className="self-end sm:self-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold transition-all border border-indigo-200"
+                      >
+                        <Download size={13} />
+                        Access File
+                      </button>
+                    )}
                   </div>
                 </div>
               )
@@ -543,6 +653,15 @@ export default function StudentVault() {
               </form>
             </div>
           </div>
+        )}
+
+        {/* Video Lecture Player Modal */}
+        {activeVideoModal && (
+          <VideoPlayerModal
+            video={activeVideoModal}
+            onClose={() => setActiveVideoModal(null)}
+            classInfo={classes.find((c) => c.class_id === activeVideoModal?.class_id)}
+          />
         )}
       </div>
     </StudentLayout>

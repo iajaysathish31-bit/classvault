@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import StudentLayout from '../layouts/StudentLayout.jsx'
 import TeacherLayout from '../layouts/TeacherLayout.jsx'
 import { useUser } from '../context/AuthContext.jsx'
+import { useData } from '../context/DataContext.jsx'
+import VideoPlayerModal from '../components/VideoPlayerModal.jsx'
 import {
   ArrowLeft,
   GraduationCap,
@@ -18,6 +20,9 @@ import {
   BookOpen,
   MessageSquare,
   ChevronRight,
+  Video,
+  Play,
+  Sparkles,
 } from 'lucide-react'
 
 // Course dataset
@@ -519,7 +524,9 @@ export default function ClassDetails() {
   const isTeacher = user?.role === 'Teacher'
   const LayoutComponent = isTeacher ? TeacherLayout : StudentLayout
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState('resources')
+  const [activeTab, setActiveTab] = useState('recordings')
+  const { contents } = useData()
+  const [activeVideoModal, setActiveVideoModal] = useState(null)
 
   // Normalize code key e.g. "PHYS-401" or "PHYS 401"
   const normalizedKey = (code || '').replace(/\s+/g, '-').toUpperCase()
@@ -555,6 +562,9 @@ export default function ClassDetails() {
   }
 
   const course = coursesData[normalizedKey] || fallbackCourse
+  const classVideos = contents.filter(
+    (c) => c.type === 'Video' && (c.class_id === normalizedKey || c.class_id === course.code)
+  )
   const progressPct = Math.min(100, Math.round((course.done / course.total) * 100))
 
   return (
@@ -659,6 +669,7 @@ export default function ClassDetails() {
         {/* Navigation Tabs */}
         <div className="flex items-center gap-1 sm:gap-2 border-b border-gray-200 mb-6 overflow-x-auto whitespace-nowrap pb-1">
           {[
+            { id: 'recordings', label: `🎥 Class Recordings (${classVideos.length})`, icon: Video },
             { id: 'resources', label: `Resources (${course.resources.length})`, icon: FileText },
             { id: 'assignments', label: `Assignments (${course.assignments.length})`, icon: CheckCircle2 },
             { id: 'syllabus', label: 'Syllabus & Overview', icon: BookOpen },
@@ -672,7 +683,7 @@ export default function ClassDetails() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors cursor-pointer shrink-0 ${
                   isActive
-                    ? 'border-vault-blue text-vault-blue font-semibold'
+                    ? 'border-rose-600 text-rose-600 font-bold'
                     : 'border-transparent text-gray-500 hover:text-vault-navy'
                 }`}
               >
@@ -682,6 +693,69 @@ export default function ClassDetails() {
             )
           })}
         </div>
+
+        {/* TAB 0: RECORDINGS (ABSENTEE CATCH-UP) */}
+        {activeTab === 'recordings' && (
+          <div className="space-y-4">
+            <div className="bg-gradient-to-r from-rose-950 via-slate-900 to-indigo-950 p-5 rounded-2xl border border-rose-900/40 text-white shadow-md">
+              <div className="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider mb-1">
+                <Sparkles size={14} /> Absentee Catch-Up Hub
+              </div>
+              <h3 className="text-lg font-bold text-white">
+                Recorded Classroom Lectures for {course.name}
+              </h3>
+              <p className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                Missed a session of this course? Watch full recordings captured during live classes by {course.prof} to stay up to speed.
+              </p>
+            </div>
+
+            {classVideos.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center text-slate-500">
+                <Video size={36} className="text-slate-300 mx-auto mb-2" />
+                <p className="font-bold text-sm text-slate-800">No recorded lectures uploaded yet for this class</p>
+                <p className="text-xs text-slate-400 mt-1">Check back once the faculty member uploads today's lecture session.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {classVideos.map((vid) => (
+                  <div
+                    key={vid.content_id}
+                    className="bg-white rounded-2xl border border-rose-100 p-5 shadow-xs hover:border-rose-300 hover:shadow-md transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-2">
+                        <span className="font-mono font-bold text-[10px] text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                          {vid.content_id}
+                        </span>
+                        <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1">
+                          <Clock size={12} className="text-rose-500" /> {vid.duration || 'Full Session'}
+                        </span>
+                      </div>
+                      <h4 className="font-bold text-slate-900 text-sm leading-snug">
+                        {vid.title}
+                      </h4>
+                      <p className="text-xs text-slate-500 mt-2 line-clamp-3 leading-relaxed">
+                        {vid.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] text-slate-400 font-mono">
+                        {vid.lecture_date || vid.created_at}
+                      </span>
+                      <button
+                        onClick={() => setActiveVideoModal(vid)}
+                        className="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-md shadow-rose-200 flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
+                      >
+                        <Play size={12} className="fill-white" /> Watch Class
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* TAB 1: RESOURCES */}
         {activeTab === 'resources' && (
@@ -846,6 +920,15 @@ export default function ClassDetails() {
               ))}
             </div>
           </div>
+        )}
+
+        {/* Video Lecture Player Modal */}
+        {activeVideoModal && (
+          <VideoPlayerModal
+            video={activeVideoModal}
+            onClose={() => setActiveVideoModal(null)}
+            classInfo={course}
+          />
         )}
       </div>
     </LayoutComponent>

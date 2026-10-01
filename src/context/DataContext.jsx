@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useUser } from './AuthContext.jsx'
+import { saveVideoToDB, deleteVideoFromDB, exportVaultBackup } from '../utils/vaultStorage.js'
 
 // Initial relational dataset matching the ClassVault ER Diagram
 const INITIAL_TEACHERS = [
@@ -261,6 +262,55 @@ const INITIAL_CONTENT = [
     teacher_id: 'TCH-103',
     class_id: '24ELE2T351',
   },
+  // Recorded Class Lectures for Absentee Catch-Up Hub
+  {
+    content_id: 'CNT-VID-01',
+    title: 'Class Recording: Microservices & MVC Architecture Walkthrough',
+    description: 'Full lecture recording for students absent during the session. Detailed breakdown of monolithic vs microservices, controller routing, service layers, and live Docker container demonstration.',
+    file_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    file_name: 'Lecture_24CSC2T351_Microservices_Live.mp4',
+    file_size: '142.5 MB',
+    type: 'Video',
+    duration: '48 mins',
+    lecture_date: '2026-09-28',
+    is_video: true,
+    is_recording: true,
+    created_at: '2026-09-28',
+    teacher_id: 'TCH-102',
+    class_id: '24CSC2T351',
+  },
+  {
+    content_id: 'CNT-VID-02',
+    title: 'Class Recording: Zeeman Effect & Quantum Mechanics Derivations',
+    description: 'Classroom board recording covering the vector atom model, anomalous Zeeman splitting in magnetic fields, and Landé g-factor calculations for absent students.',
+    file_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    file_name: 'Lecture_24PHY2T351_Zeeman_Derivation.mp4',
+    file_size: '185.0 MB',
+    type: 'Video',
+    duration: '55 mins',
+    lecture_date: '2026-09-29',
+    is_video: true,
+    is_recording: true,
+    created_at: '2026-09-29',
+    teacher_id: 'TCH-101',
+    class_id: '24PHY2T351',
+  },
+  {
+    content_id: 'CNT-VID-03',
+    title: 'Class Recording: ESP32 MQTT Firmware & Sensor Setup',
+    description: 'Hands-on laboratory recording demonstrating ESP32 flashing, Wi-Fi reconnection loops, and JSON payload streaming to MQTT brokers.',
+    file_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    file_name: 'Lecture_24ELE2T351_ESP32_MQTT_Lab.mp4',
+    file_size: '110.2 MB',
+    type: 'Video',
+    duration: '41 mins',
+    lecture_date: '2026-09-30',
+    is_video: true,
+    is_recording: true,
+    created_at: '2026-09-30',
+    teacher_id: 'TCH-103',
+    class_id: '24ELE2T351',
+  },
 ]
 
 const DataContext = createContext(null)
@@ -351,6 +401,11 @@ export function DataProvider({ children }) {
       if (saved) {
         const parsed = JSON.parse(saved)
         if (parsed.some((c) => c.class_id === '24CSC2T351')) {
+          const hasVideos = parsed.some((c) => c.type === 'Video')
+          if (!hasVideos) {
+            const initialVideos = INITIAL_CONTENT.filter((c) => c.type === 'Video')
+            return [...initialVideos, ...parsed]
+          }
           return parsed
         }
       }
@@ -476,29 +531,92 @@ export function DataProvider({ children }) {
     })
   }
 
-  // 4. TEACHER Uploads CONTENT
-  const uploadContent = ({ title, description, file_url, type, class_id, file_name, file_size }) => {
+  // 4. TEACHER Uploads CONTENT (Supports binary videos via IndexedDB, PDFs, Notes, Code, and Cloud URLs)
+  const uploadContent = async ({
+    title,
+    description,
+    file_url,
+    type,
+    class_id,
+    file_name,
+    file_size,
+    duration,
+    lecture_date,
+    video_file,
+  }) => {
     const teacherId = user?.teacher_id || 'TCH-101'
     const today = new Date().toISOString().split('T')[0]
+    const contentId = `CNT-${Math.floor(100 + Math.random() * 900)}`
+    const isVideo = type === 'Video' || type === 'Recording'
+
+    let finalFileUrl = file_url?.trim()
+
+    // If an actual binary video file was uploaded, store in IndexedDB to avoid localStorage quota errors
+    if (isVideo && video_file) {
+      try {
+        await saveVideoToDB(contentId, video_file, {
+          name: file_name || video_file.name,
+          size: file_size || video_file.size,
+          duration: duration || '45 mins',
+          class_id: class_id || '24CSC2T351',
+        })
+        finalFileUrl = `indexeddb:${contentId}`
+      } catch (err) {
+        console.warn('Could not save video to IndexedDB, fallback to cloud:', err)
+      }
+    }
+
+    if (!finalFileUrl) {
+      finalFileUrl = isVideo
+        ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+        : `/materials/${title.toLowerCase().replace(/\s+/g, '_')}.pdf`
+    }
 
     const newContent = {
-      content_id: `CNT-${Math.floor(100 + Math.random() * 900)}`,
+      content_id: contentId,
       title: title.trim(),
       description: description?.trim() || '',
-      file_url: file_url?.trim() || `/materials/${title.toLowerCase().replace(/\s+/g, '_')}.pdf`,
-      file_name: file_name || null,
-      file_size: file_size || null,
-      type: type || 'PDF',
+      file_url: finalFileUrl,
+      file_name: file_name || (isVideo ? `${title.replace(/\s+/g, '_')}.mp4` : null),
+      file_size: file_size || (isVideo ? '68 MB' : null),
+      type: isVideo ? 'Video' : (type || 'PDF'),
+      duration: duration || (isVideo ? '45 mins' : null),
+      lecture_date: lecture_date || today,
+      is_video: isVideo,
+      is_recording: isVideo,
       created_at: today,
       teacher_id: teacherId,
       class_id: class_id || '24CSC2T351',
     }
+
     setContents((prev) => [newContent, ...prev])
     return newContent
   }
 
-  const deleteContent = (content_id) => {
+  const deleteContent = async (content_id) => {
+    try {
+      await deleteVideoFromDB(content_id)
+    } catch (e) {
+      console.warn('Could not remove video from IndexedDB:', e)
+    }
     setContents((prev) => prev.filter((c) => c.content_id !== content_id))
+  }
+
+  // Restore database from backup JSON
+  const restoreBackup = (backupData) => {
+    if (!backupData) return false
+    if (Array.isArray(backupData.teachers)) setTeachers(backupData.teachers)
+    if (Array.isArray(backupData.students)) setStudents(backupData.students)
+    if (Array.isArray(backupData.classes)) setClasses(backupData.classes)
+    if (Array.isArray(backupData.topics)) setTopics(backupData.topics)
+    if (Array.isArray(backupData.topicProgress)) setTopicProgress(backupData.topicProgress)
+    if (Array.isArray(backupData.contents)) setContents(backupData.contents)
+    return true
+  }
+
+  // Export full application state as JSON backup
+  const exportCurrentBackup = () => {
+    return exportVaultBackup({ teachers, students, classes, topics, topicProgress, contents })
   }
 
   // --- QUERY HELPERS ---
@@ -548,6 +666,8 @@ export function DataProvider({ children }) {
         updateTopicProgress,
         uploadContent,
         deleteContent,
+        restoreBackup,
+        exportCurrentBackup,
         getTopicsForClass,
         getProgressForTopic,
         getClassProgress,

@@ -1,7 +1,9 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import TeacherLayout from '../../layouts/TeacherLayout.jsx'
 import { useData } from '../../context/DataContext.jsx'
 import { useUser } from '../../context/AuthContext.jsx'
+import VideoPlayerModal from '../../components/VideoPlayerModal.jsx'
+import { getStorageEstimate, parseBackupFile } from '../../utils/vaultStorage.js'
 import {
   FolderTree,
   Upload,
@@ -13,28 +15,47 @@ import {
   Filter,
   Download,
   Paperclip,
+  Video,
+  Play,
+  Database,
+  HardDrive,
+  RefreshCw,
+  FileDown,
+  FileUp,
+  Calendar,
+  Clock,
+  Sparkles,
 } from 'lucide-react'
 
 export default function FacultyMaterials() {
-  const { contents, uploadContent, deleteContent, classes } = useData()
+  const { contents, uploadContent, deleteContent, classes, restoreBackup, exportCurrentBackup } = useData()
   const { user } = useUser()
 
   const [selectedType, setSelectedType] = useState('ALL')
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
+  const [activeVideoModal, setActiveVideoModal] = useState(null)
   const [toastMessage, setToastMessage] = useState('')
+  const [storageInfo, setStorageInfo] = useState({ usageMB: '0.0', quotaMB: 'Unlimited', percent: 0 })
 
   // New Content Form Fields (matching ER Diagram CONTENT attributes)
   const [newTitle, setNewTitle] = useState('')
   const [newDescription, setNewDescription] = useState('')
   const [newFileUrl, setNewFileUrl] = useState('')
   const [newType, setNewType] = useState('PDF')
-  const [newClassId, setNewClassId] = useState(classes[0]?.class_id || 'CLS-401')
+  const [newClassId, setNewClassId] = useState(classes[0]?.class_id || '24CSC2T351')
+  const [newDuration, setNewDuration] = useState('45 mins')
+  const [newLectureDate, setNewLectureDate] = useState(new Date().toISOString().split('T')[0])
 
   // File Explorer Upload State
   const [selectedFile, setSelectedFile] = useState(null)
   const [isDragging, setIsDragging] = useState(false)
   const [showManualUrl, setShowManualUrl] = useState(false)
   const fileInputRef = useRef(null)
+  const restoreInputRef = useRef(null)
+
+  useEffect(() => {
+    getStorageEstimate().then(setStorageInfo)
+  }, [contents])
 
   const showToast = (msg) => {
     setToastMessage(msg)
@@ -44,6 +65,28 @@ export default function FacultyMaterials() {
   const handleDelete = (contentId, title) => {
     deleteContent(contentId)
     showToast(`Deleted content "${title}".`)
+  }
+
+  const handleExportBackup = () => {
+    try {
+      const filename = exportCurrentBackup()
+      showToast(`Database backup exported successfully: ${filename}`)
+    } catch {
+      showToast('Error exporting database backup.')
+    }
+  }
+
+  const handleRestoreBackup = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    try {
+      const data = await parseBackupFile(file)
+      restoreBackup(data)
+      showToast(`Restored database with ${data.contents?.length || 0} materials and ${data.classes?.length || 0} classes!`)
+      if (restoreInputRef.current) restoreInputRef.current.value = ''
+    } catch (err) {
+      showToast(`Restore failed: ${err.message}`)
+    }
   }
 
   const processFile = (file) => {
@@ -62,6 +105,13 @@ export default function FacultyMaterials() {
 
     // Auto-detect resource type from file extension
     const ext = file.name.split('.').pop()?.toLowerCase() || ''
+    if (['mp4', 'webm', 'mov', 'mkv', 'avi'].includes(ext)) {
+      setNewType('Video')
+      // Create local object URL for preview without slow Base64 stringification
+      setNewFileUrl(URL.createObjectURL(file))
+      return
+    }
+
     if (['pdf'].includes(ext)) {
       setNewType('PDF')
     } else if (['ppt', 'pptx', 'key'].includes(ext)) {
@@ -96,26 +146,30 @@ export default function FacultyMaterials() {
     }
   }
 
-  const handleUpload = (e) => {
+  const handleUpload = async (e) => {
     e.preventDefault()
     if (!newTitle.trim()) return
 
+    const isVideo = newType === 'Video'
     const fileSizeFormatted = selectedFile
       ? selectedFile.size > 1024 * 1024
         ? `${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB`
         : `${Math.round(selectedFile.size / 1024)} KB`
-      : '1.2 MB'
+      : (isVideo ? '65.0 MB' : '1.2 MB')
 
-    const fileNameFormatted = selectedFile?.name || `${newTitle.toLowerCase().replace(/\s+/g, '_')}.${newType.toLowerCase()}`
+    const fileNameFormatted = selectedFile?.name || `${newTitle.toLowerCase().replace(/\s+/g, '_')}.${isVideo ? 'mp4' : newType.toLowerCase()}`
 
-    const created = uploadContent({
+    const created = await uploadContent({
       title: newTitle,
       description: newDescription,
-      file_url: newFileUrl || `/materials/${newTitle.toLowerCase().replace(/\s+/g, '_')}.${newType.toLowerCase()}`,
+      file_url: newFileUrl || (isVideo ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' : `/materials/${newTitle.toLowerCase().replace(/\s+/g, '_')}.${newType.toLowerCase()}`),
       file_name: fileNameFormatted,
       file_size: fileSizeFormatted,
       type: newType,
       class_id: newClassId,
+      duration: isVideo ? newDuration : null,
+      lecture_date: isVideo ? newLectureDate : null,
+      video_file: isVideo ? selectedFile : null,
     })
 
     setUploadModalOpen(false)
@@ -125,10 +179,10 @@ export default function FacultyMaterials() {
     setSelectedFile(null)
     setShowManualUrl(false)
     if (fileInputRef.current) fileInputRef.current.value = ''
-    showToast(`Uploaded "${created.title}" successfully!`)
+    showToast(`Uploaded "${created.title}" ${isVideo ? 'recording to Absentee Hub' : 'successfully'}!`)
   }
 
-  const types = ['ALL', 'PDF', 'Code', 'Presentation', 'Notes']
+  const types = ['ALL', 'Video', 'PDF', 'Code', 'Presentation', 'Notes']
 
   const filtered = contents.filter((c) => {
     return selectedType === 'ALL' || c.type.toLowerCase() === selectedType.toLowerCase()
@@ -150,26 +204,86 @@ export default function FacultyMaterials() {
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1.5">
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-                TEACHER UPLOADS CONTENT
+                TEACHER UPLOADS CONTENT & RECORDINGS
               </span>
               <span className="text-xs text-slate-500 font-mono">
                 Teacher: {user?.teacher_id || 'TCH-101'}
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 tracking-tight">
-              Course Content & Vault Publisher
+              Course Content & Lecture Vault Publisher
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Publish learning resources, code suites, presentations, and problem sets to the student study vault.
+              Record classroom lectures for absent students, publish study materials, code suites, and presentations.
             </p>
           </div>
 
-          <button
-            onClick={() => setUploadModalOpen(true)}
-            className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md shadow-emerald-200 transition-all self-start md:self-auto cursor-pointer"
-          >
-            <Plus size={16} /> + Upload Content
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => {
+                setNewType('Video')
+                setUploadModalOpen(true)
+              }}
+              className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-md shadow-rose-200 transition-all cursor-pointer"
+            >
+              <Video size={16} /> + Upload Lecture Video
+            </button>
+            <button
+              onClick={() => setUploadModalOpen(true)}
+              className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md shadow-emerald-200 transition-all cursor-pointer"
+            >
+              <Plus size={16} /> + Upload Content
+            </button>
+          </div>
+        </div>
+
+        {/* Proper Backup Data Storage Console */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-700 text-white shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1">
+              <Database size={15} /> Proper Backup Data Storage & IndexedDB Media Vault
+            </div>
+            <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
+              Videos are preserved in local <strong>IndexedDB High-Capacity Storage</strong> without 5MB limits.
+              Full database snapshots can be exported or restored anytime to prevent data loss.
+            </p>
+            <div className="mt-2.5 flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
+              <span className="flex items-center gap-1.5 font-mono text-emerald-300 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">
+                <HardDrive size={12} /> {storageInfo.usageMB} MB Used in Vault
+              </span>
+              <span>•</span>
+              <span className="text-slate-300">
+                Quota: {storageInfo.quotaMB === 'Unlimited' ? 'High Browser Capacity' : `${storageInfo.quotaMB} MB Available`}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={handleExportBackup}
+              title="Download full JSON database snapshot"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold transition-all cursor-pointer"
+            >
+              <FileDown size={15} className="text-emerald-400" /> Export Full Backup (.json)
+            </button>
+
+            <button
+              type="button"
+              onClick={() => restoreInputRef.current?.click()}
+              title="Restore database from a previously exported backup file"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-md cursor-pointer"
+            >
+              <FileUp size={15} /> Restore from Backup
+            </button>
+            <input
+              type="file"
+              ref={restoreInputRef}
+              accept=".json"
+              onChange={handleRestoreBackup}
+              className="hidden"
+            />
+          </div>
         </div>
 
         {/* Filters */}
@@ -186,7 +300,7 @@ export default function FacultyMaterials() {
                   : 'bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-800 border border-slate-200/60'
               }`}
             >
-              {tp}
+              {tp === 'Video' ? '🎥 Video Lectures' : tp}
             </button>
           ))}
         </div>
@@ -213,12 +327,23 @@ export default function FacultyMaterials() {
                   >
                     <td className="py-3.5 px-5">
                       <div className="font-bold text-slate-900 flex items-center gap-2">
-                        <FileText size={15} className="text-emerald-700 shrink-0" />
-                        {item.title}
+                        {item.type === 'Video' ? (
+                          <Video size={16} className="text-rose-600 shrink-0" />
+                        ) : (
+                          <FileText size={15} className="text-emerald-700 shrink-0" />
+                        )}
+                        <span>{item.title}</span>
                       </div>
-                      <span className="text-[10px] font-mono text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 mt-0.5 inline-block">
-                        {item.content_id}
-                      </span>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[10px] font-mono text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 inline-block">
+                          {item.content_id}
+                        </span>
+                        {item.type === 'Video' && item.duration && (
+                          <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200 inline-flex items-center gap-1">
+                            <Clock size={10} /> {item.duration}
+                          </span>
+                        )}
+                      </div>
                     </td>
 
                     <td className="py-3.5 px-4 text-slate-500 max-w-xs truncate">
@@ -226,13 +351,26 @@ export default function FacultyMaterials() {
                     </td>
 
                     <td className="py-3.5 px-4">
-                      <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
-                        {item.type}
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                        item.type === 'Video'
+                          ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                          : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      }`}>
+                        {item.type === 'Video' ? '🎥 Lecture Video' : item.type}
                       </span>
                     </td>
 
                     <td className="py-3.5 px-4 text-slate-500 max-w-xs">
-                      {item.file_url?.startsWith('data:') ? (
+                      {item.type === 'Video' ? (
+                        <button
+                          type="button"
+                          onClick={() => setActiveVideoModal(item)}
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 font-bold hover:bg-rose-100 transition-colors text-[11px] cursor-pointer"
+                        >
+                          <Play size={12} className="fill-rose-600 text-rose-600" />
+                          <span>Watch Lecture Stream</span>
+                        </button>
+                      ) : item.file_url?.startsWith('data:') ? (
                         <a
                           href={item.file_url}
                           download={item.file_name || `${item.title.toLowerCase().replace(/\s+/g, '_')}.${item.type.toLowerCase()}`}
@@ -250,12 +388,22 @@ export default function FacultyMaterials() {
                       )}
                     </td>
 
-                    <td className="py-3.5 px-4 text-slate-500">{item.created_at}</td>
+                    <td className="py-3.5 px-4 text-slate-500">
+                      {item.lecture_date || item.created_at}
+                    </td>
 
-                    <td className="py-3.5 px-5 text-right">
+                    <td className="py-3.5 px-5 text-right space-x-2">
+                      {item.type === 'Video' && (
+                        <button
+                          onClick={() => setActiveVideoModal(item)}
+                          className="px-2.5 py-1 rounded-lg text-[11px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-colors cursor-pointer inline-flex items-center gap-1"
+                        >
+                          <Play size={11} /> Play
+                        </button>
+                      )}
                       <button
                         onClick={() => handleDelete(item.content_id, item.title)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer inline-block"
                         title="Delete Resource"
                       >
                         <Trash2 size={14} />
@@ -420,7 +568,7 @@ export default function FacultyMaterials() {
                 </div>
 
                 {/* 3. Resource Type and Class */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
                       Resource Type (type)
@@ -428,8 +576,9 @@ export default function FacultyMaterials() {
                     <select
                       value={newType}
                       onChange={(e) => setNewType(e.target.value)}
-                      className="w-full text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600"
+                      className="w-full text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600 font-semibold"
                     >
+                      <option value="Video">🎥 Class Lecture Recording (Absentee Hub)</option>
                       <option value="PDF">PDF Document</option>
                       <option value="Code">Code Repository</option>
                       <option value="Presentation">Presentation</option>
@@ -448,42 +597,83 @@ export default function FacultyMaterials() {
                     >
                       {classes.map((c) => (
                         <option key={c.class_id} value={c.class_id}>
-                          {c.subject}
+                          {c.subject} ({c.class_id})
                         </option>
                       ))}
                     </select>
                   </div>
                 </div>
 
+                {/* Video-Specific Absentee Catch-Up Attributes */}
+                {newType === 'Video' && (
+                  <div className="p-3.5 bg-rose-50/70 rounded-2xl border border-rose-200 space-y-3">
+                    <div className="flex items-center gap-2 text-rose-800 text-xs font-bold">
+                      <Sparkles size={14} className="text-rose-600" />
+                      <span>Absentee Catch-Up Hub Attributes</span>
+                    </div>
+                    <p className="text-[11px] text-rose-700 leading-relaxed">
+                      Students who missed class can open this recording to catch up on today's discussions, equations, and code.
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                          Class Lecture Date
+                        </label>
+                        <input
+                          type="date"
+                          value={newLectureDate}
+                          onChange={(e) => setNewLectureDate(e.target.value)}
+                          className="w-full text-xs px-3 py-1.5 rounded-xl bg-white border border-rose-200 text-slate-800 focus:outline-none"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                          Lecture Duration
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 45 mins"
+                          value={newDuration}
+                          onChange={(e) => setNewDuration(e.target.value)}
+                          className="w-full text-xs px-3 py-1.5 rounded-xl bg-white border border-rose-200 text-slate-800 focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* 4. Description */}
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Description (description)
+                    {newType === 'Video' ? 'Lecture Summary & Key Concepts Taught' : 'Description (description)'}
                   </label>
                   <textarea
                     rows={2}
-                    placeholder="Brief summary of concepts or problem set covered..."
+                    placeholder={newType === 'Video' ? 'Summary of what was taught on the board and answers given to students...' : 'Brief summary of concepts or problem set covered...'}
                     value={newDescription}
                     onChange={(e) => setNewDescription(e.target.value)}
                     className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600 resize-none"
                   />
                 </div>
 
-                {/* 5. Optional Manual URL Toggle */}
+                {/* 5. Optional Manual URL / Cloud Video Toggle */}
                 <div>
                   <button
                     type="button"
                     onClick={() => setShowManualUrl(!showManualUrl)}
                     className="text-[11px] text-emerald-800 font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
                   >
-                    <span>{showManualUrl ? '▲ Hide manual file path' : '▼ Or specify a manual URL / server path'}</span>
+                    <span>{showManualUrl ? '▲ Hide cloud URL input' : '▼ Or paste YouTube / Google Drive / Zoom cloud link'}</span>
                   </button>
 
                   {showManualUrl && (
                     <div className="mt-2">
                       <input
                         type="text"
-                        placeholder="e.g. /materials/thermo_stat_mech.pdf"
+                        placeholder="e.g. https://youtube.com/watch?v=... or https://drive.google.com/file/... or /materials/lecture.mp4"
                         value={newFileUrl}
                         onChange={(e) => setNewFileUrl(e.target.value)}
                         className="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-600 font-mono"
@@ -510,12 +700,21 @@ export default function FacultyMaterials() {
                     type="submit"
                     className="px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white shadow-md shadow-emerald-200 cursor-pointer transition-all"
                   >
-                    Publish to Vault
+                    {newType === 'Video' ? 'Publish Lecture Video' : 'Publish to Vault'}
                   </button>
                 </div>
               </form>
             </div>
           </div>
+        )}
+
+        {/* Video Player Modal */}
+        {activeVideoModal && (
+          <VideoPlayerModal
+            video={activeVideoModal}
+            onClose={() => setActiveVideoModal(null)}
+            classInfo={classes.find((c) => c.class_id === activeVideoModal?.class_id)}
+          />
         )}
       </div>
     </TeacherLayout>
